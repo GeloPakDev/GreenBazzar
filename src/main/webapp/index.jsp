@@ -5,8 +5,6 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1> "Hello World!"
-</h1>
 <br/>
 <form action="controller">
     <input type="hidden" name="command" value="login"/>
@@ -16,7 +14,12 @@
     <br/>
     <input type="submit" name="sub" value="Push"/>
     <br/>
-    ${login_msg}
+    ${login_msg.toUpperCase()}
+    <br/>
+    ${pageContext.session.id}
+    <br/>
+    ${filter_attr}
+
 </form>
 </body>
 </html>
