@@ -29,7 +29,6 @@ public class Controller extends HttpServlet {
         String page;
         try {
             page = command.execute(request);
-
             request.getRequestDispatcher(page).forward(request, response);
         } catch (CommandException e) {
             //response.sendError(500);//1

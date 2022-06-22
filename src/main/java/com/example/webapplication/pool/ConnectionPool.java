@@ -1,89 +1,99 @@
 package com.example.webapplication.pool;
 
-import com.mysql.cj.jdbc.Driver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.Enumeration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Lock locker = new ReentrantLock(true);
+    private static final AtomicBoolean isPoolCreated = new AtomicBoolean(false);
+    private static final int DEFAULT_POOL_SIZE = 8;
     private static ConnectionPool instance;
-    private BlockingQueue<Connection> free = new LinkedBlockingQueue<>(8);
-    private BlockingQueue<Connection> used = new LinkedBlockingQueue<>(8);
-
-    static {
-        try {
-            //DriverManager.registerDriver(new Driver());
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            //} catch (SQLException e) {
-            //  throw new ExceptionInInitializerError(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
-            //throw new ExceptionInInitializerError(e.getMessage());
-        }
-    }
+    private final BlockingQueue<ProxyConnection> freeConnection = new LinkedBlockingQueue<>(DEFAULT_POOL_SIZE);
+    private final BlockingQueue<ProxyConnection> usedConnection = new LinkedBlockingQueue<>(DEFAULT_POOL_SIZE);
 
     private ConnectionPool() {
-        //URL
-        String url = "jdbc:mysql://localhost:3306/userstable";
-        //Login and Password
-        Properties properties = new Properties();
-        properties.put("user", "root");
-        properties.put("password", "134408");
-
-        for (int i = 0; i < 8; i++) {
-            Connection connection;
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+            ProxyConnection connection;
             try {
-                //To connect with the database call getConnection method and pass following params
-                //Url of the Database
-                //Login of the user of the DB
-                //Password of an access
-                connection = DriverManager.getConnection(url, properties);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                connection = ConnectionFactory.createConnection();
+                freeConnection.put(connection);
+            } catch (SQLException | InterruptedException e) {
+                LOGGER.error("The connection pool is empty, no connections created", e);
+                Thread.currentThread().interrupt();
+                throw new ExceptionInInitializerError("Error while initialising connection pool");
             }
-            free.add(connection);
         }
     }
 
     public static ConnectionPool getInstance() {
-        instance = new ConnectionPool();
+        if (!isPoolCreated.get()) {
+            try {
+                locker.lock();
+                if (instance == null) {
+                    instance = new ConnectionPool();
+                    isPoolCreated.set(true);
+                }
+            } finally {
+                locker.unlock();
+            }
+        }
         return instance;
     }
 
+    public void releaseConnection(Connection connection) {
+        if (connection instanceof ProxyConnection proxyConnection) {
+            try {
+                usedConnection.take();
+                freeConnection.put(proxyConnection);
+            } catch (InterruptedException e) {
+                LOGGER.error("failed to release a connection", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
     public Connection getConnection() {
-        Connection connection = null;
+        ProxyConnection connection = null;
         try {
-            connection = free.take();
-            used.add(connection);
+            connection = freeConnection.take();
+            usedConnection.put(connection);
         } catch (InterruptedException e) {
-            //throw new RuntimeException(e);
-            //e.printStackTrace();
+            LOGGER.error("exception in getting connection from pool:", e);
             Thread.currentThread().interrupt();
         }
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
-        try {
-            used.remove(connection);
-            free.put(connection);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    //deregisterDriver
-    public void destroyPool() {
-        for (int i = 0; i < 8; i++) {
+    public void destroy() {
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
             try {
-                free.take().close();
-            } catch (SQLException | InterruptedException e) {
-                e.printStackTrace();
+                freeConnection.take().reallyClose();
+            } catch (SQLException e) {
+                LOGGER.error("failed to destroy pool", e);
+            } catch (InterruptedException e) {
+                LOGGER.error("failed to destroy pool", e);
+                Thread.currentThread().interrupt();
             }
+        }
+        try {
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                DriverManager.deregisterDriver(drivers.nextElement());
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Drivers were not de-registered", e);
         }
     }
 }

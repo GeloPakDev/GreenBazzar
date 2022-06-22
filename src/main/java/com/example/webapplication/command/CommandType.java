@@ -10,14 +10,29 @@ public enum CommandType {
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
     DEFAULT(new DefaultCommand());
-    Command command;
+    private final Command command;
 
     CommandType(Command command) {
         this.command = command;
     }
 
-    public static Command define(String commandStr) {
-        CommandType current = CommandType.valueOf(commandStr.toUpperCase());
-        return current.command;
+    public static Command of(String strCommand) {
+        CommandType current;
+
+        if (strCommand == null) {
+            current = CommandType.DEFAULT;
+            return current.command;
+        }
+        try {
+            current = CommandType.valueOf(strCommand.toUpperCase());
+            return current.command;
+        } catch (IllegalArgumentException e) {
+            current = CommandType.DEFAULT;
+            return current.command;
+        }
+    }
+
+    public Command getCommand() {
+        return command;
     }
 }
