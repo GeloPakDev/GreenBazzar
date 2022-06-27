@@ -1,66 +1,39 @@
 package com.example.webapplication.entity.order;
 
 import com.example.webapplication.entity.AbstractEntity;
+import com.example.webapplication.entity.product.Product;
+import com.example.webapplication.entity.user.User;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.List;
 
 public class Order implements AbstractEntity {
     @Serial
     private static final long serialVersionUID = 1L;
-    private Long id;
-    private Long bookId;
-    private Long userId;
-    private Type type;
+    private int id;
+    private User user;
     private Status status;
-    private String userFirstName;
-    private String userSecondName;
-    private String bookTitle;
     private LocalDateTime orderedDate;
     private LocalDateTime reservedDate;
     private LocalDateTime returnedDate;
     private LocalDateTime rejectedDate;
+    private List<Product> productList;
 
-    public Order() {
-    }
-
-    public Order(Long bookId, Long userId, Type type) {
-        this.bookId = bookId;
-        this.userId = userId;
-        this.type = type;
-    }
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getBookId() {
-        return bookId;
+    public User getUser() {
+        return user;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Status getStatus() {
@@ -69,30 +42,6 @@ public class Order implements AbstractEntity {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getUserFirstName() {
-        return userFirstName;
-    }
-
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
-    }
-
-    public String getUserSecondName() {
-        return userSecondName;
-    }
-
-    public void setUserSecondName(String userSecondName) {
-        this.userSecondName = userSecondName;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
     }
 
     public LocalDateTime getOrderedDate() {
@@ -127,46 +76,56 @@ public class Order implements AbstractEntity {
         this.rejectedDate = rejectedDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equals(id, order.id) &&
-                Objects.equals(bookId, order.bookId) &&
-                Objects.equals(userId, order.userId) &&
-                type == order.type && status == order.status &&
-                Objects.equals(userFirstName, order.userFirstName) &&
-                Objects.equals(userSecondName, order.userSecondName) &&
-                Objects.equals(bookTitle, order.bookTitle) &&
-                Objects.equals(orderedDate, order.orderedDate) &&
-                Objects.equals(reservedDate, order.reservedDate) &&
-                Objects.equals(rejectedDate, order.rejectedDate) &&
-                Objects.equals(returnedDate, order.returnedDate);
+    public List<Product> getProductList() {
+        return productList;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, bookId, userId, type, status, userFirstName,
-                userSecondName, bookTitle, orderedDate, reservedDate, returnedDate, rejectedDate);
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.getClass());
-        builder.append(" id = ").append(id);
-        builder.append(" bookId = ").append(bookId);
-        builder.append(" userId = ").append(userId);
-        builder.append(" type = ").append(type);
-        builder.append(" status = ").append(status);
-        builder.append("userFirstName= ").append(userFirstName);
-        builder.append("userSecondName= ").append(userSecondName);
-        builder.append("bookTitle= ").append(bookTitle);
-        builder.append("orderedDate = ").append(orderedDate);
-        builder.append(" reservedDate = ").append(reservedDate);
-        builder.append(" reservedDate = ").append(reservedDate);
-        builder.append(" rejectedDate = ").append(rejectedDate);
-        return builder.toString();
+        final StringBuilder sb = new StringBuilder("Order{");
+        sb.append("id=").append(id);
+        sb.append(", user=").append(user);
+        sb.append(", status=").append(status);
+        sb.append(", orderedDate=").append(orderedDate);
+        sb.append(", reservedDate=").append(reservedDate);
+        sb.append(", returnedDate=").append(returnedDate);
+        sb.append(", rejectedDate=").append(rejectedDate);
+        sb.append(", productList=").append(productList);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (id != order.id) return false;
+        if (user != null ? !user.equals(order.user) : order.user != null) return false;
+        if (status != order.status) return false;
+        if (orderedDate != null ? !orderedDate.equals(order.orderedDate) : order.orderedDate != null) return false;
+        if (reservedDate != null ? !reservedDate.equals(order.reservedDate) : order.reservedDate != null) return false;
+        if (returnedDate != null ? !returnedDate.equals(order.returnedDate) : order.returnedDate != null) return false;
+        if (rejectedDate != null ? !rejectedDate.equals(order.rejectedDate) : order.rejectedDate != null) return false;
+        return productList != null ? productList.equals(order.productList) : order.productList == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (orderedDate != null ? orderedDate.hashCode() : 0);
+        result = 31 * result + (reservedDate != null ? reservedDate.hashCode() : 0);
+        result = 31 * result + (returnedDate != null ? returnedDate.hashCode() : 0);
+        result = 31 * result + (rejectedDate != null ? rejectedDate.hashCode() : 0);
+        result = 31 * result + (productList != null ? productList.hashCode() : 0);
+        return result;
     }
 }

@@ -1,10 +1,10 @@
 package com.example.webapplication.entity.order;
 
 public enum Status {
-    ORDERED("ordered"),
-    RESERVED("reserved"),
-    RETURNED("returned"),
-    REJECTED("rejected");
+    NEW("NEW"),
+    IN_PROGRESS("IN_PROGRESS"),
+    COMPLETED("COMPLETED"),
+    CANCELED("CANCELED");
 
     private final String value;
 

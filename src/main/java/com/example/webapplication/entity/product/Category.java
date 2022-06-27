@@ -3,7 +3,7 @@ package com.example.webapplication.entity.product;
 public enum Category {
     //Vegetables and Fruits
     VEGETABLES("Vegetables"),
-    FRUITS("Fruit"),
+    FRUITS("Fruits"),
     GREENS("Greens"),
     DRIED_FRUITS("Dried_fruits"),
     //Beverages
@@ -20,14 +20,12 @@ public enum Category {
     CHEESE_CURDS("Cheese_curds"),
     BUTTER("Butter"),
     CHEESE("Cheese"),
-    SULUGUNI("Suluguni"),
-    BRYNZA("Brynza"),
     EGGS("Eggs"),
     //Meat and meat products
     BEEF("Beef"),
     LAMB("Lamb"),
     POULTRY_MEAT("Poultry_meat"),
-    RABBIT_MEAT("Poultry_meat"),
+    RABBIT_MEAT("Rabbit_meat"),
     FISH("Fish"),
     FISH_PRODUCTS("Fish_products"),
     SAUSAGE_PRODUCTS("Sausage_products"),
@@ -41,13 +39,12 @@ public enum Category {
     NOODLE("Noodle"),
     VEGETABLE_OIL("Vegetable_oil"),
     HONEY("Honey"),
-    CONFITURE("Confiture"),
     MARGARINE("Margarine"),
     BREAKFAST("Breakfast"),
     SAUCES("Sauces"),
     SPICES("Spices"),
     SEASONINGS("Seasonings"),
-    //Tea and Coffe
+    //Tea and Coffee
     BLACK_TEA("Black_tea"),
     GREEN_TEA("Green_tea"),
     COFFEE("Coffee"),
@@ -80,4 +77,4 @@ public enum Category {
     public String getName() {
         return name;
     }
-    }
+}

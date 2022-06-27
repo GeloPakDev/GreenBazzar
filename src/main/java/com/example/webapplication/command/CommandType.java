@@ -1,9 +1,7 @@
 package com.example.webapplication.command;
 
-import com.example.webapplication.command.impl.AddUserCommand;
-import com.example.webapplication.command.impl.DefaultCommand;
-import com.example.webapplication.command.impl.LoginCommand;
-import com.example.webapplication.command.impl.LogoutCommand;
+import com.example.webapplication.command.common.DefaultCommand;
+import com.example.webapplication.command.common.LogoutCommand;
 
 public enum CommandType {
     ADD_USER(new AddUserCommand()),

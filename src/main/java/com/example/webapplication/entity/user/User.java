@@ -1,29 +1,33 @@
 package com.example.webapplication.entity.user;
 
 import com.example.webapplication.entity.AbstractEntity;
+import com.example.webapplication.entity.order.Order;
 
 import java.io.Serial;
 import java.time.LocalDate;
+import java.util.List;
 
 public class User implements AbstractEntity {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private long id;
+    private int id;
     private String login;
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
     private Role role;
     private Sex sex;
+    private String photo;
     private LocalDate birthday;
+    private Address address;
+    private Payment payment;
+    private List<Order> orderList;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -59,14 +63,6 @@ public class User implements AbstractEntity {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -83,6 +79,14 @@ public class User implements AbstractEntity {
         this.sex = sex;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -91,51 +95,27 @@ public class User implements AbstractEntity {
         this.birthday = birthday;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("id=").append(id);
-        sb.append(", login='").append(login).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", role=").append(role);
-        sb.append(", sex=").append(sex);
-        sb.append(", birthday=").append(birthday);
-        sb.append('}');
-        return sb.toString();
+    public Address getAddress() {
+        return address;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (role != user.role) return false;
-        if (sex != user.sex) return false;
-        return birthday != null ? birthday.equals(user.birthday) : user.birthday == null;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
-        return result;
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 }
