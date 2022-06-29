@@ -25,9 +25,9 @@ public class ProductMapper implements EntityMapper<Product> {
             product.setWeight(resultSet.getDouble(ColumnName.PRODUCT_WEIGHT));
             product.setCategory(Category.valueOf(resultSet.getString(ColumnName.PRODUCT_CATEGORY).toUpperCase()));
             product.setQuantity(resultSet.getInt(ColumnName.PRODUCT_QUANTITY));
-            product.setCreated_at(resultSet.getObject(ColumnName.PRODUCT_CREATED_AT, LocalDateTime.class));
-            product.setModified_at(resultSet.getObject(ColumnName.PRODUCT_MODIFIED_AT, LocalDateTime.class));
-            product.setDeleted_at(resultSet.getObject(ColumnName.PRODUCT_DELETED_AT, LocalDateTime.class));
+            product.setCreated_at(resultSet.getDate(ColumnName.PRODUCT_CREATED_AT));
+            product.setModified_at(resultSet.getDate(ColumnName.PRODUCT_MODIFIED_AT));
+            product.setDeleted_at(resultSet.getDate(ColumnName.PRODUCT_DELETED_AT));
             return Optional.of(product);
         } catch (SQLException e) {
             e.printStackTrace();

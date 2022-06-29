@@ -3,12 +3,13 @@ package com.example.webapplication.dao;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.DaoException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao extends EntityDao<User, Integer> {
 
-    Optional<User> findUserByLogin(String login) throws DaoException;
+    List<User> findUsersByQuery(String query) throws DaoException;
 
-    Optional<User> findUserByFirstAndLastName(String firstName, String lastName) throws DaoException;
+    List<User> findUsersByRole(String role) throws DaoException;
 
 }

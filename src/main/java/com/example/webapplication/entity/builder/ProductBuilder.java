@@ -3,6 +3,7 @@ package com.example.webapplication.entity.builder;
 import com.example.webapplication.entity.product.Category;
 import com.example.webapplication.entity.product.Product;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -15,14 +16,13 @@ public class ProductBuilder {
     private Double weight;
     private Category category;
     private int quantity;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
-    private LocalDateTime deleted_at;
+    private Date created_at;
+    private Date modified_at;
+    private Date deleted_at;
 
     public Product build() {
         return new Product(this);
     }
-
 
     public int getId() {
         return id;
@@ -96,32 +96,33 @@ public class ProductBuilder {
         return this;
     }
 
-    public LocalDateTime getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public ProductBuilder setCreated_at(LocalDateTime created_at) {
+    public ProductBuilder setCreated_at(Date created_at) {
         this.created_at = created_at;
         return this;
     }
 
-    public LocalDateTime getModified_at() {
+    public Date getModified_at() {
         return modified_at;
     }
 
-    public ProductBuilder setModified_at(LocalDateTime modified_at) {
+    public ProductBuilder setModified_at(Date modified_at) {
         this.modified_at = modified_at;
         return this;
     }
 
-    public LocalDateTime getDeleted_at() {
+    public Date getDeleted_at() {
         return deleted_at;
     }
 
-    public ProductBuilder setDeleted_at(LocalDateTime deleted_at) {
+    public ProductBuilder setDeleted_at(Date deleted_at) {
         this.deleted_at = deleted_at;
         return this;
     }
+
 
     @Override
     public boolean equals(Object o) {

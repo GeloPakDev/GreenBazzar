@@ -62,7 +62,7 @@ public enum Category {
 
     SALADS("Salads"),
     SANDWICHES("Sandwiches"),
-
+    //Canned products
     CANNED_FISH("Canned_fish"),
     CANNED_MEAT("Canned_meat"),
     CANNED_FRUITS("Canned_fruits"),

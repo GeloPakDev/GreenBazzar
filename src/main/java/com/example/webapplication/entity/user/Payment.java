@@ -9,7 +9,7 @@ public class Payment implements AbstractEntity {
     private static final long serialVersionUID = 1L;
     private int id;
     private String paymentType;
-    private Integer cardNumber;
+    private int cardNumber;
 
     public String getPaymentType() {
         return paymentType;
@@ -19,11 +19,11 @@ public class Payment implements AbstractEntity {
         this.paymentType = paymentType;
     }
 
-    public Integer getCardNumber() {
+    public int getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(Integer cardNumber) {
+    public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
     }
 
@@ -53,15 +53,15 @@ public class Payment implements AbstractEntity {
         Payment payment = (Payment) o;
 
         if (id != payment.id) return false;
-        if (paymentType != null ? !paymentType.equals(payment.paymentType) : payment.paymentType != null) return false;
-        return cardNumber != null ? cardNumber.equals(payment.cardNumber) : payment.cardNumber == null;
+        if (cardNumber != payment.cardNumber) return false;
+        return paymentType != null ? paymentType.equals(payment.paymentType) : payment.paymentType == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (paymentType != null ? paymentType.hashCode() : 0);
-        result = 31 * result + (cardNumber != null ? cardNumber.hashCode() : 0);
+        result = 31 * result + cardNumber;
         return result;
     }
 }

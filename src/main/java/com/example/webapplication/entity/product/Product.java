@@ -4,6 +4,7 @@ import com.example.webapplication.entity.AbstractEntity;
 import com.example.webapplication.entity.builder.ProductBuilder;
 
 import java.io.Serial;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,9 +19,9 @@ public class Product implements AbstractEntity {
     private Double weight;
     private Category category;
     private int quantity;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
-    private LocalDateTime deleted_at;
+    private Date created_at;
+    private Date modified_at;
+    private Date deleted_at;
 
     public Product() {
     }
@@ -103,29 +104,29 @@ public class Product implements AbstractEntity {
         this.category = category;
     }
 
-    public LocalDateTime getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public Product setCreated_at(LocalDateTime created_at) {
+    public Product setCreated_at(Date created_at) {
         this.created_at = created_at;
         return this;
     }
 
-    public LocalDateTime getModified_at() {
+    public Date getModified_at() {
         return modified_at;
     }
 
-    public Product setModified_at(LocalDateTime modified_at) {
+    public Product setModified_at(Date modified_at) {
         this.modified_at = modified_at;
         return this;
     }
 
-    public LocalDateTime getDeleted_at() {
+    public Date getDeleted_at() {
         return deleted_at;
     }
 
-    public Product setDeleted_at(LocalDateTime deleted_at) {
+    public Product setDeleted_at(Date deleted_at) {
         this.deleted_at = deleted_at;
         return this;
     }
