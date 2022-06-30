@@ -5,8 +5,6 @@ import com.example.webapplication.entity.builder.ProductBuilder;
 
 import java.io.Serial;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Product implements AbstractEntity {
     @Serial

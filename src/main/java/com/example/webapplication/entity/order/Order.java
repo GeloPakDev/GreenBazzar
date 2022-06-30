@@ -5,7 +5,7 @@ import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.user.User;
 
 import java.io.Serial;
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.List;
 
 public class Order implements AbstractEntity {
@@ -14,10 +14,10 @@ public class Order implements AbstractEntity {
     private int id;
     private User user;
     private Status status;
-    private LocalDateTime orderedDate;
-    private LocalDateTime reservedDate;
-    private LocalDateTime returnedDate;
-    private LocalDateTime rejectedDate;
+    private Date orderedDate;
+    private Date confirmedDate;
+    private Date completedDate;
+    private Date canceledDate;
     private List<Product> productList;
 
     public int getId() {
@@ -44,36 +44,37 @@ public class Order implements AbstractEntity {
         this.status = status;
     }
 
-    public LocalDateTime getOrderedDate() {
+
+    public Date getOrderedDate() {
         return orderedDate;
     }
 
-    public void setOrderedDate(LocalDateTime orderedDate) {
+    public void setOrderedDate(Date orderedDate) {
         this.orderedDate = orderedDate;
     }
 
-    public LocalDateTime getReservedDate() {
-        return reservedDate;
+    public Date getConfirmedDate() {
+        return confirmedDate;
     }
 
-    public void setReservedDate(LocalDateTime reservedDate) {
-        this.reservedDate = reservedDate;
+    public void setConfirmedDate(Date confirmedDate) {
+        this.confirmedDate = confirmedDate;
     }
 
-    public LocalDateTime getReturnedDate() {
-        return returnedDate;
+    public Date getCompletedDate() {
+        return completedDate;
     }
 
-    public void setReturnedDate(LocalDateTime returnedDate) {
-        this.returnedDate = returnedDate;
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
     }
 
-    public LocalDateTime getRejectedDate() {
-        return rejectedDate;
+    public Date getCanceledDate() {
+        return canceledDate;
     }
 
-    public void setRejectedDate(LocalDateTime rejectedDate) {
-        this.rejectedDate = rejectedDate;
+    public void setCanceledDate(Date canceledDate) {
+        this.canceledDate = canceledDate;
     }
 
     public List<Product> getProductList() {
@@ -91,9 +92,9 @@ public class Order implements AbstractEntity {
         sb.append(", user=").append(user);
         sb.append(", status=").append(status);
         sb.append(", orderedDate=").append(orderedDate);
-        sb.append(", reservedDate=").append(reservedDate);
-        sb.append(", returnedDate=").append(returnedDate);
-        sb.append(", rejectedDate=").append(rejectedDate);
+        sb.append(", confirmedDate=").append(confirmedDate);
+        sb.append(", completedDate=").append(completedDate);
+        sb.append(", canceledDate=").append(canceledDate);
         sb.append(", productList=").append(productList);
         sb.append('}');
         return sb.toString();
@@ -110,9 +111,11 @@ public class Order implements AbstractEntity {
         if (user != null ? !user.equals(order.user) : order.user != null) return false;
         if (status != order.status) return false;
         if (orderedDate != null ? !orderedDate.equals(order.orderedDate) : order.orderedDate != null) return false;
-        if (reservedDate != null ? !reservedDate.equals(order.reservedDate) : order.reservedDate != null) return false;
-        if (returnedDate != null ? !returnedDate.equals(order.returnedDate) : order.returnedDate != null) return false;
-        if (rejectedDate != null ? !rejectedDate.equals(order.rejectedDate) : order.rejectedDate != null) return false;
+        if (confirmedDate != null ? !confirmedDate.equals(order.confirmedDate) : order.confirmedDate != null)
+            return false;
+        if (completedDate != null ? !completedDate.equals(order.completedDate) : order.completedDate != null)
+            return false;
+        if (canceledDate != null ? !canceledDate.equals(order.canceledDate) : order.canceledDate != null) return false;
         return productList != null ? productList.equals(order.productList) : order.productList == null;
     }
 
@@ -122,9 +125,9 @@ public class Order implements AbstractEntity {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (orderedDate != null ? orderedDate.hashCode() : 0);
-        result = 31 * result + (reservedDate != null ? reservedDate.hashCode() : 0);
-        result = 31 * result + (returnedDate != null ? returnedDate.hashCode() : 0);
-        result = 31 * result + (rejectedDate != null ? rejectedDate.hashCode() : 0);
+        result = 31 * result + (confirmedDate != null ? confirmedDate.hashCode() : 0);
+        result = 31 * result + (completedDate != null ? completedDate.hashCode() : 0);
+        result = 31 * result + (canceledDate != null ? canceledDate.hashCode() : 0);
         result = 31 * result + (productList != null ? productList.hashCode() : 0);
         return result;
     }

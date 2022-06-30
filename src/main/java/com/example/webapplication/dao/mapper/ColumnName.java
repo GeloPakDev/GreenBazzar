@@ -3,7 +3,7 @@ package com.example.webapplication.dao.mapper;
 public final class ColumnName {
 
     //Products
-    public static final String PRODUCT_ID = "id";
+    public static final String PRODUCT_ID = "products_id";
     public static final String PRODUCT_NAME = "name";
     public static final String PRODUCT_PHOTO = "photo";
     public static final String PRODUCT_PRICE = "price";
@@ -36,6 +36,17 @@ public final class ColumnName {
     public static final String ADDRESS_POSTAL_CODE = "postal_code";
     public static final String ADDRESS_COUNTRY = "country";
     public static final String ADDRESS_PHONE_NUMBER = "phone_number";
+
+    //Orders
+    public static final String ORDER_ID = "order_id";
+    public static final String ORDER_STATUS = "status";
+    public static final String ORDER_ORDERED_TIME = "ordered_time";
+    public static final String ORDER_CONFIRMED_TIME = "confirmed_time";
+    public static final String ORDER_COMPLETED_TIME = "completed_time";
+    public static final String ORDER_CANCELED_TIME = "canceled_time";
+
+    //Order_Products_list
+    public static final String ORDER_PRODUCTS_QUANTITY = "product_quantity";
 
 
 }

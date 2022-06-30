@@ -21,7 +21,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Optional<Product> find(Integer id) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
-             var preparedStatement = connection.prepareStatement(QuerySQL.SELECT_ORDER_BY_ID)) {
+             var preparedStatement = connection.prepareStatement(QuerySQL.SELECT_PRODUCT_BY_ID)) {
             preparedStatement.setInt(1, id);
             try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -29,7 +29,6 @@ public class ProductDaoImpl implements ProductDao {
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
             throw new DaoException();
         }
         return Optional.empty();
@@ -45,38 +44,35 @@ public class ProductDaoImpl implements ProductDao {
                 var product = mapper.map(resultSet);
                 product.ifPresent(list::add);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DaoException();
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
         }
         return list;
     }
 
     @Override
-    public Optional<Product> create(Product product) throws DaoException {
+    public boolean create(Product product) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var preparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT)) {
             constructPreparedStatement(preparedStatement, product);
-            preparedStatement.executeUpdate();
-            return Optional.empty();
+            int count = preparedStatement.executeUpdate();
+            return count == 1;
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            throw new DaoException();
+            throw new DaoException(exception);
         }
     }
 
     @Override
-    public Optional<Product> update(Product product) throws DaoException {
+    public boolean update(Product product) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var statement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT)) {
             constructPreparedStatement(statement, product);
             statement.setInt(11, product.getId());
-            statement.executeUpdate();
+            int count = statement.executeUpdate();
+            return count == 1;
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            throw new DaoException();
+            throw new DaoException(exception);
         }
-        return Optional.of(product);
     }
 
     @Override
@@ -86,8 +82,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            throw new DaoException();
+            throw new DaoException(exception);
         }
     }
 
@@ -104,8 +99,7 @@ public class ProductDaoImpl implements ProductDao {
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            throw new DaoException();
+            throw new DaoException(exception);
         }
         return products;
     }
@@ -123,8 +117,7 @@ public class ProductDaoImpl implements ProductDao {
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            throw new DaoException();
+            throw new DaoException(exception);
         }
         return products;
     }
