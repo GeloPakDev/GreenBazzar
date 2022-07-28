@@ -40,9 +40,8 @@ public class AddCardCommand implements Command {
 
         try {
             cardList = userService.findUserCards(userId);
-            addressList = userService.findUserAddresses(userId);
             if (userService.addCard(userId, card)) {
-                cardList.add(card);
+                addressList = userService.findUserAddresses(userId);
                 session.setAttribute(RequestParameter.CARDS, cardList);
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);

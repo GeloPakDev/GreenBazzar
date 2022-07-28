@@ -15,9 +15,7 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     DEFAULT(new DefaultCommand()),
     UPDATE_CUSTOMER(new UpdateCustomerCommand()),
-    CHOOSE_ALL_PRODUCTS(new ChooseAllProductCommand()),
     ADD_ADDRESS(new AddAddressCommand()),
-
     DELETE_ADDRESS(new DeleteAddressCommand()),
     ADD_CARD(new AddCardCommand()),
     DELETE_CARD(new DeleteCardCommand()),

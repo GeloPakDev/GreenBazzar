@@ -43,9 +43,8 @@ public class AddAddressCommand implements Command {
         logger.info("That is the object : " + address);
         try {
             cardList = userService.findUserCards(userId);
-            addressList = userService.findUserAddresses(userId);
             if (userService.addAddress(userId, address)) {
-                addressList.add(address);
+                addressList = userService.findUserAddresses(userId);
                 session.setAttribute(RequestParameter.CARDS, cardList);
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);

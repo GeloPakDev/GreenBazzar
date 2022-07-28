@@ -38,7 +38,7 @@ public class DeleteCardCommand implements Command {
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
             } else {
-                return new Router(PagePath.REGISTRATION_PAGE, Router.Type.REDIRECT);
+                return new Router(PagePath.HOME_PAGE, Router.Type.REDIRECT);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
