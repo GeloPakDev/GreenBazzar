@@ -2,20 +2,17 @@ package com.example.webapplication.entity.builder;
 
 import com.example.webapplication.entity.user.*;
 
-import java.sql.Date;
-
 public class UserBuilder {
     private int id;
     private String login;
     private String password;
+    private String email;
     private String firstName;
     private String lastName;
     private Role role;
-    private Sex sex;
-    private String photo;
-    private Date birthday;
     private Address address;
-    private Payment payment;
+    private Card card;
+    private String companyName;
 
     public User build() {
         return new User(this);
@@ -75,32 +72,6 @@ public class UserBuilder {
         return this;
     }
 
-    public Sex getSex() {
-        return sex;
-    }
-
-    public UserBuilder setSex(Sex sex) {
-        this.sex = sex;
-        return this;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public UserBuilder setPhoto(String photo) {
-        this.photo = photo;
-        return this;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public UserBuilder setBirthday(Date birthday) {
-        this.birthday = birthday;
-        return this;
-    }
 
     public Address getAddress() {
         return address;
@@ -111,12 +82,32 @@ public class UserBuilder {
         return this;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public String getEmail() {
+        return email;
     }
 
-    public UserBuilder setPayment(Payment payment) {
-        this.payment = payment;
+    public UserBuilder setEmail(String email) {
+        this.email = email;
         return this;
     }
+
+    public Card getPayment() {
+        return card;
+    }
+
+    public UserBuilder setPayment(Card card) {
+        this.card = card;
+        return this;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public UserBuilder setCompanyName(String companyName) {
+        this.companyName = companyName;
+        return this;
+    }
+
+
 }

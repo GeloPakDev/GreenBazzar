@@ -21,6 +21,7 @@ public class Product implements AbstractEntity {
     private Date modified_at;
     private Date deleted_at;
 
+
     public Product() {
     }
 

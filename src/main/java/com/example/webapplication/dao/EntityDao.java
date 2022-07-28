@@ -1,5 +1,6 @@
 package com.example.webapplication.dao;
 
+import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.exception.DaoException;
 
 import java.util.List;
@@ -10,8 +11,6 @@ public interface EntityDao<E, K> {
     Optional<E> find(K id) throws DaoException;
 
     List<E> findAll() throws DaoException;
-
-    boolean create(E entity) throws DaoException;
 
     boolean update(E entity) throws DaoException;
 

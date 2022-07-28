@@ -2,10 +2,9 @@ package com.example.webapplication.entity.builder;
 
 import com.example.webapplication.entity.product.Category;
 import com.example.webapplication.entity.product.Product;
+import com.example.webapplication.entity.product.Status;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ProductBuilder {
     private int id;
@@ -19,6 +18,7 @@ public class ProductBuilder {
     private Date created_at;
     private Date modified_at;
     private Date deleted_at;
+    private Status status;
 
     public Product build() {
         return new Product(this);
@@ -32,6 +32,7 @@ public class ProductBuilder {
         this.id = id;
         return this;
     }
+
 
     public String getName() {
         return name;
@@ -123,6 +124,33 @@ public class ProductBuilder {
         return this;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public ProductBuilder setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ProductBuilder{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", photo='").append(photo).append('\'');
+        sb.append(", price=").append(price);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", weight=").append(weight);
+        sb.append(", category=").append(category);
+        sb.append(", quantity=").append(quantity);
+        sb.append(", created_at=").append(created_at);
+        sb.append(", modified_at=").append(modified_at);
+        sb.append(", deleted_at=").append(deleted_at);
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -141,7 +169,8 @@ public class ProductBuilder {
         if (category != that.category) return false;
         if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
         if (modified_at != null ? !modified_at.equals(that.modified_at) : that.modified_at != null) return false;
-        return deleted_at != null ? deleted_at.equals(that.deleted_at) : that.deleted_at == null;
+        if (deleted_at != null ? !deleted_at.equals(that.deleted_at) : that.deleted_at != null) return false;
+        return status == that.status;
     }
 
     @Override
@@ -157,24 +186,7 @@ public class ProductBuilder {
         result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
         result = 31 * result + (modified_at != null ? modified_at.hashCode() : 0);
         result = 31 * result + (deleted_at != null ? deleted_at.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("ProductBuilder{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", photo='").append(photo).append('\'');
-        sb.append(", price=").append(price);
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", weight=").append(weight);
-        sb.append(", category=").append(category);
-        sb.append(", quantity=").append(quantity);
-        sb.append(", created_at=").append(created_at);
-        sb.append(", modified_at=").append(modified_at);
-        sb.append(", deleted_at=").append(deleted_at);
-        sb.append('}');
-        return sb.toString();
     }
 }

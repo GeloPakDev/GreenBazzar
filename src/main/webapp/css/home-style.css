@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    line-height: 30px;
+}
+
+nav > ul li {
+    width: 215px;
+    position: relative;
+    text-align: start;
+}
+
+nav > ul > li:hover > ul {
+    display: block;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+nav > ul > li > ul {
+    border-width: 3px;
+    border-color: black;
+    background-color: #D9D9D9;
+    position: absolute;
+    top: 0;
+    padding-left: 10px;
+    left: 100%;
+    display: none;
+}
+
+nav ul li a i {
+    padding-left: 8px;
+}
+
+header {
+    padding-top: 31px;
+    padding-bottom: 32px;
+}
+
+.header-main .container .header-class-actions .favorite-btn {
+    background-color: white;
+    border-width: 0px;
+}
+
+.header-main .container .header-class-actions .shopping-btn {
+    background-color: white;
+    border-width: 0px;
+}
+
+.header-main .container .header-class-actions .enter-btn {
+    border-width: 0px;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+}
+
+.header-main .container .header-class-actions input {
+    width: 400px;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 40px;
+}
+
+.header-main .container .header-class-actions {
+    position: absolute;
+    right: 220px;
+}
+
+.header-main .container .title {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.banner {
+    width: 55%;
+    height: 210px;
+    border-radius: 10px;
+    background-color: #D9D9D9;
+}
+
+.categories {
+    padding-left: 220px;
+    padding-right: 31px;
+    z-index: 10;
+}
+
+.card-body {
+    min-height: 270px;
+    min-width: 280px;
+    margin-right: 10px;
+}
+
+.best {
+    padding-left: 205px;
+    padding-right: 205px;
+}
+
+.best-products {
+    padding-left: 220px;
+    padding-bottom: 10px;
+}
+
+.see-all-best {
+    position: absolute;
+    right: 220px;
+}
+
+.see-all-sales {
+    padding-top: 20px;
+    position: absolute;
+    right: 220px;
+}
+
+.sales {
+    padding-left: 205px;
+    padding-right: 205px;
+}
+
+.sales-products {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 220px;
+}

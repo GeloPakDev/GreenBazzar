@@ -1,0 +1,65 @@
+.modal .modal-dialog .modal-content {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: "Roboto", sans-serif;
+}
+
+.modal .modal-dialog .modal-content .modal-body {
+    width: 100%;
+    height: 30vh;
+    background-size: cover;
+}
+
+.modal .modal-dialog .modal-content .modal-body form .card_number {
+    margin-bottom: 25px;
+}
+
+.card_number .input {
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    border: 2px solid #9e9e9e;
+    width: 100%;
+    text-align: left;
+}
+
+
+.card_grp {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+
+.expiry_date,
+.cvc {
+    width: 48%;
+    display: flex;
+}
+
+.expiry_date .expiry_input {
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    border: 2px solid #9e9e9e;
+    text-align: center;
+    width: 60px;
+    margin-right: 10px;
+}
+
+.cvc {
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cvc .cvc_input {
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    border: 2px solid #9e9e9e;
+    text-align: center;
+    width: 80px;
+    margin-right: 10px;
+}

@@ -4,17 +4,31 @@ import com.example.webapplication.dao.ProductDao;
 import com.example.webapplication.dao.QuerySQL;
 import com.example.webapplication.dao.mapper.impl.ProductMapper;
 import com.example.webapplication.entity.product.Product;
+import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.pool.ConnectionPool;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 public class ProductDaoImpl implements ProductDao {
+    private static ProductDaoImpl instance;
+
+    public static ProductDaoImpl getInstance() {
+        if (instance == null) {
+            return instance = new ProductDaoImpl();
+        }
+        return instance;
+    }
+
+    private ProductDaoImpl() {
+    }
 
     ProductMapper mapper = new ProductMapper();
 
@@ -29,7 +43,7 @@ public class ProductDaoImpl implements ProductDao {
                 }
             }
         } catch (SQLException exception) {
-            throw new DaoException();
+            throw new DaoException(exception);
         }
         return Optional.empty();
     }
@@ -51,11 +65,25 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean create(Product product) throws DaoException {
+    public boolean create(int sellerId, Product product) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
-             var preparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT)) {
-            constructPreparedStatement(preparedStatement, product);
-            int count = preparedStatement.executeUpdate();
+             var addProductPreparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT, Statement.RETURN_GENERATED_KEYS);
+             var addStatusPreparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT_STATUS)
+        ) {
+            constructPreparedStatement(addProductPreparedStatement, product);
+            addProductPreparedStatement.setInt(11, sellerId);
+            int count = addProductPreparedStatement.executeUpdate();
+
+            int userId = 0;
+            try (ResultSet rs = addProductPreparedStatement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    userId = rs.getInt(1);
+                    System.out.println(userId);
+                }
+            }
+            addStatusPreparedStatement.setString(1, String.valueOf(Status.PENDING));
+            addStatusPreparedStatement.setInt(2, userId);
+            addStatusPreparedStatement.executeUpdate();
             return count == 1;
         } catch (SQLException exception) {
             throw new DaoException(exception);
@@ -84,6 +112,45 @@ public class ProductDaoImpl implements ProductDao {
         } catch (SQLException exception) {
             throw new DaoException(exception);
         }
+    }
+
+    @Override
+    public List<Product> findProductsByStatus(int sellerId, String status) throws DaoException {
+        List<Product> products = new ArrayList<>();
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.FIND_PRODUCT_BY_STATUS)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, sellerId);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    var product = mapper.map(resultSet);
+                    product.ifPresent(products::add);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> findProductsByPriceRange(String category, int from, int to) throws DaoException {
+        List<Product> products = new ArrayList<>();
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.FIND_PRODUCTS_BY_PRICE_RANGE)) {
+            preparedStatement.setString(1, category);
+            preparedStatement.setInt(2, from);
+            preparedStatement.setInt(3, to);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    var product = mapper.map(resultSet);
+                    product.ifPresent(products::add);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return products;
     }
 
     @Override
@@ -120,6 +187,37 @@ public class ProductDaoImpl implements ProductDao {
             throw new DaoException(exception);
         }
         return products;
+    }
+
+    @Override
+    public List<Product> findAllProductsByStatus(String status) throws DaoException {
+        List<Product> products = new ArrayList<>();
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.FIND_ALL_PRODUCTS_BY_STATUS)) {
+            preparedStatement.setString(1, status);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    var product = mapper.map(resultSet);
+                    product.ifPresent(products::add);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return products;
+    }
+
+    @Override
+    public boolean updateProductStatus(int productId, String status) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT_STATUS)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, productId);
+            int count = preparedStatement.executeUpdate();
+            return count == 1;
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
     }
 
     private void constructPreparedStatement(PreparedStatement preparedStatement, Product product) throws SQLException {

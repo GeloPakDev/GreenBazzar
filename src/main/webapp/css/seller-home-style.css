@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding-left: 220px;
+    padding-right: 220px;
+}
+
+.container .title {
+    font-size: 31px;
+    font-weight: 500;
+    padding-top: 31px;
+}
+
+.container .profile {
+    font-size: 31px;
+    padding-top: 30px;
+}
+
+.container .statuses {
+    font-size: 18px;
+    padding-top: 20px;
+}
+
+.container {
+    width: 100%;
+}
+
+hr {
+    height: 2px;
+    border-width: 0;
+    color: gray;
+    background-color: gray;
+}
+
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background: white;
+}
+
+.sidebar ul {
+    padding-left: 17px;
+}
+
+.sidebar ul li a span {
+    color: black;
+    text-decoration-color: white;
+}
+
+.vl {
+    float: right;
+    color: gray;
+    background-color: gray;
+    border-left: 2px solid gray;
+    height: 500px;
+}
+
+.products-list ul {
+    position: absolute;
+    right: 220px;
+}
+
+.card-body table {
+    position: absolute;
+    right: 220px;
+}
+
+.products-list ul li {
+    border-width: 10px;
+    background-color: brown;
+    width: 5px;
+    border-radius: 10px;
+    list-style-type: none;
+    left: 20px;
+}
+
+.products-list ul li .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav ul li a span {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.statuses {
+    padding-bottom: 10px;
+}
+
+.sidebar .products {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.sidebar .edit-btn {
+    padding-right: 5px;
+    padding-top: 5px;
+    float: right;
+    background-color: white;
+    border-width: 0px;
+}
+
+/* .sidebar ul li:first-child {
+    line-height: 60px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #fff;
+}
+
+
+.sidebar ul li a {
+    width: 100%;
+    text-decoration: none;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}  */

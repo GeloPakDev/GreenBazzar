@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+}
+
+.container .title {
+  text-align: center;
+  font-size: 31px;
+  font-weight: 400;
+}
+
+.container form .user_details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+form .user_details .input_box {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  width: calc(100% /2 - 10px);
+}
+
+.user_details .input_box input {
+  width: 100%;
+  border-radius: 100px;
+  padding-left: 20px;
+  text-align: left;
+  height: 70px;
+}
+
+.container form .email_input {
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container form .email_input input {
+  width: 100%;
+  border-radius: 100px;
+  padding-left: 20px;
+  text-align: left;
+  height: 70px;
+}
+
+.container form .button {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container form .button input {
+  font-size: 21px;
+  width: 100%;
+  border-radius: 100px;
+  border: none;
+  background-color: #D9D9D9;
+  text-align: center;
+  height: 70px;
+}
+
+.container form .custom-control {
+  padding-left: 20px;
+}
+
+.container form .roles {
+  padding-top: 30px;
+}
+
+.container form .form_control {
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container form .form_control input {
+  width: 100%;
+  border-radius: 100px;
+  padding-left: 20px;
+  text-align: left;
+  height: 70px;
+}
+

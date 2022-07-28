@@ -28,7 +28,6 @@ public class ProductOrderMapper implements EntityMapper<Product>{
             product.setDeleted_at(resultSet.getDate(ColumnName.PRODUCT_DELETED_AT));
             return Optional.of(product);
         } catch (SQLException e) {
-            e.printStackTrace();
             return Optional.empty();
         }
     }

@@ -1,39 +1,42 @@
 package com.example.webapplication.controller;
 
 public class Router {
-    public enum RouterType {
-        FORWARD,
-        REDIRECT,
-        ERROR
-    }
 
-    private String pagePath;
-    private RouterType routerType;
+    private String page;
+    private Type actionType;
+
+    public enum Type {
+        FORWARD, REDIRECT
+    }
 
     public Router() {
+        this.actionType = Type.FORWARD;
+        this.page = PagePath.REGISTRATION_PAGE;
     }
 
-    public Router(String pagePath, RouterType routerType) {
-        this.pagePath = pagePath;
-        this.routerType = routerType;
+    public Router(String page, Type actionType) {
+        this.page = page;
+        this.actionType = actionType;
     }
 
-    public void setRouteType(RouterType routerType) {
-        if (routerType == null) {
-            routerType = RouterType.REDIRECT;
-        }
-        this.routerType = routerType;
+    public Router(String page) {
+        this.actionType = Type.FORWARD;
+        this.page = page;
     }
 
-    public RouterType getRouterType() {
-        return routerType;
+    public String getPage() {
+        return page;
     }
 
-    public void setPagePath(String pagePath) {
-        this.pagePath = pagePath;
+    public void setPage(String page) {
+        this.page = page;
     }
 
-    public String getPagePath() {
-        return pagePath;
+    public Type getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(Type actionType) {
+        this.actionType = actionType;
     }
 }

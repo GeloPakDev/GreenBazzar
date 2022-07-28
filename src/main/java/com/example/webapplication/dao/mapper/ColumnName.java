@@ -1,6 +1,7 @@
 package com.example.webapplication.dao.mapper;
 
 public final class ColumnName {
+    //These constants used for the DB
 
     //Products
     public static final String PRODUCT_ID = "products_id";
@@ -20,18 +21,19 @@ public final class ColumnName {
     public static final String USER_PASSWORD = "password";
     public static final String USER_FIRSTNAME = "first_name";
     public static final String USER_LASTNAME = "last_name";
+    public static final String USER_EMAIL = "email";
     public static final String USER_ROLE = "role";
-    public static final String USER_PHOTO = "photo";
-    public static final String USER_BIRTHDAY = "birthday";
-    public static final String USER_SEX = "sex";
+    public static final String COMPANY_NAME = "company_name";
+
     //users_payment
-    public static final String PAYMENT_ID = "users_id";
-    public static final String PAYMENT_TYPE = "payment_type";
-    public static final String PAYMENT_CARD_NUMBER = "card_number";
+    public static final String CARD_ID = "user_payment_id";
+    public static final String CARD_CVV_NUMBER = "cvv_number";
+    public static final String CARD_EXPIRATION_DATE = "expiration_date";
+    public static final String CARD_NUMBER = "card_number";
+
     //users_address
-    public static final String ADDRESS_ID = "users_id";
-    public static final String ADDRESS_LINE_1 = "address_line1";
-    public static final String ADDRESS_LINE_2 = "address_line2";
+    public static final String ADDRESS_ID = "user_address_id";
+    public static final String ADDRESS_LINE = "address_line";
     public static final String ADDRESS_CITY = "city";
     public static final String ADDRESS_POSTAL_CODE = "postal_code";
     public static final String ADDRESS_COUNTRY = "country";

@@ -16,7 +16,6 @@ public enum Category {
     MILK("Milk"),
     YOGURT("Yogurt"),
     SOUR_CREAM("Sour_cream"),
-    QUARK("Quark"),
     CHEESE_CURDS("Cheese_curds"),
     BUTTER("Butter"),
     CHEESE("Cheese"),
@@ -27,46 +26,26 @@ public enum Category {
     POULTRY_MEAT("Poultry_meat"),
     RABBIT_MEAT("Rabbit_meat"),
     FISH("Fish"),
-    FISH_PRODUCTS("Fish_products"),
-    SAUSAGE_PRODUCTS("Sausage_products"),
     SAUSAGE("Sausage"),
-    DELI_MEAT("Deli_meat"),
     //Grocery
     CEREALS("Cereals"),
     FLOUR("Flour"),
     SUGAR("Sugar"),
     SALT("Salt"),
     NOODLE("Noodle"),
-    VEGETABLE_OIL("Vegetable_oil"),
     HONEY("Honey"),
     MARGARINE("Margarine"),
-    BREAKFAST("Breakfast"),
     SAUCES("Sauces"),
     SPICES("Spices"),
-    SEASONINGS("Seasonings"),
     //Tea and Coffee
     BLACK_TEA("Black_tea"),
     GREEN_TEA("Green_tea"),
     COFFEE("Coffee"),
     CREAM("Cream"),
-    //Bakery products
-    FRESH_BAKERY("Fresh_bakery"),
-    LOAVES("Loaves"),
-    CRACKERS("Crackers"),
     //Cakes and sweets
     CAKES("Cakes"),
     PASTRY("Pastry"),
-    GINGERBREAD("Gingerbread"),
-    DIABETIC_PRODUCTS("Diabetic_products"),
-    CHOCOLATE("Chocolate"),
-
-    SALADS("Salads"),
-    SANDWICHES("Sandwiches"),
-    //Canned products
-    CANNED_FISH("Canned_fish"),
-    CANNED_MEAT("Canned_meat"),
-    CANNED_FRUITS("Canned_fruits"),
-    CANNED_VEGETABLES("Canned_vegetables");
+    CHOCOLATE("Chocolate");
 
     private final String name;
 

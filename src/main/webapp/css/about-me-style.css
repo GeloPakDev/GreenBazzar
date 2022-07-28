@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    position: absolute;
+    left: 220px;
+}
+
+.container .title {
+    font-size: 31px;
+    font-weight: 500;
+    padding-top: 31px;
+}
+
+.container .profile {
+    font-size: 31px;
+    padding-top: 30px;
+}
+
+.container .personal-data {
+    font-size: 21px;
+    padding-top: 30px;
+}
+
+.container .row .addresses {
+    left: 220px;
+}
+
+.container .edit-btn {
+    border-width: 0px;
+    padding-left: 5px;
+    background-color: white;
+}
+
+form .input-field {
+    padding-left: 0;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: calc(100% / 2 - 10px);
+}
+
+form .input-field input {
+    width: 100%;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 50px;
+}
+
+.container .address-btn {
+    padding-left: 5px;
+    background-color: white;
+    border-width: 0;
+}
+
+.address-title {
+    padding-top: 30px;
+    font-size: 21px;
+}
+
+.modal .modal-dialog .modal-content .modal-body form .form-row .mb-3 {
+    padding: 2px;
+}
+
+.cards-list ul li form button {
+    position: absolute;
+    padding-top: 15px;
+}

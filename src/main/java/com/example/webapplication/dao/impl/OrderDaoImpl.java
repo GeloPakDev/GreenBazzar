@@ -59,18 +59,18 @@ public class OrderDaoImpl implements OrderDao {
         return null;
     }
 
-    @Override
-    public boolean create(Order entity) throws DaoException {
-        try (var connection = ConnectionPool.getInstance().getConnection();
-             var addOrderStatement = connection.prepareStatement(ADD_ORDER);
-             var addProductsStatement = connection.prepareStatement(ADD_PRODUCTS_TO_ORDER)) {
-
-
-        } catch (SQLException exception) {
-            throw new DaoException(exception);
-        }
-        return false;
-    }
+//    @Override
+//    public boolean create(Order entity) throws DaoException {
+//        try (var connection = ConnectionPool.getInstance().getConnection();
+//             var addOrderStatement = connection.prepareStatement(ADD_ORDER);
+//             var addProductsStatement = connection.prepareStatement(ADD_PRODUCTS_TO_ORDER)) {
+//
+//
+//        } catch (SQLException exception) {
+//            throw new DaoException(exception);
+//        }
+//        return false;
+//    }
 
     @Override
     public boolean update(Order entity) throws DaoException {

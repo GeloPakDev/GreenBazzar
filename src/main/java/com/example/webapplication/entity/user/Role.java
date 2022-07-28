@@ -1,10 +1,9 @@
 package com.example.webapplication.entity.user;
 
 public enum Role {
-    GUEST("GUEST"),
     ADMIN("ADMIN"),
     CUSTOMER("CUSTOMER"),
-    SUPPLIER("SUPPLIER");
+    SELLER("SELLER");
 
     private final String name;
 
