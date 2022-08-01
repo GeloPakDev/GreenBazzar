@@ -1,7 +1,6 @@
 package com.example.webapplication.dao.impl;
 
 import com.example.webapplication.dao.OrderDao;
-import com.example.webapplication.dao.QuerySQL;
 import com.example.webapplication.dao.mapper.impl.ProductOrderMapper;
 import com.example.webapplication.dao.mapper.impl.UserMapper;
 import com.example.webapplication.entity.order.Order;
@@ -11,7 +10,6 @@ import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.pool.ConnectionPool;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,18 @@ import static com.example.webapplication.dao.mapper.ColumnName.*;
 import static com.example.webapplication.dao.QuerySQL.*;
 
 public class OrderDaoImpl implements OrderDao {
+    private static OrderDaoImpl instance;
+
+    public static OrderDaoImpl getInstance() {
+        if (instance == null) {
+            return instance = new OrderDaoImpl();
+        }
+        return instance;
+    }
+
+    private OrderDaoImpl() {
+    }
+
     @Override
     public Optional<Order> find(Integer id) throws DaoException {
         var order = new Order();

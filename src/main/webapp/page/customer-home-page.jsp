@@ -15,6 +15,11 @@
 
     <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModal">
         <i class="fa fa-pencil"></i></button>
+
+    <a style="color: black;text-decoration: none;" class="small"
+       href="${pageContext.request.contextPath}/page/home.jsp">
+        <button class="enter-btn" type="button">home</button>
+    </a>
     <!--Modal page for changing user data-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -151,7 +156,11 @@
                             </div>
                             <div class="cvc">
                                 <input name="cvv-number" type="text" class="cvc_input" data-mask="000"
-                                       placeholder="000">
+                                       placeholder="00">
+                            </div>
+                            <div>
+                                <input name="balance" type="text" class="card_balance" data-mask="000"
+                                       placeholder="00">
                             </div>
                         </div>
                         <input type="submit" class="btn" value="Add">

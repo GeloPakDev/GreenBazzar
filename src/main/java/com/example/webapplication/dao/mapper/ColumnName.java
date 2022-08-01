@@ -30,6 +30,7 @@ public final class ColumnName {
     public static final String CARD_CVV_NUMBER = "cvv_number";
     public static final String CARD_EXPIRATION_DATE = "expiration_date";
     public static final String CARD_NUMBER = "card_number";
+    public static final String CARD_BALANCE = "balance";
 
     //users_address
     public static final String ADDRESS_ID = "user_address_id";

@@ -27,6 +27,7 @@ public class AddCardCommand implements Command {
         String cardNumber = request.getParameter(RequestParameter.CARD_NUMBER);
         String expirationDate = request.getParameter(RequestParameter.CARD_EXPIRATION_DATE);
         String cvvNumber = request.getParameter(RequestParameter.CARD_CVV_NUMBER);
+        String balance = request.getParameter(RequestParameter.CARD_BALANCE);
         int userId = (int) session.getAttribute(RequestParameter.USER_ID);
 
         logger.info("That is the userId :" + userId);
@@ -37,6 +38,7 @@ public class AddCardCommand implements Command {
         card.setCardNumber(Integer.parseInt(cardNumber));
         card.setExpirationDate(Integer.parseInt(expirationDate));
         card.setCvvNumber(Integer.parseInt(cvvNumber));
+        card.setBalance(Integer.parseInt(balance));
 
         try {
             cardList = userService.findUserCards(userId);

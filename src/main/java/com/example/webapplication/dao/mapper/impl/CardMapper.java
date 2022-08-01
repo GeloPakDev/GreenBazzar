@@ -18,6 +18,7 @@ public class CardMapper implements EntityMapper<Card> {
             card.setCardNumber(resultSet.getInt(ColumnName.CARD_NUMBER));
             card.setExpirationDate(resultSet.getInt(ColumnName.CARD_EXPIRATION_DATE));
             card.setCvvNumber(resultSet.getInt(ColumnName.CARD_CVV_NUMBER));
+            card.setBalance(resultSet.getInt(ColumnName.CARD_BALANCE));
             return Optional.of(card);
         } catch (SQLException e) {
             return Optional.empty();

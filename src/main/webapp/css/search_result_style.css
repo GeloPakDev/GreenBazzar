@@ -11,13 +11,13 @@ ul {
     line-height: 30px;
 }
 
-nav>ul li {
+nav > ul li {
     width: 215px;
     position: relative;
     text-align: start;
 }
 
-nav>ul>li:hover>ul {
+nav > ul > li:hover > ul {
     display: block;
 }
 
@@ -27,7 +27,7 @@ nav ul li a {
     display: block;
 }
 
-nav>ul>li>ul {
+nav > ul > li > ul {
     border-width: 3px;
     border-color: black;
     background-color: #D9D9D9;
@@ -49,23 +49,31 @@ header {
 
 .header-main .container .header-class-actions .favorite-btn {
     background-color: white;
-    border-width: 0px;
+    border-width: 0;
 }
 
-.header-main .container .header-class-actions .shopping-btn {
+.header-main .container .header-class-actions .buttons-section .shopping-btn {
+    color: black;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: white;
-    border-width: 0px;
+    border-width: 0;
 }
 
-.header-main .container .header-class-actions .enter-btn {
-    border-width: 0px;
+.header-main .container .header-class-actions .buttons-section .enter-btn {
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    border-width: 0;
     height: 40px;
     width: 115px;
     background-color: #D9D9D9;
     border-radius: 10px;
 }
 
-.header-main .container .header-class-actions input {
+.header-main .container .header-class-actions .search-section .search input {
     width: 400px;
     border-radius: 100px;
     padding-left: 20px;
@@ -73,12 +81,18 @@ header {
     height: 40px;
 }
 
-.header-main .container .header-class-actions {
+.header-main .container .header-class-actions .search {
     position: absolute;
-    right: 220px;
+    right: 215px;
 }
 
+/*.header-main .container .header-class-actions {*/
+/*    position: absolute;*/
+/*    right: 220px;*/
+/*}*/
+
 .header-main .container .title {
+    padding-left: 80px;
     font-size: 28px;
     font-weight: 500;
 }
@@ -90,7 +104,7 @@ header {
     background-color: #D9D9D9;
 }
 
-.categories {
+.row .categories {
     padding-left: 220px;
     padding-right: 31px;
     z-index: 10;
@@ -99,7 +113,6 @@ header {
 .card-body {
     min-height: 270px;
     min-width: 280px;
-    margin-right: 10px;
 }
 
 .best {
@@ -146,9 +159,72 @@ header {
 
 .card-body table {
     position: absolute;
-    right: 220px;
+    right: 200px;
 }
 
-.chosen-category{
+.chosen-category {
+    padding-left: 200px;
+}
+
+form.search input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+/* Style the submit button */
+form.search button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+}
+
+form.search button:hover {
+    background: #0b7dda;
+}
+
+/* Clear floats */
+form.search::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.header-main .container .header-class-actions .search-section form button {
+    background-color: white;
+    border-width: 0;
+    position: absolute;
+    padding-top: 12px;
+    padding-left: 10px;
+}
+
+.header-main .container .header-class-actions .buttons-section {
+    float: right;
+    padding-right: 125px;
+}
+
+.header-main .container .header-class-actions .search-section {
+    position: absolute;
+    right: 240px;
+}
+
+.price-range {
+    padding-left: 200px;
+    padding-top: 20px;
+    position: absolute;
+    padding-right: 20px;
+}
+
+.search-result {
+    position: absolute;
     padding-left: 200px;
 }

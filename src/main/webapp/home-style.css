@@ -42,27 +42,40 @@ nav ul li a i {
     padding-left: 8px;
 }
 
+nav ul li ul li form .input-field {
+    background-color: #D9D9D9;
+    border-width: 0;
+}
+
 header {
     padding-top: 31px;
     padding-bottom: 32px;
 }
 
-.header-main .container .header-class-actions .favorite-btn {
+.header-main .container .header-class-actions .buttons-section .favorite-btn {
     background-color: white;
-    border-width: 0px;
+    padding-top: 10px;
+    border-width: 0;
 }
 
-.header-main .container .header-class-actions .shopping-btn {
+.header-main .container .header-class-actions .buttons-section .shopping-btn {
+    text-decoration: none;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: white;
-    border-width: 0px;
+    border-width: 0;
 }
 
-.header-main .container .header-class-actions .enter-btn {
-    border-width: 0px;
+.header-main .container .header-class-actions .buttons-section .enter-btn {
+    border-width: 0;
     height: 40px;
     width: 115px;
     background-color: #D9D9D9;
     border-radius: 10px;
+    color: black;
+    text-decoration: none;
+    position: absolute;
 }
 
 .header-main .container .header-class-actions input {
@@ -73,9 +86,9 @@ header {
     height: 40px;
 }
 
-.header-main .container .header-class-actions {
+.header-main .container .header-class-actions .search {
     position: absolute;
-    right: 220px;
+    right: 215px;
 }
 
 .header-main .container .title {
@@ -132,4 +145,22 @@ header {
     padding-top: 20px;
     padding-bottom: 10px;
     padding-left: 220px;
+}
+
+.header-main .container .header-class-actions .search-section {
+    position: absolute;
+    right: 240px;
+}
+
+.header-main .container .header-class-actions .buttons-section {
+    float: right;
+    padding-right: 125px;
+}
+
+.header-main .container .header-class-actions .search-section form button {
+    background-color: white;
+    border-width: 0;
+    position: absolute;
+    padding-top: 12px;
+    padding-left: 10px;
 }

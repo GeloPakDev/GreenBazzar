@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class ProductDaoImpl implements ProductDao {
     private static ProductDaoImpl instance;
 
@@ -215,6 +214,18 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, productId);
             int count = preparedStatement.executeUpdate();
             return count == 1;
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+    }
+
+    @Override
+    public void updateQuantityOfTheProduct(int productId, int number) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT_QUANTITY)) {
+            preparedStatement.setInt(1, number);
+            preparedStatement.setInt(2, productId);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DaoException(exception);
         }

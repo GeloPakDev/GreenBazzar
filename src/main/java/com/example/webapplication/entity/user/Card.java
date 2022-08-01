@@ -13,6 +13,7 @@ public class Card implements AbstractEntity {
     private int cardNumber;
     private int expirationDate;
     private int cvvNumber;
+    private int balance;
 
     public Card() {
     }
@@ -22,6 +23,7 @@ public class Card implements AbstractEntity {
         this.cardNumber = cardBuilder.getCardNumber();
         this.expirationDate = cardBuilder.getExpirationDate();
         this.cvvNumber = cardBuilder.getCvvNumber();
+        this.balance = cardBuilder.getBalance();
     }
 
     public int getId() {
@@ -63,6 +65,7 @@ public class Card implements AbstractEntity {
         sb.append(", cardNumber=").append(cardNumber);
         sb.append(", expirationDate=").append(expirationDate);
         sb.append(", cvvNumber=").append(cvvNumber);
+        sb.append(", balance=").append(balance);
         sb.append('}');
         return sb.toString();
     }
@@ -77,7 +80,8 @@ public class Card implements AbstractEntity {
         if (id != card.id) return false;
         if (cardNumber != card.cardNumber) return false;
         if (expirationDate != card.expirationDate) return false;
-        return cvvNumber == card.cvvNumber;
+        if (cvvNumber != card.cvvNumber) return false;
+        return balance == card.balance;
     }
 
     @Override
@@ -86,6 +90,16 @@ public class Card implements AbstractEntity {
         result = 31 * result + cardNumber;
         result = 31 * result + expirationDate;
         result = 31 * result + cvvNumber;
+        result = 31 * result + balance;
         return result;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public Card setBalance(int balance) {
+        this.balance = balance;
+        return this;
     }
 }

@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +56,10 @@ public class LoginCommand implements Command {
                         LOGGER.info("Users role:" + user.getRole());
                         //Get access to the user to get his values
                         if (user.getRole() == Role.CUSTOMER) {
+                            HashMap<Product, Integer> productCart = new HashMap<>();
                             List<Card> cardList = userService.findUserCards(user.getId());
                             List<Address> addressList = userService.findUserAddresses(user.getId());
+                            session.setAttribute(RequestParameter.PRODUCT_CART, productCart);
                             session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.USER, user);
                             session.setAttribute(RequestParameter.ADDRESSES, addressList);

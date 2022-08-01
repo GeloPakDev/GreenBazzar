@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class AddToBasketCommand implements Command {
+public class DeleteFromCartCommand implements Command {
     public static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -26,43 +26,34 @@ public class AddToBasketCommand implements Command {
         ProductService service = ProductServiceImpl.getInstance();
         //get the cart from the session for the user
         HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
-        //Get id of the product
+        //Get id of the product which should be deleted
         String id = request.getParameter(RequestParameter.PRODUCT_ID);
-        logger.info(id);
+        logger.info("That is product id" + id);
+        //Get quantity of the product from the cart
+        String productQuantityFromBasket = request.getParameter(RequestParameter.PRODUCT_QUANTITY_IN_CART);
+        logger.info("That is number of products :" + productQuantityFromBasket);
 
         try {
             Product product;
+            int productQuantityFromCart = Integer.parseInt(productQuantityFromBasket);
             int productId = Integer.parseInt(id);
             //Find the product from the db
             Optional<Product> productOptional = service.findProductById(productId);
             if (productOptional.isPresent()) {
+                //get the actual product
                 product = productOptional.get();
-                //Put the product to the cart with default quantity of 1
+                //remove product from the cart
+                //get the quantity from inventory
                 int inventoryQuantity = product.getQuantity();
-                int quantity = inventoryQuantity - 1;
+                //return updated quantity of the product in the DB
+                int quantity = inventoryQuantity + productQuantityFromCart;
+                productList.remove(product);
                 service.updateQuantityOfTheProduct(productId, quantity);
-                productList.put(product, 1);
             }
             session.setAttribute(RequestParameter.PRODUCT_CART, productList);
-            calculateCartData(request);
             return new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-    }
-
-    public static void calculateCartData(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        //get the hashtable of the products;
-        HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
-        //get number of products in the cart
-        int totalNumberOfProducts = productList.keySet().size();
-        logger.info("That is the size of the hashtable : " + totalNumberOfProducts);
-        int totalPrice = 0;
-        for (Product product : productList.keySet()) {
-            totalPrice += product.getPrice() * productList.get(product);
-        }
-        session.setAttribute(RequestParameter.TOTAL_PRODUCT_QUANTITY, totalNumberOfProducts);
-        session.setAttribute(RequestParameter.TOTAL_PRICE, totalPrice);
     }
 }

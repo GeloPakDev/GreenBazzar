@@ -162,7 +162,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean deleteAddress(int addressId) throws DaoException {
-        boolean toReturn = false;
+        boolean toReturn;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(QuerySQL.DELETE_ADDRESS)) {
             preparedStatement.setInt(1, addressId);
@@ -200,7 +200,8 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setInt(1, card.getExpirationDate());
                 preparedStatement.setInt(2, card.getCardNumber());
                 preparedStatement.setInt(3, card.getCvvNumber());
-                preparedStatement.setInt(4, userId);
+                preparedStatement.setInt(4, card.getBalance());
+                preparedStatement.setInt(5, userId);
                 toReturn = preparedStatement.executeUpdate() != 0;
             }
         } catch (SQLException exception) {

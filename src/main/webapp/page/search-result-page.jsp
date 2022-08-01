@@ -5,6 +5,8 @@
     <title>Search Result Page</title>
     <link href="${pageContext.request.contextPath}/css/search_result_style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
     <%@include file="../components/css-js.jsp" %>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -15,28 +17,35 @@
         <div class="container">
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
-                   <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
+                <span class="search-section">
+                     <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
                        <input type="hidden" value="search_products" name="command">
                        <input type="text" placeholder="Search.." name="search">
-                       <button type="submit"><i class="fa fa-search"></i></button>
-                   </form>
-                    <button class="favorite-btn">
-                        <i class="material-icons">favorite</i>
-                    </button>
+                       <button type="submit">
+                           <i class="fa fa-search"></i></button>
+                     </form>
+                </span>
 
-                    <button class="shopping-btn">
-                        <i class="material-icons">shopping_cart</i>
-                    </button>
-                <a style="color: black;text-decoration: none;" class="small"
-                   href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
-                    <button class="enter-btn" type="button">Home</button>
+                <span class="buttons-section">
+                <button class="favorite-btn">
+                    <i class="material-icons">favorite</i>
+                </button>
+
+                    <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
+                        <button class="shopping-btn" type="button">
+                            <i class="material-icons">shopping_cart</i>
+                        </button>
+                    </a>
+
+                <a href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
+                    <button class="enter-btn" type="button">Profile</button>
                 </a>
                 </span>
+            </span>
         </div>
     </div>
 </header>
-<div style="padding-left: 220px;">Selected category: ${category}</div>
-<div style="padding-left: 220px;" class="row">
+<div class="row">
     <div class="categories">
         <nav>
             <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -99,7 +108,7 @@
         </nav>
     </div>
 </div>
-<div style="padding-left: 220px;" class="price-range">
+<div class="price-range">
     <form action="${pageContext.request.contextPath}/controller" method="post">
         <input type="hidden" value="choose_by_price_range" name="command">
         <div data-role="rangeslider">
@@ -111,8 +120,9 @@
         <input type="submit" data-inline="true" value="Filter">
     </form>
 </div>
+<div class="search-result">By "${search}" was found: ${quantity} results</div>
 <div class="card-body">
-    <table id="datatablesSimple" style="position: absolute;right: 220px;">
+    <table id="datatablesSimple">
         <thead>
         <tr>
             <th>Name</th>

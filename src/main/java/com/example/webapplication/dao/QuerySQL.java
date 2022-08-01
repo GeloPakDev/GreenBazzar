@@ -74,7 +74,7 @@ public final class QuerySQL {
                    modified_at,
                    deleted_at
             FROM products
-            WHERE name LIKE CONCAT('%',?,'%')""";
+            WHERE name LIKE CONCAT('%',?,'%') AND quantity > 0""";
 
     public static final String FIND_PRODUCT_BY_CATEGORY = """
             SELECT p.products_id,
@@ -91,7 +91,7 @@ public final class QuerySQL {
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
-            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED"
+            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED" AND p.quantity > 0
             """;
 
     public static final String FIND_ALL_PRODUCTS_BY_STATUS = """
@@ -109,7 +109,7 @@ public final class QuerySQL {
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
-            WHERE ps.status LIKE CONCAT('%',?,'%')""";
+            WHERE ps.status LIKE CONCAT('%',?,'%') AND p.quantity > 0""";
 
     public static final String FIND_PRODUCT_BY_STATUS = """
             SELECT p.products_id,
@@ -125,8 +125,8 @@ public final class QuerySQL {
                    p.deleted_at,
                    p.seller_id
             FROM products p
-            JOIN product_status ps ON p.products_id =ps.products_id
-            WHERE ps.status LIKE CONCAT('%',?,'%') AND p.seller_id =?""";
+            JOIN product_status ps ON p.products_id = ps.products_id
+            WHERE ps.status LIKE CONCAT('%',?,'%') AND p.seller_id =? AND p.quantity > 0""";
 
     public static final String FIND_PRODUCTS_BY_PRICE_RANGE = """
             SELECT p.products_id,
@@ -143,13 +143,18 @@ public final class QuerySQL {
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
-            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED" AND p.price BETWEEN ? and ?
+            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED" AND p.price BETWEEN ? AND ? AND p.quantity > 0
             """;
     public static final String UPDATE_PRODUCT_STATUS = """
             UPDATE product_status
             SET status =?
             WHERE products_id =?
-                    """;
+            """;
+    public static final String UPDATE_PRODUCT_QUANTITY = """
+            UPDATE products
+            SET quantity =?
+            WHERE products_id =?
+            """;
 
     //Queries for UserDao
     public static final String SELECT_USER_BY_ID = """
@@ -338,14 +343,15 @@ public final class QuerySQL {
 
     public static final String ADD_CARD_FOR_USER = """
             INSERT INTO user_payment
-            (expiration_date, card_number, cvv_number, customer_id)
-            VALUES(?, ?, ?, ?)
+            (expiration_date, card_number, cvv_number, balance, customer_id)
+            VALUES(?, ?, ?, ?, ?)
                     """;
     public static final String FIND_USER_CARDS = """
             SELECT user_payment_id,
                    expiration_date,
                    card_number,
-                   cvv_number
+                   cvv_number,
+                   balance
             FROM user_payment
             WHERE customer_id = ?
                     """;

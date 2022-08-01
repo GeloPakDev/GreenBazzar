@@ -1,16 +1,11 @@
 package com.example.webapplication.service.impl;
 
 import com.example.webapplication.dao.ProductDao;
-import com.example.webapplication.dao.UserDao;
 import com.example.webapplication.dao.impl.ProductDaoImpl;
-import com.example.webapplication.dao.impl.UserDaoImpl;
 import com.example.webapplication.entity.product.Product;
-import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.service.ProductService;
-import com.example.webapplication.validator.UserValidator;
-import com.example.webapplication.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findProductsByPriceRange(String category, int from, int to) throws ServiceException {
         try {
-            return dao.findProductsByPriceRange(category,from, to);
+            return dao.findProductsByPriceRange(category, from, to);
         } catch (DaoException exception) {
             throw new ServiceException(exception);
         }
@@ -92,6 +87,15 @@ public class ProductServiceImpl implements ProductService {
             return dao.find(id);
         } catch (DaoException exception) {
             throw new ServiceException(exception);
+        }
+    }
+
+    @Override
+    public void updateQuantityOfTheProduct(int productId, int number) throws ServiceException {
+        try {
+            dao.updateQuantityOfTheProduct(productId, number);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
     }
 

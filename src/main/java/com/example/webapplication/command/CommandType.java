@@ -23,7 +23,12 @@ public enum CommandType {
     ADD_PRODUCT(new AddProductCommand()),
     APPROVE_PRODUCT(new ApproveProductCommand()),
     CHOOSE_BY_CATEGORY_PRODUCT(new ChooseByCategoryProductCommand()),
-    CHOOSE_BY_PRICE_RANGE(new ChooseByPriceRangeCommand());
+    CHOOSE_BY_PRICE_RANGE(new ChooseByPriceRangeCommand()),
+    SEARCH_PRODUCTS(new SearchProductCommand()),
+    ADD_TO_CART(new AddToBasketCommand()),
+    DELETE_FROM_CART(new DeleteFromCartCommand()),
+    PROCEED_TO_PAYMENT(new ProceedToPaymentCommand());
+
 
     private final Command command;
 

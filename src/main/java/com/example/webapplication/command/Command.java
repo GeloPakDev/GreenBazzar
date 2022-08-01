@@ -7,11 +7,4 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface Command {
     Router execute(HttpServletRequest request) throws CommandException;
 
-    default int parseIntParameter(String input) {
-        try {
-            return Integer.parseInt((input));
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
 }

@@ -1,7 +1,6 @@
 package com.example.webapplication.service;
 
 import com.example.webapplication.entity.product.Product;
-import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.exception.ServiceException;
 
 import java.util.List;
@@ -21,6 +20,9 @@ public interface ProductService {
     List<Product> findProductsByQuery(String query) throws ServiceException;
 
     Optional<Product> findProductById(int id) throws ServiceException;
+
+    void updateQuantityOfTheProduct(int productId, int number) throws ServiceException;
+
 
     boolean createProduct(int sellerId, Product product) throws ServiceException;
 

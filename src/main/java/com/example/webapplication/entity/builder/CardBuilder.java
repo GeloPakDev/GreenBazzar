@@ -7,6 +7,7 @@ public class CardBuilder {
     private int cardNumber;
     private int expirationDate;
     private int cvvNumber;
+    private int balance;
 
     public Card build() {
         return new Card(this);
@@ -45,6 +46,15 @@ public class CardBuilder {
 
     public CardBuilder setCvvNumber(int cvvNumber) {
         this.cvvNumber = cvvNumber;
+        return this;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public CardBuilder setBalance(int balance) {
+        this.balance = balance;
         return this;
     }
 }
