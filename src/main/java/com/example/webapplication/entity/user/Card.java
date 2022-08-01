@@ -15,6 +15,14 @@ public class Card implements AbstractEntity {
     private int cvvNumber;
     private int balance;
 
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
     public Card() {
     }
 
@@ -94,12 +102,4 @@ public class Card implements AbstractEntity {
         return result;
     }
 
-    public int getBalance() {
-        return balance;
-    }
-
-    public Card setBalance(int balance) {
-        this.balance = balance;
-        return this;
-    }
 }

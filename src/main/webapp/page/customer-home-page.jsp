@@ -147,7 +147,6 @@
                         <div class="card_number" id="card-container">
                             <input name="card-number" type="text" class="input" id="card"
                                    placeholder="0000 0000 0000 0000">
-                            <div id="logo"></div>
                         </div>
                         <div class="card_grp">
                             <div class="expiry_date">
@@ -158,12 +157,12 @@
                                 <input name="cvv-number" type="text" class="cvc_input" data-mask="000"
                                        placeholder="00">
                             </div>
-                            <div>
-                                <input name="balance" type="text" class="card_balance" data-mask="000"
+                            <div class="card-balance">
+                                <input name="card-balance" type="text" class="card_balance" data-mask="000"
                                        placeholder="00">
                             </div>
                         </div>
-                        <input type="submit" class="btn" value="Add">
+                        <input type="submit" class="btn">
                     </form>
                 </div>
             </div>

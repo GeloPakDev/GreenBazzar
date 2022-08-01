@@ -41,8 +41,8 @@ public class AddCardCommand implements Command {
         card.setBalance(Integer.parseInt(balance));
 
         try {
-            cardList = userService.findUserCards(userId);
             if (userService.addCard(userId, card)) {
+                cardList = userService.findUserCards(userId);
                 addressList = userService.findUserAddresses(userId);
                 session.setAttribute(RequestParameter.CARDS, cardList);
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);

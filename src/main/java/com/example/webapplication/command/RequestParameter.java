@@ -30,7 +30,7 @@ public class RequestParameter {
     public static final String CARD_NUMBER = "card-number";
     public static final String CARD_EXPIRATION_DATE = "expiration-date";
     public static final String CARD_CVV_NUMBER = "cvv-number";
-    public static final String CARD_BALANCE = "balance";
+    public static final String CARD_BALANCE = "card-balance";
     public static final String CARDS = "cards";
 
     public static final String OPERATION_MESSAGE = "operation_message";

@@ -48,6 +48,7 @@ public class DeleteFromCartCommand implements Command {
                 //return updated quantity of the product in the DB
                 int quantity = inventoryQuantity + productQuantityFromCart;
                 productList.remove(product);
+
                 service.updateQuantityOfTheProduct(productId, quantity);
             }
             session.setAttribute(RequestParameter.PRODUCT_CART, productList);
