@@ -109,18 +109,39 @@ nav ul li a span {
     border-width: 0px;
 }
 
-/* .sidebar ul li:first-child {
-    line-height: 60px;
-    margin-bottom: 20px;
-    font-weight: 600;
-    border-bottom: 1px solid #fff;
+.sidebar .card-body table {
+    position: absolute;
+    right: 100px;
 }
 
+.sidebar .card-body table th {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
 
-.sidebar ul li a {
-    width: 100%;
-    text-decoration: none;
-    height: 60px;
-    display: flex;
-    align-items: center;
-}  */
+.sidebar .card-body table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.sidebar .card-body table {
+    width: 60%;
+}
+
+.sidebar .card-body thead {
+    background-color: #333;
+    color: white;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.sidebar .card-body tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+.sidebar .card-body tbody tr:nth-child(even) {
+    background-color: #eee;
+}

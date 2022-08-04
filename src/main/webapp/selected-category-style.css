@@ -81,36 +81,16 @@ header {
     height: 40px;
 }
 
-.header-main .container .header-class-actions .search-section form button {
-    background-color: white;
-    border-width: 0;
-    position: absolute;
-    padding-top: 12px;
-    padding-left: 10px;
-}
-
 .header-main .container .header-class-actions .search {
     position: absolute;
     right: 215px;
 }
-
-.header-main .container .header-class-actions .buttons-section {
-    float: right;
-    padding-right: 125px;
-}
-
-.header-main .container .header-class-actions .search-section {
-    position: absolute;
-    right: 180px;
-}
-
 
 .header-main .container .title {
     padding-left: 80px;
     font-size: 28px;
     font-weight: 500;
 }
-
 
 .banner {
     width: 55%;
@@ -192,7 +172,7 @@ form.search input[type=text] {
 }
 
 /* Style the submit button */
-form .search button {
+form.search button {
     float: left;
     width: 20%;
     padding: 10px;
@@ -204,7 +184,7 @@ form .search button {
     cursor: pointer;
 }
 
-form .search button:hover {
+form.search button:hover {
     background: #0b7dda;
 }
 
@@ -215,6 +195,23 @@ form.search::after {
     display: table;
 }
 
+.header-main .container .header-class-actions .search-section form button {
+    background-color: white;
+    border-width: 0;
+    position: absolute;
+    padding-top: 12px;
+    padding-left: 10px;
+}
+
+.header-main .container .header-class-actions .buttons-section {
+    float: right;
+    padding-right: 125px;
+}
+
+.header-main .container .header-class-actions .search-section {
+    position: absolute;
+    right: 240px;
+}
 
 .price-range {
     padding-left: 200px;
@@ -266,4 +263,22 @@ form.search::after {
 
 .card-body tbody tr:nth-child(even) {
     background-color: #eee;
+}
+
+.selected-category {
+    position: absolute;
+    left: 200px;
+    padding-top: 30px;
+}
+
+.price-range {
+    padding-top: 30px;
+}
+
+.price-range form .filter {
+    margin-top: 10px;
+    width: 165px;
+    height: 50px;
+    border-width: 0;
+    border-radius: 10px;
 }

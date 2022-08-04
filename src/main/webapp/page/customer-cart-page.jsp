@@ -45,7 +45,7 @@
     </div>
 </header>
 <div class="card-body">
-    <table id="datatablesSimple" style="position: absolute;right: 220px;">
+    <table id="datatablesSimple">
         <thead>
         <tr>
             <th>Name</th>
@@ -53,6 +53,8 @@
             <th>price</th>
             <th>description</th>
             <th>weight</th>
+            <th>Quantity</th>
+            <th>delete</th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +73,7 @@
                         <input type="hidden" name="product_quantity" value="${tempProduct.value}">
                         <input type="hidden" name="products_id" value="${tempProduct.key.id}">
                         <input type="hidden" value="delete_from_cart" name="command">
-                        <input type="submit" value="delete"></input>
+                        <input type="submit" value="delete">
                     </form>
                 </td>
             </tr>
@@ -79,17 +81,19 @@
         </tbody>
     </table>
 </div>
-<div class="total-products">
-    Total number of products:${total_quantity}
-</div>
-<div class="total-price">
-    Total price of products:${total_price}
-</div>
-<div class="proceed-to-payment">
-    <form action="${pageContext.request.contextPath}/controller" method="post">
-        <input type="hidden" value="proceed_to_payment" name="command">
-        <input type="submit" value="Proceed to payment">
-    </form>
+<div class="cart-overview">
+    <div class="total-products">
+        Total number of products:${total_quantity}
+    </div>
+    <div class="total-price">
+        Total price of products:${total_price}
+    </div>
+    <div class="proceed-to-payment">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" value="proceed_to_payment" name="command">
+            <input type="submit" value="Proceed to payment" class="checkout">
+        </form>
+    </div>
 </div>
 </body>
 </html>

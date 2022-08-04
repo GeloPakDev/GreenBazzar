@@ -1,4 +1,4 @@
-package com.example.webapplication.command.customer;
+package com.example.webapplication.command.seller;
 
 import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
@@ -16,23 +16,23 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class ChooseByCategoryProductCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+public class ChooseProductByStatusCommand implements Command {
+    public static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        HttpSession session = request.getSession();
         ProductService productService = ProductServiceImpl.getInstance();
-        String category = request.getParameter(RequestParameter.PRODUCT_CATEGORY);
-
-        logger.info("That is  the category : " + category);
-
+        HttpSession session = request.getSession();
+        int sellerId = (int) session.getAttribute(RequestParameter.USER_ID);
+        String status = request.getParameter(RequestParameter.PRODUCT_STATUS);
+        logger.info("That is userId : " + sellerId);
+        logger.info("That is status : " + status);
+        List<Product> productList;
         try {
-            List<Product> productList = productService.findProductsByCategory(category);
-            session.setAttribute(RequestParameter.PRODUCT_CATEGORY, category);
-            request.setAttribute(RequestParameter.PRODUCT_CATEGORY, category);
+            productList = productService.findProductsByStatus(sellerId, status);
+            session.setAttribute(RequestParameter.USER_ID, sellerId);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
-            return new Router(PagePath.SELECTED_CATEGORY_PAGE, Router.Type.FORWARD);
+            return new Router(PagePath.SELLER_HOME_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

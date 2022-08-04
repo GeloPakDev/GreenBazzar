@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class ApproveProductCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+public class UpdateOrderProductCommand implements Command {
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -35,6 +35,7 @@ public class ApproveProductCommand implements Command {
                 request.setAttribute(RequestParameter.PRODUCTS, productList);
                 return new Router(PagePath.ADMIN_PAGE, Router.Type.FORWARD);
             } else {
+                //TODO
                 return new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {

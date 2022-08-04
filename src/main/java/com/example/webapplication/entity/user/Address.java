@@ -2,7 +2,6 @@ package com.example.webapplication.entity.user;
 
 import com.example.webapplication.entity.AbstractEntity;
 import com.example.webapplication.entity.builder.AddressBuilder;
-import com.example.webapplication.entity.builder.UserBuilder;
 
 import java.io.Serial;
 

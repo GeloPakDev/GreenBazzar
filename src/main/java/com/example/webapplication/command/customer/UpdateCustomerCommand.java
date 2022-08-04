@@ -19,9 +19,6 @@ import java.util.Optional;
 public class UpdateCustomerCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final String ALREADY_EXISTING_LOGIN = " - already existing login";
-    private static final String ALREADY_EXISTING_EMAIL = " - already existing email";
-    private static final String INVALID_CERTIFICATE_NUMBER = " - invalid certificate number";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

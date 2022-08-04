@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class SearchProductCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

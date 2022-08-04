@@ -1,6 +1,9 @@
 package com.example.webapplication.dao;
 
 public final class QuerySQL {
+    private QuerySQL() {
+    }
+
     //Queries for ProductDAO
     public static final String SELECT_PRODUCT_BY_ID = """
             SELECT products_id,
@@ -13,7 +16,8 @@ public final class QuerySQL {
                    quantity,
                    created_at,
                    modified_at,
-                   deleted_at
+                   deleted_at,
+                   seller_id
             FROM products
             WHERE products_id=?""";
     public static final String SELECT_ALL_PRODUCTS = """
@@ -72,7 +76,8 @@ public final class QuerySQL {
                    quantity,
                    created_at,
                    modified_at,
-                   deleted_at
+                   deleted_at,
+                   seller_id
             FROM products
             WHERE name LIKE CONCAT('%',?,'%') AND quantity > 0""";
 
@@ -143,7 +148,7 @@ public final class QuerySQL {
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
-            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED" AND p.price BETWEEN ? AND ? AND p.quantity > 0
+            WHERE category LIKE CONCAT('%',?,'%') AND ps.orderStatus = "APPROVED" AND p.price BETWEEN ? AND ? AND p.quantity > 0
             """;
     public static final String UPDATE_PRODUCT_STATUS = """
             UPDATE product_status
@@ -154,6 +159,12 @@ public final class QuerySQL {
             UPDATE products
             SET quantity =?
             WHERE products_id =?
+            """;
+
+    public static final String UPDATE_ORDER_PRODUCT_STATUS = """
+            UPDATE order_product_list
+            SET order_status =?
+            WHERE products_id =? AND order_id = ?
             """;
 
     //Queries for UserDao
@@ -247,16 +258,21 @@ public final class QuerySQL {
                    u.password,
                    u.first_name,
                    u.last_name,
+                   u.email,
                    u.role,
-                   u.birthday,
-                   ua.address_line1,
-                   ua.address_line2,
+                   u.company_name,
+                   ua.user_address_id,
+                   ua.address_line,
                    ua.city,
                    ua.postal_code,
                    ua.country,
                    ua.phone_number,
-                   up.payment_type,
+                   up.user_payment_id,
+                   up.expiration_date,
                    up.card_number,
+                   up.cvv_number,
+                   up.balance,
+                   o.customer_id,
                    o.status,
                    o.ordered_time,
                    o.confirmed_time,
@@ -269,28 +285,96 @@ public final class QuerySQL {
                    p.description,
                    p.weight,
                    p.category,
-                   ol.product_quantity,
+                   p.quantity,
                    p.created_at,
                    p.modified_at,
                    p.deleted_at
             FROM orders o
-            JOIN users u ON o.users_id =u.users_id
-            JOIN user_payment up ON u.users_id =up.users_id
-            JOIN user_address ua ON u.users_id =ua.users_id
-            JOIN order_product_list ol ON ol.order_id =o.order_id
-            JOIN products p ON ol.products_id =p.products_id
+            JOIN users u ON o.customer_id = u.users_id
+            JOIN user_payment up ON u.users_id = up.customer_id
+            JOIN user_address ua ON u.users_id = ua.customer_id
+            JOIN order_product_list ol ON o.order_id = ol.order_id
+            JOIN products p ON ol.products_id = p.products_id
             WHERE o.order_id=?""";
 
+    public static final String SELECT_ORDER_BY_USER_ID = """
+            SELECT o.order_id,
+                   u.users_id,
+                   u.login,
+                   u.password,
+                   u.first_name,
+                   u.last_name,
+                   u.email,
+                   u.role,
+                   u.company_name,
+                   ua.user_address_id,
+                   ua.address_line,
+                   ua.city,
+                   ua.postal_code,
+                   ua.country,
+                   ua.phone_number,
+                   up.user_payment_id,
+                   up.expiration_date,
+                   up.card_number,
+                   up.cvv_number,
+                   up.balance,
+                   o.customer_id,
+                   o.status,
+                   o.ordered_time,
+                   o.confirmed_time,
+                   o.completed_time,
+                   o.canceled_time
+            FROM orders o
+            JOIN users u ON o.customer_id = u.users_id
+            JOIN user_payment up ON u.users_id = up.customer_id
+            JOIN user_address ua ON u.users_id = ua.customer_id
+            WHERE o.customer_id = ?
+            """;
+
+    public static final String SELECT_PRODUCT_BY_ORDER = """
+            SELECT p.products_id,
+                   p.name,
+                   p.photo,
+                   p.price,
+                   p.description,
+                   p.weight,
+                   p.category,
+                   p.quantity,
+                   p.created_at,
+                   p.modified_at,
+                   p.deleted_at,
+                   p.seller_id
+            FROM order_product_list ol
+            JOIN products p ON ol.products_id = p.products_id
+            WHERE ol.order_id = ?
+            """;
+    public static final String SELECT_PRODUCT_BY_SELLER = """
+            SELECT p.products_id,
+                   p.name,
+                   p.photo,
+                   p.price,
+                   p.description,
+                   p.weight,
+                   p.category,
+                   ol.product_quantity,
+                   p.created_at,
+                   p.modified_at,
+                   p.deleted_at,
+                   p.seller_id,
+                   ol.order_id
+            FROM order_product_list ol
+            JOIN products p ON ol.products_id = p.products_id
+            WHERE p.seller_id = ? AND ol.order_status LIKE CONCAT('%',?,'%')""";
 
     public static final String ADD_ORDER = """
             INSERT INTO orders
             (customer_id, status, ordered_time, confirmed_time, completed_time, canceled_time)
-            VALUES((SELECT users_id FROM users WHERE users_id=?),?,?,?,?,?)""";
+            VALUES(?,?,?,?,?,?)""";
 
     public static final String ADD_PRODUCTS_TO_ORDER = """
             INSERT INTO order_product_list
-            (product_quantity, order_id, products_id)
-            VALUES(?, SELECT order_id FROM orders WHERE order_id=?, SELECT products_id FROM products WHERE products_id=?)""";
+            (product_quantity, order_id, products_id , order_status)
+            VALUES(?, ?, ?, ?)""";
 
     public static final String CHECK_LOGIN = """
             SELECT first_name
@@ -361,6 +445,9 @@ public final class QuerySQL {
             WHERE user_payment_id =?
                     """;
 
-    private QuerySQL() {
-    }
+    public static final String UPDATE_CARD_BALANCE = """
+            UPDATE user_payment
+            SET balance = ?
+            WHERE customer_id = ?
+            """;
 }

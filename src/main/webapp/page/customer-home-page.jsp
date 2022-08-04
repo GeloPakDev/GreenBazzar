@@ -1,9 +1,16 @@
+<%@ page import="com.example.webapplication.entity.order.Order" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.example.webapplication.entity.product.Product" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="com.example.webapplication.command.RequestParameter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>About me page</title>
-    <link href="${pageContext.request.contextPath}/css/about-me-style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/about-me-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <%@include file="../components/css-js.jsp" %>
 </head>
@@ -16,10 +23,25 @@
     <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModal">
         <i class="fa fa-pencil"></i></button>
 
-    <a style="color: black;text-decoration: none;" class="small"
-       href="${pageContext.request.contextPath}/page/home.jsp">
-        <button class="enter-btn" type="button">home</button>
-    </a>
+    <div class="buttons-section">
+
+        <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
+            <button class="favorite-btn" type="button">
+                <i class="material-icons">favorite</i>
+            </button>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
+            <button class="shopping-btn" type="button">
+                <i class="material-icons">shopping_cart</i>
+            </button>
+        </a>
+
+        <a href="${pageContext.request.contextPath}/page/home.jsp">
+            <button class="enter-btn" type="button">home</button>
+        </a>
+    </div>
+
     <!--Modal page for changing user data-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -118,7 +140,7 @@
             <c:forEach var="tempAddress" items="${addresses}">
                 <li>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="text"
+                        <input class="address-input" type="text"
                                value="${tempAddress.addressLine} ,${tempAddress.city} ,${tempAddress.postalCode} ,${tempAddress.country} ,${tempAddress.phoneNumber}"
                                required readonly>
                         <input type="hidden" value="delete_address" name="command">
@@ -174,8 +196,8 @@
             <c:forEach var="tempCard" items="${cards}">
                 <li>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="text" value="${tempCard.cardNumber} ,${tempCard.expirationDate}" required
-                               readonly>
+                        <input class="card-input" type="text" value="${tempCard.cardNumber} ,${tempCard.expirationDate}"
+                               required readonly>
                         <input type="hidden" value="delete_card" name="command">
                         <input name="id" type="hidden" value="${user.id}">
                         <input name="card_id" type="hidden" value="${tempCard.id}">
@@ -185,6 +207,37 @@
                     </form>
                 </li>
             </c:forEach>
+        </ul>
+    </div>
+
+    <div class="user-orders">Orders</div>
+
+    <div class="orders-list">
+        <ul style="padding: 0; margin: 0;">
+            <%
+                HashMap<Order, List<Product>> orders = (HashMap<Order, List<Product>>) session.getAttribute(RequestParameter.ORDERS);
+
+                List<Order> orderList = new ArrayList<>(orders.keySet());
+                List<List<Product>> products = new ArrayList<>(orders.values());
+                for (int i = 0; i < orders.keySet().size(); i++) {
+                    int id = orderList.get(i).getId();
+            %>
+            <p><%=id%>
+            </p>
+            <%
+                int p = products.get(i).size();
+                for (int j = 0; j < p; j++) {
+                    Product product = products.get(i).get(j);
+            %>
+            <li>
+                <input class="order-input" type="text"
+                       value="<%=product%>"
+                       required readonly>
+            </li>
+            <%
+                    }
+                }
+            %>
         </ul>
     </div>
 </div>

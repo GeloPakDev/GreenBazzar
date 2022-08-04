@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Search Result Page</title>
-    <link href="${pageContext.request.contextPath}/css/search_result_style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/selected-category-style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <%@include file="../components/css-js.jsp" %>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
@@ -15,28 +15,36 @@
         <div class="container">
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
-                   <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
+                <span class="search-section">
+                     <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
                        <input type="hidden" value="search_products" name="command">
                        <input type="text" placeholder="Search.." name="search">
-                       <button type="submit"><i class="fa fa-search"></i></button>
-                   </form>
-                    <button class="favorite-btn">
-                        <i class="material-icons">favorite</i>
-                    </button>
+                       <button type="submit">
+                           <i class="fa fa-search"></i></button>
+                     </form>
+                </span>
 
-                    <button class="shopping-btn">
-                        <i class="material-icons">shopping_cart</i>
-                    </button>
-                <a style="color: black;text-decoration: none;" class="small"
-                   href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
-                    <button class="enter-btn" type="button">Home</button>
+                <span class="buttons-section">
+                <button class="favorite-btn">
+                    <i class="material-icons">favorite</i>
+                </button>
+
+                    <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
+                        <button class="shopping-btn" type="button">
+                            <i class="material-icons">shopping_cart</i>
+                        </button>
+                    </a>
+
+                <a href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
+                    <button class="enter-btn" type="button">Profile</button>
                 </a>
                 </span>
+            </span>
         </div>
     </div>
 </header>
-<div style="padding-left: 220px;">Selected category: ${category}</div>
-<div style="padding-left: 220px;" class="row">
+<div class="selected-category">Selected category: ${category}</div>
+<div class="row">
     <div class="categories">
         <nav>
             <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -99,7 +107,7 @@
         </nav>
     </div>
 </div>
-<div style="padding-left: 220px;" class="price-range">
+<div class="price-range">
     <form action="${pageContext.request.contextPath}/controller" method="post">
         <input type="hidden" value="choose_by_price_range" name="command">
         <div data-role="rangeslider">
@@ -108,11 +116,11 @@
             <label for="price-max">To:</label>
             <input type="number" name="price-to" id="price-max" value="800" min="0" max="1000">
         </div>
-        <input type="submit" data-inline="true" value="Filter">
+        <input type="submit" data-inline="true" value="Filter" class="filter">
     </form>
 </div>
 <div class="card-body">
-    <table id="datatablesSimple" style="position: absolute;right: 220px;">
+    <table id="datatablesSimple">
         <thead>
         <tr>
             <th>Name</th>
@@ -120,6 +128,8 @@
             <th>price</th>
             <th>description</th>
             <th>weight</th>
+            <th>Cart</th>
+            <th>favorites</th>
         </tr>
         </thead>
         <tbody>
@@ -134,7 +144,7 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="add_to_cart" name="command">
                         <input type="hidden" name="products_id" value="${tempProduct.id}">
-                        <button type="submit" name="status">
+                        <button type="submit" name="orderStatus">
                             Add To cart
                         </button>
                     </form>
@@ -143,7 +153,7 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="decline_product" name="command">
                         <input type="hidden" name="id" value="${user.id}">
-                        <button name="status" value="DECLINED">
+                        <button name="orderStatus" value="DECLINED">
                             Add to favourites
                         </button>
                     </form>

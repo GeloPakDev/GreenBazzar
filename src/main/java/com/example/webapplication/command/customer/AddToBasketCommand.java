@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class AddToBasketCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

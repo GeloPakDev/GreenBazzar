@@ -23,7 +23,6 @@ public interface ProductService {
 
     void updateQuantityOfTheProduct(int productId, int number) throws ServiceException;
 
-
     boolean createProduct(int sellerId, Product product) throws ServiceException;
 
     boolean updateProductStatus(int productId, String status) throws ServiceException;

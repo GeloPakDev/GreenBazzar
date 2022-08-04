@@ -23,49 +23,66 @@
         </div>
     </div>
 </header>
-<div class="addresses-list">
-    <ul>
-        <c:forEach var="tempAddress" items="${addresses}">
-            <li>
-                <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="text"
-                           value="${tempAddress.addressLine} ,${tempAddress.city} ,${tempAddress.postalCode} ,${tempAddress.country} ,${tempAddress.phoneNumber}"
-                           required readonly>
-                    <input type="hidden" value="delete_address" name="command">
-                    <input type="hidden" name="id" value="${user.id}">
-                    <input type="hidden" name="address_id" value="${tempAddress.id}">
-                    <input type="radio" class="custom-control-input" value="${tempAddress}">
-                </form>
-            </li>
-        </c:forEach>
-    </ul>
-</div>
-<div class="cards-list">
-    <ul>
-        <c:forEach var="tempCard" items="${cards}">
-            <li>
-                <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="text" value="${tempCard.cardNumber} ,${tempCard.expirationDate}" required
-                           readonly>
-                    <input type="hidden" value="delete_card" name="command">
-                    <input name="id" type="hidden" value="${user.id}">
-                    <input name="card_id" type="hidden" value="${tempCard.id}">
-                    <input type="radio" class="custom-control-input" value="${tempCard}">
-                </form>
-            </li>
-        </c:forEach>
-    </ul>
-</div>
-<div class="products-list">
-    <ul>
-        <c:forEach var="tempProduct" items="${cart}">
-            <li>
-                <input type="text"
-                       value="${tempProduct.key.name} , ${tempProduct.key.photo},${tempProduct.key.price}, ${tempProduct.key.description}, ${tempProduct.key.weight}"
-                       required readonly>
-            </li>
-        </c:forEach>
-    </ul>
-</div>
+
+<form action="${pageContext.request.contextPath}/controller" method="post">
+    <input type="hidden" value="checkout" name="command">
+    <div class="address">
+        <div>Choose address from following:</div>
+        <div class="addresses-list">
+            <ul style="padding: 0; margin: 0;">
+                <c:forEach var="tempAddress" items="${addresses}">
+                    <li>
+                        <input class="address-input" type="text"
+                               value="${tempAddress.addressLine} ,${tempAddress.city} ,${tempAddress.postalCode} ,${tempAddress.country} ,${tempAddress.phoneNumber}"
+                               required readonly>
+                        <input type="hidden" name="id" value="${user.id}">
+                        <input type="hidden" name="address_id" value="${tempAddress.id}">
+                        <input name="address" type="radio" value="${tempAddress}" class="radio-btn">
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+    <div class="cards">
+        <div>Choose card from the following:</div>
+        <div class="cards-list">
+            <ul style="padding: 0; margin: 0;">
+                <c:forEach var="tempCard" items="${cards}">
+                    <li>
+                        <input class="card-input" type="text" value="${tempCard.cardNumber} ,${tempCard.expirationDate}"
+                               required readonly>
+                        <input name="card_id" type="hidden" value="${tempCard.id}">
+                        <input name="card-balance" type="radio" value="${tempCard.balance}" class="radio-btn">
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+    <div class="products">
+        <div>List of products:</div>
+        <div class="products-list">
+            <ul style="padding: 0; margin: 0;">
+                <c:forEach var="tempProduct" items="${cart}">
+                    <li>
+                        <input class="product-input" type="text"
+                               value="${tempProduct.key.name} , ${tempProduct.key.photo},${tempProduct.key.price}, ${tempProduct.key.description}, ${tempProduct.key.weight}"
+                               required readonly>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+
+    <div class="payment">
+        <div class="title">Payment Data</div>
+        <div class="total-price">
+            Total price for payment: ${total_price}
+        </div>
+
+        <div class="proceed-to-payment">
+            <input type="submit" value="Proceed to payment" class="payment-button">
+        </div>
+    </div>
+</form>
 </body>
 </html>

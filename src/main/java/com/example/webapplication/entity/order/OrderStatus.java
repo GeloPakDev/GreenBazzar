@@ -1,14 +1,13 @@
 package com.example.webapplication.entity.order;
 
-public enum Status {
-    NEW("NEW"),
-    IN_PROGRESS("IN_PROGRESS"),
-    COMPLETED("COMPLETED"),
-    CANCELED("CANCELED");
+public enum OrderStatus {
+    PENDING("PENDING"),
+    APPROVED("APPROVED"),
+    DECLINED("DECLINED");
 
     private final String value;
 
-    Status(String value) {
+    OrderStatus(String value) {
         this.value = value;
     }
 

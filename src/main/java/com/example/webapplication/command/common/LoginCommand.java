@@ -4,6 +4,8 @@ import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
 import com.example.webapplication.controller.PagePath;
 import com.example.webapplication.controller.Router;
+import com.example.webapplication.entity.order.Order;
+import com.example.webapplication.entity.order.OrderProduct;
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.entity.user.Address;
@@ -12,8 +14,10 @@ import com.example.webapplication.entity.user.Role;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.CommandException;
 import com.example.webapplication.exception.ServiceException;
+import com.example.webapplication.service.OrderService;
 import com.example.webapplication.service.ProductService;
 import com.example.webapplication.service.UserService;
+import com.example.webapplication.service.impl.OrderServiceImpl;
 import com.example.webapplication.service.impl.ProductServiceImpl;
 import com.example.webapplication.service.impl.UserServiceImpl;
 import com.example.webapplication.validator.UserValidator;
@@ -28,13 +32,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
+        OrderService orderService = OrderServiceImpl.getInstance();
         UserValidator userValidator = UserValidatorImpl.getInstance();
 
         Router router = new Router();
@@ -56,9 +61,35 @@ public class LoginCommand implements Command {
                         LOGGER.info("Users role:" + user.getRole());
                         //Get access to the user to get his values
                         if (user.getRole() == Role.CUSTOMER) {
+                            //Create User's cart
                             HashMap<Product, Integer> productCart = new HashMap<>();
+                            //Get user's cards
                             List<Card> cardList = userService.findUserCards(user.getId());
+                            //Get user's addresses
                             List<Address> addressList = userService.findUserAddresses(user.getId());
+                            //Create HashMap for storing ORDERS with PRODUCTS
+                            HashMap<Order, List<Product>> orders = new HashMap<>();
+                            //Get list of the user's ORDERS
+                            List<Order> ordersList = null;
+                            try {
+                                ordersList = orderService.findAllUserOrders(user.getId());
+                            } catch (ServiceException e) {
+                                throw new ServiceException(e);
+                            }
+                            //On each iteration add ORDER and list of PRODUCTS into hashmap
+                            for (Order order : ordersList) {
+                                int orderId = order.getId();
+                                List<Product> orderProducts;
+                                try {
+                                    //Get the list of PRODUCTS for each user's ORDER
+                                    orderProducts = orderService.findOrderProducts(orderId);
+                                } catch (ServiceException e) {
+                                    throw new ServiceException(e);
+                                }
+                                //Put ORDER and corresponding PRODUCTS into the hashmap
+                                orders.put(order, orderProducts);
+                            }
+                            session.setAttribute(RequestParameter.ORDERS, orders);
                             session.setAttribute(RequestParameter.PRODUCT_CART, productCart);
                             session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.USER, user);
@@ -84,4 +115,3 @@ public class LoginCommand implements Command {
         return router;
     }
 }
-

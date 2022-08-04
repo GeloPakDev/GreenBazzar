@@ -109,5 +109,55 @@ public class UserBuilder {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        UserBuilder that = (UserBuilder) o;
+
+        if (id != that.id) return false;
+        if (login != null ? !login.equals(that.login) : that.login != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (role != that.role) return false;
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
+        if (card != null ? !card.equals(that.card) : that.card != null) return false;
+        return companyName != null ? companyName.equals(that.companyName) : that.companyName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (card != null ? card.hashCode() : 0);
+        result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String
+    toString() {
+        final StringBuilder sb = new StringBuilder("UserBuilder{");
+        sb.append("id=").append(id);
+        sb.append(", login='").append(login).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", role=").append(role);
+        sb.append(", address=").append(address);
+        sb.append(", card=").append(card);
+        sb.append(", companyName='").append(companyName).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -117,7 +117,7 @@
             <label for="price-max">To:</label>
             <input type="number" name="price-to" id="price-max" value="800" min="0" max="1000">
         </div>
-        <input type="submit" data-inline="true" value="Filter">
+        <input type="submit" data-inline="true" value="Filter" class="filter">
     </form>
 </div>
 <div class="search-result">By "${search}" was found: ${quantity} results</div>
@@ -130,6 +130,8 @@
             <th>price</th>
             <th>description</th>
             <th>weight</th>
+            <th>Cart</th>
+            <th>favorites</th>
         </tr>
         </thead>
         <tbody>
@@ -144,7 +146,7 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="add_to_cart" name="command">
                         <input type="hidden" name="products_id" value="${tempProduct.id}">
-                        <button type="submit" name="status">
+                        <button type="submit" name="orderStatus">
                             Add To cart
                         </button>
                     </form>
@@ -153,7 +155,7 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="decline_product" name="command">
                         <input type="hidden" name="id" value="${user.id}">
-                        <button name="status" value="DECLINED">
+                        <button name="orderStatus" value="DECLINED">
                             Add to favourites
                         </button>
                     </form>

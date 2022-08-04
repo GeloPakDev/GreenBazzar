@@ -15,6 +15,7 @@ public class RequestParameter {
     public static final String USERS = "users";
 
 
+    public static final String ADDRESS = "address";
     public static final String ADDRESS_ID = "address_id";
     public static final String ADDRESSES = "addresses";
     public static final String ADDRESS_LINE = "address-line";
@@ -32,6 +33,7 @@ public class RequestParameter {
     public static final String CARD_CVV_NUMBER = "cvv-number";
     public static final String CARD_BALANCE = "card-balance";
     public static final String CARDS = "cards";
+    public static final String CARD = "card";
 
     public static final String OPERATION_MESSAGE = "operation_message";
 
@@ -57,5 +59,11 @@ public class RequestParameter {
     public static final String PRODUCT_QUANTITY_IN_CART = "product_quantity";
     public static final String TOTAL_PRODUCT_QUANTITY = "total_quantity";
     public static final String TOTAL_PRICE = "total_price";
+    //Order
+    public static final String ORDERS = "orders";
+    public static final String ORDER_PRODUCTS = "order_products";
+    public static final String ORDER_ID = "order_id";
+    public static final String ORDER_CHECKER = "order_checker";
+
 
 }

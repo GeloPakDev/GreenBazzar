@@ -6,13 +6,21 @@
     font-family: 'Poppins', sans-serif;
 }
 
+ul {
+    list-style: none;
+}
+
 .header-main .container .title {
-    padding-left: 80px;
+    position: absolute;
+    left: 100px;
+    top: 30px;
     font-size: 28px;
     font-weight: 500;
 }
 
 .header-main .container .header-class-actions .enter-btn {
+    top: 30px;
+    right: 220px;
     color: black;
     text-decoration: none;
     position: absolute;
@@ -21,4 +29,115 @@
     width: 115px;
     background-color: #D9D9D9;
     border-radius: 10px;
+}
+
+.address {
+    padding-top: 100px;
+    padding-left: 100px;
+}
+
+.cards {
+    padding-left: 100px;
+}
+
+.products {
+    padding-left: 100px;
+}
+
+/*payment style*/
+.payment {
+    width: 400px;
+    height: 200px;
+    background-color: #D9D9D9;
+    position: absolute;
+    right: 220px;
+    top: 100px;
+    border-radius: 10px;
+}
+
+.payment .title {
+    padding-top: 20px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 21px;
+}
+
+.payment .total-price {
+    padding-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.payment .proceed-to-payment {
+    position: absolute;
+    top: 120px;
+    right: 70px;
+}
+
+.payment .proceed-to-payment form .payment-button {
+    padding-right: 50px;
+    padding-left: 50px;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+    border-width: 0;
+    height: 40px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.address .addresses-list ul li {
+    left: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: calc(100% / 2 - 10px);
+}
+
+.address .addresses-list ul li .address-input {
+    width: 100%;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 50px;
+}
+
+.cards .cards-list ul li {
+    left: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: calc(100% / 2 - 10px);
+}
+
+.cards .cards-list ul li .card-input {
+    width: 100%;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 50px;
+}
+
+.products .products-list ul li {
+    left: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: calc(100% / 2 - 10px);
+}
+
+.products .products-list ul li .product-input {
+    width: 100%;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 50px;
+}
+
+.products .products-list ul li .radio-btn {
+    top: 15px;
+    left: 15px;
+    position: absolute;
+}
+
+.address .addresses-list ul li .radio-btn {
+    position: absolute;
 }

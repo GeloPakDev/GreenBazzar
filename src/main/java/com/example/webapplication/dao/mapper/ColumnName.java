@@ -15,6 +15,7 @@ public final class ColumnName {
     public static final String PRODUCT_CREATED_AT = "created_at";
     public static final String PRODUCT_MODIFIED_AT = "modified_at";
     public static final String PRODUCT_DELETED_AT = "deleted_at";
+    public static final String PRODUCT_SELLER_ID = "seller_id";
     //users
     public static final String USER_ID = "users_id";
     public static final String USER_LOGIN = "login";
@@ -47,7 +48,6 @@ public final class ColumnName {
     public static final String ORDER_CONFIRMED_TIME = "confirmed_time";
     public static final String ORDER_COMPLETED_TIME = "completed_time";
     public static final String ORDER_CANCELED_TIME = "canceled_time";
-
     //Order_Products_list
     public static final String ORDER_PRODUCTS_QUANTITY = "product_quantity";
 

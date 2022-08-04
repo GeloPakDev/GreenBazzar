@@ -1,24 +1,21 @@
 package com.example.webapplication.entity.order;
 
 import com.example.webapplication.entity.AbstractEntity;
-import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.user.User;
 
 import java.io.Serial;
 import java.sql.Date;
-import java.util.List;
 
 public class Order implements AbstractEntity {
     @Serial
     private static final long serialVersionUID = 1L;
     private int id;
     private User user;
-    private Status status;
+    private OrderStatus orderStatus;
     private Date orderedDate;
     private Date confirmedDate;
     private Date completedDate;
     private Date canceledDate;
-    private List<Product> productList;
 
     public int getId() {
         return id;
@@ -36,14 +33,13 @@ public class Order implements AbstractEntity {
         this.user = user;
     }
 
-    public Status getStatus() {
-        return status;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
-
 
     public Date getOrderedDate() {
         return orderedDate;
@@ -77,25 +73,16 @@ public class Order implements AbstractEntity {
         this.canceledDate = canceledDate;
     }
 
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
         sb.append("id=").append(id);
         sb.append(", user=").append(user);
-        sb.append(", status=").append(status);
+        sb.append(", orderStatus=").append(orderStatus);
         sb.append(", orderedDate=").append(orderedDate);
         sb.append(", confirmedDate=").append(confirmedDate);
         sb.append(", completedDate=").append(completedDate);
         sb.append(", canceledDate=").append(canceledDate);
-        sb.append(", productList=").append(productList);
         sb.append('}');
         return sb.toString();
     }
@@ -109,26 +96,24 @@ public class Order implements AbstractEntity {
 
         if (id != order.id) return false;
         if (user != null ? !user.equals(order.user) : order.user != null) return false;
-        if (status != order.status) return false;
+        if (orderStatus != order.orderStatus) return false;
         if (orderedDate != null ? !orderedDate.equals(order.orderedDate) : order.orderedDate != null) return false;
         if (confirmedDate != null ? !confirmedDate.equals(order.confirmedDate) : order.confirmedDate != null)
             return false;
         if (completedDate != null ? !completedDate.equals(order.completedDate) : order.completedDate != null)
             return false;
-        if (canceledDate != null ? !canceledDate.equals(order.canceledDate) : order.canceledDate != null) return false;
-        return productList != null ? productList.equals(order.productList) : order.productList == null;
+        return canceledDate != null ? canceledDate.equals(order.canceledDate) : order.canceledDate == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         result = 31 * result + (orderedDate != null ? orderedDate.hashCode() : 0);
         result = 31 * result + (confirmedDate != null ? confirmedDate.hashCode() : 0);
         result = 31 * result + (completedDate != null ? completedDate.hashCode() : 0);
         result = 31 * result + (canceledDate != null ? canceledDate.hashCode() : 0);
-        result = 31 * result + (productList != null ? productList.hashCode() : 0);
         return result;
     }
 }

@@ -1,9 +1,11 @@
+<%@ page import="com.example.webapplication.command.RequestParameter" %>
+<%@ page import="java.util.Objects" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Seller Home Page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/seller-home-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/seller-home-style.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <%@include file="../components/css-js.jsp" %>
@@ -26,6 +28,8 @@
                     <th>weight</th>
                     <th>category</th>
                     <th>quantity</th>
+                    <th>approve</th>
+                    <th>decline</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +42,31 @@
                         <td>${tempProduct.weight}</td>
                         <td>${tempProduct.category}</td>
                         <td>${tempProduct.quantity}</td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="update_order_product_status" name="command">
+                                <% if (request.getParameter(RequestParameter.ORDER_CHECKER) != null) { %>
+                                <input type="hidden" value="${tempProduct.order}" name="order_id">
+                                <input type="hidden" name="order_checker" value="order_checker">
+                                <%
+                                    } else {
+                                        System.out.println("Order doesn't has an Id");
+                                    }%>
+                                <input type="hidden" name="products_id" value="${tempProduct.id}">
+                                <button name="status" type="submit" value="APPROVED">
+                                    Approve
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="update_order_product_status" name="command">
+                                <input type="hidden" name="products_id" value="${tempProduct.id}">
+                                <button name="status" value="DECLINED">
+                                    Decline
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -129,13 +158,32 @@
         <div>Orders</div>
         <ul>
             <li>
-                New
+                <form action="${pageContext.request.contextPath}/controller" method="post">
+                    <input type="hidden" value="choose_order_product_by_status" name="command">
+                    <input type="hidden" name="order_checker" value="order_checker">
+                    <input type="hidden" name="id" value="${id}">
+                    <button name="status" type="submit" value="PENDING">
+                        Pending
+                    </button>
+                </form>
             </li>
             <li>
-                Completed
+                <form action="${pageContext.request.contextPath}/controller" method="post">
+                    <input type="hidden" value="choose_order_product_by_status" name="command">
+                    <input type="hidden" name="id" value="${id}">
+                    <button name="status" value="APPROVED">
+                        Approved
+                    </button>
+                </form>
             </li>
             <li>
-                Declined
+                <form action="${pageContext.request.contextPath}/controller" method="post">
+                    <input type="hidden" value="choose_order_product_by_status" name="command">
+                    <input type="hidden" name="id" value="${id}">
+                    <button name="status" value="DECLINED">
+                        Declined
+                    </button>
+                </form>
             </li>
         </ul>
         <hr>
