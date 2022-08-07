@@ -148,7 +148,7 @@ public final class QuerySQL {
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
-            WHERE category LIKE CONCAT('%',?,'%') AND ps.orderStatus = "APPROVED" AND p.price BETWEEN ? AND ? AND p.quantity > 0
+            WHERE category LIKE CONCAT('%',?,'%') AND ps.status = "APPROVED" AND p.price BETWEEN ? AND ? AND p.quantity > 0
             """;
     public static final String UPDATE_PRODUCT_STATUS = """
             UPDATE product_status
@@ -167,6 +167,12 @@ public final class QuerySQL {
             WHERE products_id =? AND order_id = ?
             """;
 
+    public static final String UPDATE_CARD_BALANCE = """
+            UPDATE user_payment
+            SET balance =?
+            WHERE user_payment_id =?
+            """;
+
     //Queries for UserDao
     public static final String SELECT_USER_BY_ID = """
             SELECT u.users_id,
@@ -177,17 +183,20 @@ public final class QuerySQL {
                    u.email,
                    u.role,
                    u.company_name,
+                   ua.user_address_id,
                    ua.address_line,
                    ua.city,
                    ua.postal_code,
                    ua.country,
                    ua.phone_number,
+                   up.user_payment_id,
                    up.expiration_date,
                    up.card_number,
-                   up.cvv_number
+                   up.cvv_number,
+                   up.balance
             FROM users u
             JOIN user_payment up ON u.users_id = up.customer_id
-            JOIN user_address ua ON u.users_id =ua.customer_id
+            JOIN user_address ua ON u.users_id = ua.customer_id
             WHERE u.users_id=?""";
 
     public static final String USER_SEARCH = """
@@ -245,7 +254,8 @@ public final class QuerySQL {
 
     public static final String UPDATE_USER = """
             UPDATE users
-            SET first_name =?,
+            SET login =?,
+                first_name =?,
                 last_name=?,
                 email=?,
                 company_name=?
@@ -444,10 +454,15 @@ public final class QuerySQL {
             FROM user_payment
             WHERE user_payment_id =?
                     """;
+    public static final String FIND_STATUS_OF_ORDER_PRODUCT = """
+            SELECT order_status
+            FROM order_product_list
+            WHERE order_id = ? AND products_id = ?
+            """;
 
-    public static final String UPDATE_CARD_BALANCE = """
-            UPDATE user_payment
-            SET balance = ?
-            WHERE customer_id = ?
+    public static final String UPDATE_ORDER_STATUS = """
+            UPDATE orders
+            SET status =?
+            WHERE order_id =?
             """;
 }

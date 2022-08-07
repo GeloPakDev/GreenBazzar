@@ -42,12 +42,16 @@ public class ProceedToPaymentCommand implements Command {
             logger.info("List of addresses" + cardList);
             //List of Products
             HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
-            logger.info("That is product list: " + productList);
-            session.setAttribute(RequestParameter.TOTAL_PRICE, totalOrderPrice);
-            session.setAttribute(RequestParameter.CARDS, cardList);
-            session.setAttribute(RequestParameter.ADDRESSES, addressList);
-            session.setAttribute(RequestParameter.PRODUCT_CART, productList);
-            return new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+            if (productList.isEmpty()) {
+                return new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
+            } else {
+                logger.info("That is product list: " + productList);
+                session.setAttribute(RequestParameter.TOTAL_PRICE, totalOrderPrice);
+                session.setAttribute(RequestParameter.CARDS, cardList);
+                session.setAttribute(RequestParameter.ADDRESSES, addressList);
+                session.setAttribute(RequestParameter.PRODUCT_CART, productList);
+                return new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+            }
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

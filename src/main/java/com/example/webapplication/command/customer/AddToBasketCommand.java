@@ -24,26 +24,36 @@ public class AddToBasketCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         ProductService service = ProductServiceImpl.getInstance();
-        //get the cart from the session for the user
+        //Get the cart from the session for the user
         HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
-        //Get id of the product
+        //Get ID of the product which will be added
         String id = request.getParameter(RequestParameter.PRODUCT_ID);
-        logger.info(id);
 
         try {
             Product product;
+            Product updatedProduct;
             int productId = Integer.parseInt(id);
-            //Find the product from the db
+            //Find the product from the DB
             Optional<Product> productOptional = service.findProductById(productId);
+
             if (productOptional.isPresent()) {
                 product = productOptional.get();
                 //Put the product to the cart with default quantity of 1
-                int inventoryQuantity = product.getQuantity();
-                int quantity = inventoryQuantity - 1;
-                service.updateQuantityOfTheProduct(productId, quantity);
-                productList.put(product, 1);
+                int productInventoryQuantity = product.getQuantity();
+                //Check on availability of the product in the DB
+                if (productInventoryQuantity - 1 > 0) {
+                    int quantity = productInventoryQuantity - 1;
+                    //Update the quantity of the product
+                    service.updateQuantityOfTheProduct(productId, quantity);
+                    //Get updated product to put it in the cart
+                    Optional<Product> updatedOptionalProduct = service.findProductById(productId);
+                    if (updatedOptionalProduct.isPresent()) {
+                        updatedProduct = updatedOptionalProduct.get();
+                        productList.put(updatedProduct, 1);
+                    }
+                }
             }
-            session.setAttribute(RequestParameter.PRODUCT_CART, productList);
+            //update the data
             calculateCartData(request);
             return new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {

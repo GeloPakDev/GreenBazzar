@@ -1,11 +1,12 @@
-<%@ page import="com.example.webapplication.command.RequestParameter" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.webapplication.entity.product.Product" %>
 <%@ page import="java.util.HashMap" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.example.webapplication.command.RequestParameter" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Cart page</title>
+    <title>Favourite page</title>
     <link href="${pageContext.request.contextPath}/style/customer-cart-style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -29,37 +30,35 @@
                 </span>
 
                 <span class="buttons-section">
-<%--                    Favourites page--%>
-                    <form action="${pageContext.request.contextPath}/controller" method="post">
-                         <input type="hidden" value="favourite" name="command">
-                         <button class="shopping-btn" type="submit" style="color: black;
-    text-decoration: none;
-    right: 300px;
-    top: 30px;
-    position: absolute;
-    border-width: 0;
-    background-color: white;
-    border-radius: 10px;">
-                         <i class="material-icons">favorite</i>
-                         </button>
-                    </form>
-<%--                    Bucket page--%>
+                <button class="favorite-btn">
+                    <i class="material-icons">favorite</i>
+                </button>
+
+                    <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
+                        <button class="shopping-btn" type="button">
+                            <i class="material-icons">shopping_cart</i>
+                        </button>
+                    </a>
+
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                                 <input type="hidden" value="customer_bucket" name="command">
                                 <button class="shopping-btn" type="submit" style="color: black;
     text-decoration: none;
-    right: 250px;
+    right: 130px;
     top: 30px;
     position: absolute;
     border-width: 0;
-    background-color: white;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
     border-radius: 10px;">
                                     <i class="material-icons">shopping_cart</i>
                                 </button>
                     </form>
-<%--                    Profile page--%>
+
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                                 <input type="hidden" value="about_me" name="command">
+                                <input type="hidden" name="category" value="Vegetables">
                                 <input class="enter-btn" type="submit" value="profile" style=" color: black;
     text-decoration: none;
     right: 130px;
@@ -78,10 +77,10 @@
 </header>
 <div class="card-body">
     <%
-        HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
-        if (productList.isEmpty()) {
+        List<Product> favouriteList = (List<Product>) session.getAttribute(RequestParameter.FAVOURITE_LIST);
+        if (favouriteList.isEmpty()) {
     %>
-    <p>Your cart is empty!</p>
+    <p>Favourite list is empty!</p>
     <%
     } else {
     %>
@@ -98,37 +97,26 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="tempProduct" items="${cart}">
+        <c:forEach var="tempProduct" items="${favourite_list}">
             <tr>
-                <td>${tempProduct.key.name}</td>
-                <td>${tempProduct.key.photo}</td>
-                <td>${tempProduct.key.price}</td>
-                <td>${tempProduct.key.description}</td>
-                <td>${tempProduct.key.weight}</td>
+                <td>${tempProduct.name}</td>
+                <td>${tempProduct.photo}</td>
+                <td>${tempProduct.price}</td>
+                <td>${tempProduct.description}</td>
+                <td>${tempProduct.weight}</td>
                 <td>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="hidden" name="products_id" value="${tempProduct.key.id}">
-                        <input type="hidden" name="product_quantity" value="${tempProduct.value}">
-                        <input type="hidden" value="change_product_quantity" name="command">
-                        <button type="submit" name="action" value="increase"
-                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <input type="number" name="product_quantity" id="price-max" value="${tempProduct.value}" min="0"
-                               readonly>
-                        <button type="submit"
-                                value="decrease"
-                                name="action"
-                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                            <i class="fa fa-minus"></i>
+                        <input type="hidden" value="add_to_cart" name="command">
+                        <input type="hidden" name="products_id" value="${tempProduct.id}">
+                        <button type="submit" name="orderStatus">
+                            Add To cart
                         </button>
                     </form>
                 </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="hidden" name="product_quantity" value="${tempProduct.value}">
-                        <input type="hidden" name="products_id" value="${tempProduct.key.id}">
-                        <input type="hidden" value="delete_from_cart" name="command">
+                        <input type="hidden" value="delete_from_favourites" name="command">
+                        <input type="hidden" name="products_id" value="${tempProduct.id}">
                         <input type="submit" value="delete">
                     </form>
                 </td>
@@ -139,20 +127,6 @@
     <%
         }
     %>
-</div>
-<div class="cart-overview">
-    <div class="total-products">
-        Total number of products:${total_quantity}
-    </div>
-    <div class="total-price">
-        Total price of products:${total_price}
-    </div>
-    <div class="proceed-to-payment">
-        <form action="${pageContext.request.contextPath}/controller" method="post">
-            <input type="hidden" value="proceed_to_payment" name="command">
-            <input type="submit" value="Proceed to payment" class="checkout">
-        </form>
-    </div>
 </div>
 </body>
 </html>

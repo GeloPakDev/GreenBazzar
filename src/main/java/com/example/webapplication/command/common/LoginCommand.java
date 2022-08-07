@@ -4,20 +4,14 @@ import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
 import com.example.webapplication.controller.PagePath;
 import com.example.webapplication.controller.Router;
-import com.example.webapplication.entity.order.Order;
-import com.example.webapplication.entity.order.OrderProduct;
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.product.Status;
-import com.example.webapplication.entity.user.Address;
-import com.example.webapplication.entity.user.Card;
 import com.example.webapplication.entity.user.Role;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.CommandException;
 import com.example.webapplication.exception.ServiceException;
-import com.example.webapplication.service.OrderService;
 import com.example.webapplication.service.ProductService;
 import com.example.webapplication.service.UserService;
-import com.example.webapplication.service.impl.OrderServiceImpl;
 import com.example.webapplication.service.impl.ProductServiceImpl;
 import com.example.webapplication.service.impl.UserServiceImpl;
 import com.example.webapplication.validator.UserValidator;
@@ -27,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +34,6 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
         ProductService productService = ProductServiceImpl.getInstance();
-        OrderService orderService = OrderServiceImpl.getInstance();
         UserValidator userValidator = UserValidatorImpl.getInstance();
 
         Router router = new Router();
@@ -63,38 +57,12 @@ public class LoginCommand implements Command {
                         if (user.getRole() == Role.CUSTOMER) {
                             //Create User's cart
                             HashMap<Product, Integer> productCart = new HashMap<>();
-                            //Get user's cards
-                            List<Card> cardList = userService.findUserCards(user.getId());
-                            //Get user's addresses
-                            List<Address> addressList = userService.findUserAddresses(user.getId());
-                            //Create HashMap for storing ORDERS with PRODUCTS
-                            HashMap<Order, List<Product>> orders = new HashMap<>();
-                            //Get list of the user's ORDERS
-                            List<Order> ordersList = null;
-                            try {
-                                ordersList = orderService.findAllUserOrders(user.getId());
-                            } catch (ServiceException e) {
-                                throw new ServiceException(e);
-                            }
-                            //On each iteration add ORDER and list of PRODUCTS into hashmap
-                            for (Order order : ordersList) {
-                                int orderId = order.getId();
-                                List<Product> orderProducts;
-                                try {
-                                    //Get the list of PRODUCTS for each user's ORDER
-                                    orderProducts = orderService.findOrderProducts(orderId);
-                                } catch (ServiceException e) {
-                                    throw new ServiceException(e);
-                                }
-                                //Put ORDER and corresponding PRODUCTS into the hashmap
-                                orders.put(order, orderProducts);
-                            }
-                            session.setAttribute(RequestParameter.ORDERS, orders);
+                            //Create List for favourite products
+                            List<Product> favouriteProductList = new ArrayList<>();
                             session.setAttribute(RequestParameter.PRODUCT_CART, productCart);
+                            session.setAttribute(RequestParameter.FAVOURITE_LIST, favouriteProductList);
                             session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.USER, user);
-                            session.setAttribute(RequestParameter.ADDRESSES, addressList);
-                            session.setAttribute(RequestParameter.CARDS, cardList);
                             router = new Router(PagePath.HOME_PAGE, Router.Type.FORWARD);
                         } else if (user.getRole() == Role.SELLER) {
                             List<Product> productList = productService.findProductsByStatus(user.getId(), String.valueOf(Status.PENDING));

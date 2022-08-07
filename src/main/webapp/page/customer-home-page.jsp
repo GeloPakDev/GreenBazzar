@@ -1,15 +1,18 @@
 <%@ page import="com.example.webapplication.entity.order.Order" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.webapplication.entity.product.Product" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="com.example.webapplication.command.RequestParameter" %>
+<%@ page import="com.example.webapplication.entity.order.OrderStatus" %>
+<%@ page import="com.example.webapplication.entity.product.Status" %>
+<%@ page import="com.example.webapplication.service.OrderService" %>
+<%@ page import="com.example.webapplication.service.impl.OrderServiceImpl" %>
+<%@ page import="com.example.webapplication.exception.ServiceException" %>
+<%@ page import="java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>About me page</title>
-    <link href="${pageContext.request.contextPath}/about-me-style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/style/about-me-style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <%@include file="../components/css-js.jsp" %>
@@ -24,24 +27,49 @@
         <i class="fa fa-pencil"></i></button>
 
     <div class="buttons-section">
-
-        <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
-            <button class="favorite-btn" type="button">
+        <%--                    Favourites page--%>
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" value="favourite" name="command">
+            <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 150px;
+    top: 10px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
                 <i class="material-icons">favorite</i>
             </button>
-        </a>
-
-        <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
-            <button class="shopping-btn" type="button">
+        </form>
+        <%--                    Bucket page--%>
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" value="customer_bucket" name="command">
+            <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 200px;
+    top: 10px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
                 <i class="material-icons">shopping_cart</i>
             </button>
-        </a>
-
+        </form>
+        <%--                    Home page--%>
         <a href="${pageContext.request.contextPath}/page/home.jsp">
-            <button class="enter-btn" type="button">home</button>
+            <input value="home" class="enter-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 0;
+    top: 0;
+    position: absolute;
+    border-width: 0;
+    float: right;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
+    border-radius: 10px;">
         </a>
     </div>
-
     <!--Modal page for changing user data-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -165,23 +193,37 @@
                 <div class="modal-body">
                     <form class="credit-card" action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="add_card" name="command">
-                        <input name="id" type="hidden" value="${user.id}">
+                        <input type="hidden" value="${user.id}" name="id">
                         <div class="card_number" id="card-container">
+                            <label class="form-label required">Card Number</label>
                             <input name="card-number" type="text" class="input" id="card"
-                                   placeholder="0000 0000 0000 0000">
+                                   onkeypress='return formats(this,event)' onkeyup="return numberValidation(event)"
+                                   placeholder="0000 0000 0000 0000"
+                                   style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                         </div>
                         <div class="card_grp">
                             <div class="expiry_date">
+                                <label class="form-label required">Expiration date</label>
                                 <input name="expiration-date" type="text" class="expiry_input" data-mask="00"
-                                       placeholder="00">
+                                       maxlength="5"
+                                       placeholder="MM/YY"
+                                       onkeypress='return formatString(this,event)'
+                                       style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                             </div>
                             <div class="cvc">
+                                <label class="form-label required">CVV</label>
                                 <input name="cvv-number" type="text" class="cvc_input" data-mask="000"
-                                       placeholder="00">
+                                       placeholder="Enter CVV" maxlength="3"
+                                       onkeyup="return numberValidation(event)"
+                                       style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                             </div>
                             <div class="card-balance">
+                                <label class="form-label required">Balance</label>
                                 <input name="card-balance" type="text" class="card_balance" data-mask="000"
-                                       placeholder="00">
+                                       placeholder="Enter balance"
+                                       onkeyup="return numberValidation(event)"
+                                       maxlength="8"
+                                       style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                             </div>
                         </div>
                         <input type="submit" class="btn">
@@ -215,27 +257,67 @@
     <div class="orders-list">
         <ul style="padding: 0; margin: 0;">
             <%
+                OrderService orderService = OrderServiceImpl.getInstance();
+                //Get all the user's orders
                 HashMap<Order, List<Product>> orders = (HashMap<Order, List<Product>>) session.getAttribute(RequestParameter.ORDERS);
-
+                //Get list of orders
                 List<Order> orderList = new ArrayList<>(orders.keySet());
+                //Get list of products to each corresponding order
                 List<List<Product>> products = new ArrayList<>(orders.values());
                 for (int i = 0; i < orders.keySet().size(); i++) {
-                    int id = orderList.get(i).getId();
+                    int orderID = orderList.get(i).getId();
+                    OrderStatus orderStatus = orderList.get(i).getOrderStatus();
             %>
-            <p><%=id%>
+            <p>Order <%=orderID%> Status: <%=orderStatus%>
             </p>
             <%
+                String status = "";
                 int p = products.get(i).size();
+                List<String> statusesOfProducts = new ArrayList<>();
                 for (int j = 0; j < p; j++) {
+                    //get products from the list
                     Product product = products.get(i).get(j);
+                    int productID = product.getId();
+                    try {
+                        //Get status of the product in the order
+                        Optional<String> optionalStatus = orderService.findOrderProductStatus(orderID, productID);
+                        if (optionalStatus.isPresent()) {
+                            status = optionalStatus.get();
+                        }
+                    } catch (ServiceException e) {
+                        throw new RuntimeException(e);
+                    }
+                    statusesOfProducts.add(status);
             %>
             <li>
                 <input class="order-input" type="text"
-                       value="<%=product%>"
+                       value="<%=product.getName()%>  status : <%=status%>"
                        required readonly>
             </li>
             <%
                     }
+//                    int check = 0;
+//                    for (String productStatus : statusesOfProducts) {
+//                        if (!Objects.equals(productStatus, String.valueOf(Status.APPROVED))) {
+//                            check++;
+//                        } else if (Objects.equals(productStatus, String.valueOf(Status.DECLINED))) {
+//                            check = -10;
+//                            break;
+//                        }
+//                    }
+//                    if (check == 0) {
+//                        try {
+//                            orderService.updateOrderStatus(orderID, String.valueOf(Status.APPROVED));
+//                        } catch (ServiceException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    } else if (check == -10) {
+//                        try {
+//                            orderService.updateOrderStatus(orderID , String.valueOf(Status.DECLINED));
+//                        } catch (ServiceException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
                 }
             %>
         </ul>
@@ -243,3 +325,47 @@
 </div>
 </body>
 </html>
+
+<script>
+    function formats(ele, e) {
+        if (ele.value.length < 19) {
+            ele.value = ele.value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function numberValidation(e) {
+        e.target.value = e.target.value.replace(/[^\d ]/g, '');
+        return false;
+    }
+</script>
+
+
+<script>
+    function formatString(e) {
+        var inputChar = String.fromCharCode(event.keyCode);
+        var code = event.keyCode;
+        var allowedKeys = [8];
+        if (allowedKeys.indexOf(code) !== -1) {
+            return;
+        }
+
+        event.target.value = event.target.value.replace(
+            /^([1-9]\/|[2-9])$/g, '0$1/' // 3 > 03/
+        ).replace(
+            /^(0[1-9]|1[0-2])$/g, '$1/' // 11 > 11/
+        ).replace(
+            /^([0-1])([3-9])$/g, '0$1/$2' // 13 > 01/3
+        ).replace(
+            /^(0?[1-9]|1[0-2])([0-9]{2})$/g, '$1/$2' // 141 > 01/41
+        ).replace(
+            /^([0]+)\/|[0]+$/g, '0' // 0/ > 0 and 00 > 0
+        ).replace(
+            /[^\d\/]|^[\/]*$/g, '' // To allow only digits and `/`
+        ).replace(
+            /\/\//g, '/' // Prevent entering more than 1 `/`
+        );
+    }
+</script>

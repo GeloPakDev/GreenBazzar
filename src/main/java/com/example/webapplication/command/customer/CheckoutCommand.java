@@ -21,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 
 public class CheckoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -34,6 +33,9 @@ public class CheckoutCommand implements Command {
         //get the User for the ORDER
         User user = (User) session.getAttribute(RequestParameter.USER);
         logger.info("That is the user: " + user);
+        //get the cardId to withdraw money form it
+        String userCardId = request.getParameter(RequestParameter.CARD_ID);
+        logger.info("That is user's card id : " + userCardId);
         //get the user Card Balance to withdraw the money from it
         String userCardBalance = request.getParameter(RequestParameter.CARD_BALANCE);
         logger.info("That is user's card balance: " + userCardBalance);
@@ -51,27 +53,25 @@ public class CheckoutCommand implements Command {
         logger.info("That is total price of the order" + totalOrderPrice);
 
         int cardBalance = Integer.parseInt(userCardBalance);
+        int cardId = Integer.parseInt(userCardId);
         //Check can we withdraw the money from the chosen card or not
         if (cardBalance - totalOrderPrice > 0) {
             try {
                 //calculate the updated balance for the user's card
                 int updatedBalance = cardBalance - totalOrderPrice;
                 //set updated balance
-                orderService.withdrawMoney(customerID, updatedBalance);
+                orderService.withdrawMoney(cardId, updatedBalance);
                 //Create an Order object
                 Order order = new Order();
                 order.setUser(user);
                 order.setOrderStatus(OrderStatus.PENDING);
                 order.setOrderedDate(Date.valueOf(LocalDate.now()));
                 //Call the dao method to create object
-                int orderId = orderService.createOrder(customerID, order, productList);
-                //Get list of user orders
-                List<Order> orders = orderService.findAllUserOrders(customerID);
-                //get the list of products linked to this order
-                List<Product> orderProducts = orderService.findOrderProducts(orderId);
-                session.setAttribute(RequestParameter.ORDER_PRODUCTS, orderProducts);
-                session.setAttribute(RequestParameter.ORDERS, orders);
-                router = new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                if (orderService.createOrder(customerID, order, productList)) {
+                    router = new Router(PagePath.HOME_PAGE, Router.Type.FORWARD);
+                } else {
+                    router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+                }
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }

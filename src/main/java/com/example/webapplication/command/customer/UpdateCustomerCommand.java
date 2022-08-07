@@ -45,6 +45,7 @@ public class UpdateCustomerCommand implements Command {
             logger.info("login from email: " + email);
             String companyName = request.getParameter(RequestParameter.SELLER_COMPANY);
             logger.info("login from companyName: " + companyName);
+            //login
             if (userToUpdate.getLogin().equals(login)) {
                 userToUpdate.setLogin(login);
                 logger.info("as the logins are the same: " + login + " is set");
@@ -55,7 +56,7 @@ public class UpdateCustomerCommand implements Command {
                     return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
                 }
             }
-
+            //email
             if (userToUpdate.getEmail().equals(email)) {
                 userToUpdate.setEmail(email);
                 logger.info("as the emails are the same: " + email + " is set");
@@ -66,7 +67,7 @@ public class UpdateCustomerCommand implements Command {
                     return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
                 }
             }
-//
+            //company name for seller case
             if (companyName != null) {
                 if (userService.isCompanyNameAvailable(companyName)) {
                     userToUpdate.setCompanyName(companyName);

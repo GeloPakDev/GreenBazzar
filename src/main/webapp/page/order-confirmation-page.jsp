@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Order confirmation page</title>
-    <link href="${pageContext.request.contextPath}/css/order-confirmation-style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/style/order-confirmation-style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <%@include file="../components/css-js.jsp" %>
@@ -16,9 +16,19 @@
         <div class="container">
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
-                <a href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
-                    <button class="enter-btn" type="button">Profile</button>
-                </a>
+               <a href="${pageContext.request.contextPath}/page/home.jsp">
+               <input value="home" class="enter-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 220px;
+    top: 30px;
+    position: absolute;
+    border-width: 0;
+    float: right;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
+    border-radius: 10px;">
+               </a>
             </span>
         </div>
     </div>

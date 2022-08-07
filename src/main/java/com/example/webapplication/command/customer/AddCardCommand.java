@@ -2,6 +2,7 @@ package com.example.webapplication.command.customer;
 
 import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
+import com.example.webapplication.command.customer.util.CardNumberFormatter;
 import com.example.webapplication.controller.PagePath;
 import com.example.webapplication.controller.Router;
 import com.example.webapplication.entity.user.Address;
@@ -29,16 +30,17 @@ public class AddCardCommand implements Command {
         String cvvNumber = request.getParameter(RequestParameter.CARD_CVV_NUMBER);
         String balance = request.getParameter(RequestParameter.CARD_BALANCE);
         int userId = (int) session.getAttribute(RequestParameter.USER_ID);
-
+        logger.info("That is card number :" + cardNumber + "expiration date :" + expirationDate + "cvv:" + cvvNumber + "balance:" + balance);
         logger.info("That is the userId :" + userId);
 
         List<Card> cardList;
         List<Address> addressList;
         Card card = new Card();
-        card.setCardNumber(Integer.parseInt(cardNumber));
-        card.setExpirationDate(Integer.parseInt(expirationDate));
+        card.setCardNumber(cardNumber);
+        card.setExpirationDate(expirationDate);
         card.setCvvNumber(Integer.parseInt(cvvNumber));
         card.setBalance(Integer.parseInt(balance));
+        logger.info(card);
 
         try {
             if (userService.addCard(userId, card)) {

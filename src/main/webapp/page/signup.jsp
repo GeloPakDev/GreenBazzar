@@ -5,7 +5,7 @@
     <title>Registration Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/registration-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/registration-style.css">
     <%@include file="../components/css-js.jsp" %>
 </head>
 <body>
@@ -14,7 +14,8 @@
         <div class="container">
             <span class="title" style="font-size: 31px;font-weight: 500;position: absolute;top: 31px;left: 220px;">Greenbazaar</span>
             <span class="enter" style="font-size: 21px;font-weight: 400;position: absolute;top: 37px;right: 220px;"> <a
-                    style="color: black;text-decoration: none;" class="small" href="${pageContext.request.contextPath}/page/signin.jsp">Login</a></span>
+                    style="color: black;text-decoration: none;" class="small"
+                    href="${pageContext.request.contextPath}/page/signin.jsp">Login</a></span>
         </div>
     </div>
 </header>

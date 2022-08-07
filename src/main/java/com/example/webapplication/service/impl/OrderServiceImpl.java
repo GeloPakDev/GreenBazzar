@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -66,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int createOrder(int customerId, Order order, HashMap<Product, Integer> products) throws ServiceException {
+    public boolean createOrder(int customerId, Order order, HashMap<Product, Integer> products) throws ServiceException {
         try {
             return dao.createOrder(customerId, order, products);
         } catch (DaoException e) {
@@ -78,6 +79,24 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateOrderProductStatus(int orderId, int productId, String status) throws ServiceException {
         try {
             return dao.updateOrderProductStatus(orderId, productId, status);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<String> findOrderProductStatus(int orderId, int productId) throws ServiceException {
+        try {
+            return dao.findOrderProductStatus(orderId, productId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean updateOrderStatus(int orderID, String status) throws ServiceException {
+        try {
+            return dao.updateOrderStatus(orderID, status);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

@@ -94,16 +94,17 @@ public class UserDaoImpl implements UserDao {
     public boolean update(User user) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var preparedStatement = connection.prepareStatement(QuerySQL.UPDATE_USER)) {
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getLastName());
+            preparedStatement.setString(4, user.getEmail());
             if (user.getCompanyName() == null || user.getCompanyName().isBlank()) {
                 logger.info("as certificate is null or empty null is being set");
-                preparedStatement.setObject(4, null);
+                preparedStatement.setObject(5, null);
             } else {
-                preparedStatement.setString(4, user.getCompanyName());
+                preparedStatement.setString(5, user.getCompanyName());
             }
-            preparedStatement.setLong(5, user.getId());
+            preparedStatement.setLong(6, user.getId());
             int count = preparedStatement.executeUpdate();
             return count == 1;
         } catch (SQLException exception) {
@@ -197,8 +198,8 @@ public class UserDaoImpl implements UserDao {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var preparedStatement = connection.prepareStatement(QuerySQL.ADD_CARD_FOR_USER)) {
             if (card != null) {
-                preparedStatement.setInt(1, card.getExpirationDate());
-                preparedStatement.setInt(2, card.getCardNumber());
+                preparedStatement.setString(1, card.getExpirationDate());
+                preparedStatement.setString(2, card.getCardNumber());
                 preparedStatement.setInt(3, card.getCvvNumber());
                 preparedStatement.setInt(4, card.getBalance());
                 preparedStatement.setInt(5, userId);

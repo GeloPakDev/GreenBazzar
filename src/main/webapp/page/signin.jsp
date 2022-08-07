@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Sign In page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/login-style.css">
     <%@include file="../components/css-js.jsp" %>
 </head>
 <body>

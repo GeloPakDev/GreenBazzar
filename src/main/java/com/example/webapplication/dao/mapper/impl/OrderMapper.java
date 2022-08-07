@@ -18,7 +18,6 @@ public class OrderMapper implements EntityMapper<Order> {
     @Override
     public Optional<Order> map(ResultSet resultSet) {
         var order = new Order();
-        List<Product> productList = new ArrayList<>();
         try {
             order.setId(resultSet.getInt(ORDER_ID));
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Home page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/home-style.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/home.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
@@ -14,29 +14,68 @@
         <div class="container">
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
-                <span class="search-section">
-                     <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
+                <span class="search-section" style="position: absolute;right: 270px;">
+                     <form class="search" action="${pageContext.request.contextPath}/controller" method="post" style=" position: absolute;
+    right: 215px;">
                        <input type="hidden" value="search_products" name="command">
-                       <input type="text" placeholder="Search.." name="search">
-                       <button type="submit">
+                       <input type="text" placeholder="Search.." name="search" style=" width: 400px;
+    border-radius: 100px;
+    padding-left: 20px;
+    text-align: left;
+    height: 40px;">
+                       <button type="submit" style="background-color: white;
+    border-width: 0;
+    position: absolute;
+    padding-top: 12px;
+    padding-left: 10px;">
                            <i class="fa fa-search"></i></button>
                      </form>
                 </span>
 
-                <span class="buttons-section">
-                <button class="favorite-btn">
-                    <i class="material-icons">favorite</i>
-                </button>
-
-                    <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
-                        <button class="shopping-btn" type="button">
-                            <i class="material-icons">shopping_cart</i>
-                        </button>
-                    </a>
-
-                <a href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
-                    <button class="enter-btn" type="button">Profile</button>
-                </a>
+                <span class="buttons-section" style="float: right;padding-right: 180px;">
+    <%--                    Favourites page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                       <input type="hidden" value="favourite" name="command">
+                       <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 400px;
+    top: 40px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
+                       <i class="material-icons">favorite</i>
+                       </button>
+                    </form>
+    <%--                    Bucket page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="customer_bucket" name="command">
+                                <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 350px;
+    top: 40px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
+                                    <i class="material-icons">shopping_cart</i>
+                                </button>
+                     </form>
+    <%--                    Profile page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="about_me" name="command">
+                          <input value="profile" class="enter-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 200px;
+    top: 30px;
+    position: absolute;
+    border-width: 0;
+    float: right;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
+    border-radius: 10px;">
+                     </form>
                 </span>
             </span>
         </div>

@@ -1,6 +1,7 @@
 package com.example.webapplication.dao.impl;
 
 import com.example.webapplication.dao.OrderDao;
+import com.example.webapplication.dao.mapper.ColumnName;
 import com.example.webapplication.dao.mapper.impl.OrderMapper;
 import com.example.webapplication.dao.mapper.impl.ProductMapper;
 import com.example.webapplication.dao.mapper.impl.ProductOrderMapper;
@@ -12,6 +13,8 @@ import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.status.StatusConfiguration;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,7 +90,6 @@ public class OrderDaoImpl implements OrderDao {
         } catch (SQLException exception) {
             throw new DaoException(exception);
         }
-        Collections.reverse(orders);
         return orders;
     }
 
@@ -179,7 +181,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public boolean withdrawMoney(int cardId, int moneyAmount) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
-             var statement = connection.prepareStatement(UPDATE_PRODUCT_QUANTITY)) {
+             var statement = connection.prepareStatement(UPDATE_CARD_BALANCE)) {
             statement.setInt(1, moneyAmount);
             statement.setInt(2, cardId);
             int count = statement.executeUpdate();
@@ -190,7 +192,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int createOrder(int customerId, Order order, HashMap<Product, Integer> products) throws DaoException {
+    public boolean createOrder(int customerId, Order order, HashMap<Product, Integer> products) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              //Add order to the DB
              var addOrderStatement = connection.prepareStatement(ADD_ORDER, Statement.RETURN_GENERATED_KEYS);
@@ -203,7 +205,7 @@ public class OrderDaoImpl implements OrderDao {
             addOrderStatement.setDate(4, order.getCanceledDate());
             addOrderStatement.setDate(5, order.getCompletedDate());
             addOrderStatement.setDate(6, order.getCanceledDate());
-            addOrderStatement.executeUpdate();
+            int count = addOrderStatement.executeUpdate();
             //get the ID of the new created order
             int orderId = 0;
             try (ResultSet rs = addOrderStatement.getGeneratedKeys()) {
@@ -229,7 +231,7 @@ public class OrderDaoImpl implements OrderDao {
                 addProductsStatement.setString(4, String.valueOf(Status.PENDING));
                 addProductsStatement.executeUpdate();
             }
-            return orderId;
+            return count == 1;
         } catch (SQLException exception) {
             throw new DaoException(exception);
         }
@@ -242,6 +244,37 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.setString(1, status);
             preparedStatement.setInt(2, productId);
             preparedStatement.setInt(3, orderId);
+            int count = preparedStatement.executeUpdate();
+            return count == 1;
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+    }
+
+    @Override
+    public Optional<String> findOrderProductStatus(int orderId, int productId) throws DaoException {
+        String status = "";
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(FIND_STATUS_OF_ORDER_PRODUCT)) {
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.setInt(2, productId);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.ofNullable(resultSet.getString(ColumnName.ORDER_PRODUCT_STATUS));
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return Optional.of(status);
+    }
+
+    @Override
+    public boolean updateOrderStatus(int orderID, String status) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, orderID);
             int count = preparedStatement.executeUpdate();
             return count == 1;
         } catch (SQLException exception) {

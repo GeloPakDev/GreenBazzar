@@ -12,5 +12,6 @@ public class PagePath {
     public static final String SEARCH_RESULT_PAGE = "/page/search-result-page.jsp";
     public static final String CUSTOMER_CART_PAGE = "/page/customer-cart-page.jsp";
     public static final String ORDER_CONFIRMATION_PAGE = "/page/order-confirmation-page.jsp";
+    public static final String FAVOURITE_PAGE = "/page/favourite-page.jsp";
 
 }

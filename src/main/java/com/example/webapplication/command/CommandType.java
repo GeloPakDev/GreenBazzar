@@ -32,7 +32,13 @@ public enum CommandType {
     DELETE_FROM_CART(new DeleteFromCartCommand()),
     PROCEED_TO_PAYMENT(new ProceedToPaymentCommand()),
     CHECKOUT(new CheckoutCommand()),
-    UPDATE_ORDER_PRODUCT_STATUS(new UpdateOrderProductStatusCommand());
+    UPDATE_ORDER_PRODUCT_STATUS(new UpdateOrderProductStatusCommand()),
+    ABOUT_ME(new AboutMeCommand()),
+    CHANGE_PRODUCT_QUANTITY(new ChangeProductQuantityCommand()),
+    CUSTOMER_BUCKET(new CustomerBucketCommand()),
+    FAVOURITE(new FavouriteCommand()),
+    ADD_TO_FAVOURITES(new AddToFavouriteCommand()),
+    DELETE_FROM_FAVOURITES(new DeleteFromFavourites());
 
     private final Command command;
 

@@ -56,14 +56,14 @@ public class RequestParameter {
     public static final String SEARCH_PRODUCT = "search";
     public static final String NUMBER_OF_RESULTS = "quantity";
     public static final String PRODUCT_CART = "cart";
-    public static final String PRODUCT_QUANTITY_IN_CART = "product_quantity";
+    public static final String PRODUCT_QUANTITY_CART = "product_quantity";
     public static final String TOTAL_PRODUCT_QUANTITY = "total_quantity";
     public static final String TOTAL_PRICE = "total_price";
+    public static final String PRODUCT_ACTION = "action";
     //Order
     public static final String ORDERS = "orders";
     public static final String ORDER_PRODUCTS = "order_products";
     public static final String ORDER_ID = "order_id";
     public static final String ORDER_CHECKER = "order_checker";
-
-
+    public static final String FAVOURITE_LIST = "favourite_list";
 }

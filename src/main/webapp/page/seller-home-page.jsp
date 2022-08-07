@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Seller Home Page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/seller-home-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/seller-home-style.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <%@include file="../components/css-js.jsp" %>

@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Search Result Page</title>
-    <link href="${pageContext.request.contextPath}/css/search_result_style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/style/search_result_style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
@@ -12,34 +12,67 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
-<header>
+
+<header style="padding-top: 31px;padding-bottom: 32px;">
     <div class="header-main">
         <div class="container">
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
-                <span class="search-section">
+                <span class="search-section" style="position: absolute;right: 450px;">
                      <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
                        <input type="hidden" value="search_products" name="command">
-                       <input type="text" placeholder="Search.." name="search">
-                       <button type="submit">
+                       <input type="text" placeholder="Search.." name="search"
+                              style="width: 300px;border-radius: 100px;padding-left: 20px;text-align: left;height: 40px;">
+                       <button type="submit"
+                               style=" background-color:white ;color:black;border-width: 0;position: absolute;padding-top: 12px;padding-left: 10px;">
                            <i class="fa fa-search"></i></button>
                      </form>
                 </span>
 
-                <span class="buttons-section">
-                <button class="favorite-btn">
-                    <i class="material-icons">favorite</i>
-                </button>
-
-                    <a href="${pageContext.request.contextPath}/page/customer-cart-page.jsp">
-                        <button class="shopping-btn" type="button">
-                            <i class="material-icons">shopping_cart</i>
-                        </button>
-                    </a>
-
-                <a href="${pageContext.request.contextPath}/page/customer-home-page.jsp">
-                    <button class="enter-btn" type="button">Profile</button>
-                </a>
+                <span class="buttons-section" style="float: right;padding-right: 200px;">
+    <%--                    Favourites page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                       <input type="hidden" value="favourite" name="command">
+                       <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 400px;
+    top: 40px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
+                       <i class="material-icons">favorite</i>
+                       </button>
+                    </form>
+    <%--                    Bucket page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="customer_bucket" name="command">
+                                <button class="shopping-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 350px;
+    top: 40px;
+    position: absolute;
+    border-width: 0;
+    background-color: white;
+    border-radius: 10px;">
+                                    <i class="material-icons">shopping_cart</i>
+                                </button>
+                     </form>
+    <%--                    Profile page--%>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                                <input type="hidden" value="about_me" name="command">
+                          <input value="profile" class="enter-btn" type="submit" style="color: black;
+                                 text-decoration: none;
+                                 right: 180px;
+                                 top: 30px;
+                                 position: absolute;
+                                 border-width: 0;
+                                 float: right;
+                                 height: 40px;
+                                 width: 115px;
+                                 background-color: #D9D9D9;
+                                 border-radius: 10px;">
+                 </form>
                 </span>
             </span>
         </div>
@@ -146,16 +179,16 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="add_to_cart" name="command">
                         <input type="hidden" name="products_id" value="${tempProduct.id}">
-                        <button type="submit" name="orderStatus">
+                        <button type="submit">
                             Add To cart
                         </button>
                     </form>
                 </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="hidden" value="decline_product" name="command">
-                        <input type="hidden" name="id" value="${user.id}">
-                        <button name="orderStatus" value="DECLINED">
+                        <input type="hidden" value="add_to_favourites" name="command">
+                        <input type="hidden" name="products_id" value="${tempProduct.id}">
+                        <button type="submit">
                             Add to favourites
                         </button>
                     </form>

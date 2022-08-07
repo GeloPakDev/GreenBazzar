@@ -4,14 +4,10 @@ import com.example.webapplication.entity.user.Card;
 
 public class CardBuilder {
     private int id;
-    private int cardNumber;
-    private int expirationDate;
+    private String cardNumber;
+    private String expirationDate;
     private int cvvNumber;
     private int balance;
-
-    public Card build() {
-        return new Card(this);
-    }
 
     public int getId() {
         return id;
@@ -22,20 +18,20 @@ public class CardBuilder {
         return this;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public CardBuilder setCardNumber(int cardNumber) {
+    public CardBuilder setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
         return this;
     }
 
-    public int getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public CardBuilder setExpirationDate(int expirationDate) {
+    public CardBuilder setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
         return this;
     }
@@ -60,6 +56,18 @@ public class CardBuilder {
 
 
     @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("CardBuilder{");
+        sb.append("id=").append(id);
+        sb.append(", cardNumber='").append(cardNumber).append('\'');
+        sb.append(", expirationDate='").append(expirationDate).append('\'');
+        sb.append(", cvvNumber=").append(cvvNumber);
+        sb.append(", balance=").append(balance);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -67,31 +75,19 @@ public class CardBuilder {
         CardBuilder that = (CardBuilder) o;
 
         if (id != that.id) return false;
-        if (cardNumber != that.cardNumber) return false;
-        if (expirationDate != that.expirationDate) return false;
         if (cvvNumber != that.cvvNumber) return false;
-        return balance == that.balance;
+        if (balance != that.balance) return false;
+        if (cardNumber != null ? !cardNumber.equals(that.cardNumber) : that.cardNumber != null) return false;
+        return expirationDate != null ? expirationDate.equals(that.expirationDate) : that.expirationDate == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + cardNumber;
-        result = 31 * result + expirationDate;
+        result = 31 * result + (cardNumber != null ? cardNumber.hashCode() : 0);
+        result = 31 * result + (expirationDate != null ? expirationDate.hashCode() : 0);
         result = 31 * result + cvvNumber;
         result = 31 * result + balance;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("CardBuilder{");
-        sb.append("id=").append(id);
-        sb.append(", cardNumber=").append(cardNumber);
-        sb.append(", expirationDate=").append(expirationDate);
-        sb.append(", cvvNumber=").append(cvvNumber);
-        sb.append(", balance=").append(balance);
-        sb.append('}');
-        return sb.toString();
     }
 }

@@ -50,6 +50,7 @@ public final class ColumnName {
     public static final String ORDER_CANCELED_TIME = "canceled_time";
     //Order_Products_list
     public static final String ORDER_PRODUCTS_QUANTITY = "product_quantity";
+    public static final String ORDER_PRODUCT_STATUS = "order_status";
 
 
 }
