@@ -1,3 +1,8 @@
+<%@ page import="com.example.webapplication.command.RequestParameter" %>
+<%@ page import="com.example.webapplication.entity.user.Address" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.webapplication.entity.user.Card" %>
+<%@ page import="com.example.webapplication.command.customer.AddCardCommand" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -39,6 +44,14 @@
     <div class="address">
         <div>Choose address from following:</div>
         <div class="addresses-list">
+            <%
+                List<Address> addresses = (List<Address>) session.getAttribute(RequestParameter.ADDRESSES);
+                if (addresses.isEmpty()) {
+            %>
+            <p>Your cart is empty!</p>
+            <%
+            } else {
+            %>
             <ul style="padding: 0; margin: 0;">
                 <c:forEach var="tempAddress" items="${addresses}">
                     <li>
@@ -51,11 +64,22 @@
                     </li>
                 </c:forEach>
             </ul>
+            <%
+                }
+            %>
         </div>
     </div>
     <div class="cards">
         <div>Choose card from the following:</div>
         <div class="cards-list">
+            <%
+                List<Card> cards = (List<Card>) session.getAttribute(RequestParameter.CARDS);
+                if (cards.isEmpty()) {
+            %>
+            <p>You don't have any cards!</p>
+            <%
+            } else {
+            %>
             <ul style="padding: 0; margin: 0;">
                 <c:forEach var="tempCard" items="${cards}">
                     <li>
@@ -66,6 +90,9 @@
                     </li>
                 </c:forEach>
             </ul>
+            <%
+                }
+            %>
         </div>
     </div>
     <div class="products">

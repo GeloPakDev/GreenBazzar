@@ -25,6 +25,7 @@ public class UserOrderService {
         List<Order> ordersList;
         try {
             ordersList = orderService.findAllUserOrders(userId);
+            logger.info(ordersList);
         } catch (ServiceException e) {
             throw new ServiceException(e);
         }

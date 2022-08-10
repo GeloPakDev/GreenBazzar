@@ -12,28 +12,31 @@ import com.example.webapplication.exception.CommandException;
 import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.service.ProductService;
 import com.example.webapplication.service.impl.ProductServiceImpl;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 
-public class AddProductCommand implements Command {
+public class UpdateSellerProductCommand implements Command {
     public static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
+        HttpSession session = request.getSession();
         ProductService productService = ProductServiceImpl.getInstance();
-
+        //Get id of the product
+        int productID = Integer.parseInt(request.getParameter(RequestParameter.PRODUCT_ID));
+        //Get product details to update
         String name = request.getParameter(RequestParameter.PRODUCT_NAME);
-        logger.info(name);
-        //getting an image
+        //Get an image
         InputStream inputStream = null;
         Part part;
         try {
@@ -41,7 +44,6 @@ public class AddProductCommand implements Command {
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
         }
-        logger.debug(part);
         if (part != null) {
             try {
                 inputStream = part.getInputStream();
@@ -54,11 +56,9 @@ public class AddProductCommand implements Command {
         Category category = Category.valueOf(request.getParameter(RequestParameter.PRODUCT_CATEGORY));
         double weight = Double.parseDouble(request.getParameter(RequestParameter.PRODUCT_WEIGHT));
         int quantity = Integer.parseInt(request.getParameter(RequestParameter.PRODUCT_QUANTITY));
-
-        logger.info(quantity + " " + price);
-
-        String sellerId = request.getParameter(RequestParameter.USER_ID);
-
+        //Get if of the seller
+        int sellerId = (int) session.getAttribute(RequestParameter.USER_ID);
+        //Construct the product
         Product product = new Product();
         product.setName(name);
         product.setPrice(price);
@@ -67,19 +67,19 @@ public class AddProductCommand implements Command {
         product.setWeight(weight);
         product.setQuantity(quantity);
 
-        logger.info("That is the  product:" + product);
-
         try {
-            int id = Integer.parseInt(sellerId);
-            logger.info("User Id" + id);
-            if (productService.createProduct(id, product, inputStream)) {
-                List<Product> list = productService.findProductsByStatus(id, String.valueOf(Status.PENDING));
-                request.setAttribute(RequestParameter.PRODUCTS, list);
-                return new Router(PagePath.SELLER_HOME_PAGE, Router.Type.FORWARD);
+            //Update the product
+            if (productService.updateProduct(productID, product, inputStream)) {
+                //Update the status of the product
+                productService.updateProductStatus(productID, String.valueOf(Status.PENDING));
+                //Get list of PENDING products
+                List<Product> productList = productService.findProductsByStatus(sellerId, String.valueOf(Status.PENDING));
+                request.setAttribute(RequestParameter.PRODUCTS, productList);
+                router = new Router(PagePath.PENDING_SELLER_PRODUCTS_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return null;
+        return router;
     }
 }

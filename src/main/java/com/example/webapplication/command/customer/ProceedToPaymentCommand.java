@@ -24,6 +24,7 @@ public class ProceedToPaymentCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
         HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
         //get UserId to find out that addresses and cards which he has
@@ -43,17 +44,18 @@ public class ProceedToPaymentCommand implements Command {
             //List of Products
             HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
             if (productList.isEmpty()) {
-                return new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
+                router = new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
             } else {
                 logger.info("That is product list: " + productList);
                 session.setAttribute(RequestParameter.TOTAL_PRICE, totalOrderPrice);
                 session.setAttribute(RequestParameter.CARDS, cardList);
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 session.setAttribute(RequestParameter.PRODUCT_CART, productList);
-                return new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+                router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
+        return router;
     }
 }

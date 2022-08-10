@@ -8,6 +8,7 @@ import com.example.webapplication.entity.order.Order;
 import com.example.webapplication.entity.order.OrderStatus;
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.user.Address;
+import com.example.webapplication.entity.user.Card;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.CommandException;
 import com.example.webapplication.exception.ServiceException;
@@ -21,15 +22,18 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 public class CheckoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        Router router;
+        Router router = new Router();
         HttpSession session = request.getSession();
         OrderService orderService = OrderServiceImpl.getInstance();
+        List<Card> cards = (List<Card>) session.getAttribute(RequestParameter.CARDS);
+        List<Address> addresses = (List<Address>) session.getAttribute(RequestParameter.ADDRESSES);
         //get the User for the ORDER
         User user = (User) session.getAttribute(RequestParameter.USER);
         logger.info("That is the user: " + user);
@@ -54,30 +58,38 @@ public class CheckoutCommand implements Command {
 
         int cardBalance = Integer.parseInt(userCardBalance);
         int cardId = Integer.parseInt(userCardId);
-        //Check can we withdraw the money from the chosen card or not
-        if (cardBalance - totalOrderPrice > 0) {
-            try {
-                //calculate the updated balance for the user's card
-                int updatedBalance = cardBalance - totalOrderPrice;
-                //set updated balance
-                orderService.withdrawMoney(cardId, updatedBalance);
-                //Create an Order object
-                Order order = new Order();
-                order.setUser(user);
-                order.setOrderStatus(OrderStatus.PENDING);
-                order.setOrderedDate(Date.valueOf(LocalDate.now()));
-                //Call the dao method to create object
-                if (orderService.createOrder(customerID, order, productList)) {
-                    router = new Router(PagePath.HOME_PAGE, Router.Type.FORWARD);
-                } else {
-                    router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
-                }
-            } catch (ServiceException e) {
-                throw new CommandException(e);
-            }
+        if (addresses.isEmpty()) {
+            return new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+        } else if (cards.isEmpty()) {
+            session.setAttribute(RequestParameter.PRODUCT_CART, productList);
+            return new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
         } else {
-            router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+            //Check can we withdraw the money from the chosen card or not
+            if (cardBalance - totalOrderPrice > 0) {
+                try {
+                    //calculate the updated balance for the user's card
+                    int updatedBalance = cardBalance - totalOrderPrice;
+                    //set updated balance
+                    orderService.withdrawMoney(cardId, updatedBalance);
+                    //Create an Order object
+                    Order order = new Order();
+                    order.setUser(user);
+                    order.setOrderStatus(OrderStatus.PENDING);
+                    order.setOrderedDate(Date.valueOf(LocalDate.now()));
+                    //Call the dao method to create object
+                    if (orderService.createOrder(customerID, order, productList)) {
+                        router = new Router(PagePath.HOME_PAGE, Router.Type.FORWARD);
+                    } else {
+                        router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+                    }
+                } catch (ServiceException e) {
+                    throw new CommandException(e);
+                }
+            } else {
+                router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
+            }
         }
         return router;
     }
 }
+

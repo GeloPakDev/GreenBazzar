@@ -3,6 +3,7 @@ package com.example.webapplication.service;
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.exception.ServiceException;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,11 @@ public interface ProductService {
 
     void updateQuantityOfTheProduct(int productId, int number) throws ServiceException;
 
-    boolean createProduct(int sellerId, Product product) throws ServiceException;
+    boolean createProduct(int sellerId, Product product, InputStream inputStream) throws ServiceException;
 
     boolean updateProductStatus(int productId, String status) throws ServiceException;
 
+    void delete(int productID) throws ServiceException;
+
+    boolean updateProduct(int productID, Product product, InputStream inputStream) throws ServiceException;
 }

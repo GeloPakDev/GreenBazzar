@@ -4,6 +4,7 @@ import com.example.webapplication.dao.QuerySQL;
 import com.example.webapplication.dao.UserDao;
 import com.example.webapplication.dao.mapper.impl.AddressMapper;
 import com.example.webapplication.dao.mapper.impl.CardMapper;
+import com.example.webapplication.dao.mapper.impl.SellerMapper;
 import com.example.webapplication.dao.mapper.impl.UserMapper;
 import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.entity.user.Address;
@@ -34,10 +35,11 @@ public class UserDaoImpl implements UserDao {
     private UserDaoImpl() {
     }
 
-    public static final Logger logger = LogManager.getLogger();
-    UserMapper userMapper = new UserMapper();
-    AddressMapper addressMapper = new AddressMapper();
-    CardMapper cardMapper = new CardMapper();
+    private static final Logger logger = LogManager.getLogger();
+    private UserMapper userMapper = new UserMapper();
+    private AddressMapper addressMapper = new AddressMapper();
+    private CardMapper cardMapper = new CardMapper();
+    private SellerMapper sellerMapper = new SellerMapper();
 
 
     @Override
@@ -240,6 +242,22 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(exception);
         }
         return cardsList;
+    }
+
+    @Override
+    public Optional<User> findSellerById(int sellerID) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.SELECT_SELLER_BY_ID)) {
+            preparedStatement.setInt(1, sellerID);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return sellerMapper.map(resultSet);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return Optional.empty();
     }
 
 

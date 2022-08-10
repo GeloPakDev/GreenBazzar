@@ -6,8 +6,13 @@ import com.example.webapplication.dao.mapper.impl.ProductMapper;
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.entity.product.Status;
 import com.example.webapplication.exception.DaoException;
+import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.pool.ConnectionPool;
+import org.apache.logging.log4j.Level;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,12 +69,12 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean create(int sellerId, Product product) throws DaoException {
+    public boolean create(int sellerId, Product product, InputStream inputStream) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var addProductPreparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT, Statement.RETURN_GENERATED_KEYS);
              var addStatusPreparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT_STATUS)
         ) {
-            constructPreparedStatement(addProductPreparedStatement, product);
+            constructPreparedStatement(addProductPreparedStatement, product, inputStream);
             addProductPreparedStatement.setInt(11, sellerId);
             int count = addProductPreparedStatement.executeUpdate();
 
@@ -93,7 +98,7 @@ public class ProductDaoImpl implements ProductDao {
     public boolean update(Product product) throws DaoException {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var statement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT)) {
-            constructPreparedStatement(statement, product);
+            //constructPreparedStatement(statement, product)
             statement.setInt(11, product.getId());
             int count = statement.executeUpdate();
             return count == 1;
@@ -231,9 +236,24 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    private void constructPreparedStatement(PreparedStatement preparedStatement, Product product) throws SQLException {
+    @Override
+    public boolean updateProduct(int productID, Product product, InputStream inputStream) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT)) {
+            constructPreparedStatement(preparedStatement, product, inputStream);
+            preparedStatement.setInt(11, productID);
+            int counter = preparedStatement.executeUpdate();
+            return counter == 1;
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+    }
+
+    private void constructPreparedStatement(PreparedStatement preparedStatement, Product product, InputStream inputStream) throws SQLException {
         preparedStatement.setString(1, product.getName());
-        preparedStatement.setString(2, product.getPhoto());
+        if (inputStream != null) {
+            preparedStatement.setBlob(2, inputStream);
+        }
         preparedStatement.setDouble(3, product.getPrice());
         preparedStatement.setString(4, product.getDescription());
         preparedStatement.setDouble(5, product.getWeight());

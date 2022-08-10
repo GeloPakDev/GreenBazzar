@@ -171,7 +171,7 @@
         <c:forEach var="tempProduct" items="${products}">
             <tr>
                 <td>${tempProduct.name}</td>
-                <td>${tempProduct.photo}</td>
+                <td><img src="data:image/jpg;base64,${tempProduct.photo}" width="70" height="70"/></td>
                 <td>${tempProduct.price}</td>
                 <td>${tempProduct.description}</td>
                 <td>${tempProduct.weight}</td>

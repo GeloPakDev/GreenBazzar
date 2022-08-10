@@ -2,7 +2,9 @@ package com.example.webapplication.dao;
 
 import com.example.webapplication.entity.product.Product;
 import com.example.webapplication.exception.DaoException;
+import com.example.webapplication.exception.ServiceException;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface ProductDao extends EntityDao<Product, Integer> {
@@ -12,7 +14,7 @@ public interface ProductDao extends EntityDao<Product, Integer> {
 
     List<Product> findProductsByQuery(String searchQuery) throws DaoException;
 
-    boolean create(int id, Product product) throws DaoException;
+    boolean create(int id, Product product, InputStream inputStream) throws DaoException;
 
     List<Product> findProductsByCategory(String category) throws DaoException;
 
@@ -21,5 +23,8 @@ public interface ProductDao extends EntityDao<Product, Integer> {
     boolean updateProductStatus(int productId, String status) throws DaoException;
 
     void updateQuantityOfTheProduct(int productId, int number) throws DaoException;
+
+    boolean updateProduct(int productID, Product product, InputStream inputStream) throws DaoException;
+
 
 }

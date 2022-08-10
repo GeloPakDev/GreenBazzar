@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @WebServlet(urlPatterns = ("/controller"))
+@MultipartConfig(maxFileSize = 16177215)
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 

@@ -9,6 +9,7 @@ import com.example.webapplication.service.ProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,9 +101,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean createProduct(int sellerId, Product product) throws ServiceException {
+    public boolean createProduct(int sellerId, Product product, InputStream inputStream) throws ServiceException {
         try {
-            return dao.create(sellerId, product);
+            return dao.create(sellerId, product, inputStream);
         } catch (DaoException exception) {
             throw new ServiceException(exception);
         }
@@ -114,6 +115,24 @@ public class ProductServiceImpl implements ProductService {
             return dao.updateProductStatus(productId, status);
         } catch (DaoException exception) {
             throw new ServiceException(exception);
+        }
+    }
+
+    @Override
+    public void delete(int productID) throws ServiceException {
+        try {
+            dao.delete(productID);
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean updateProduct(int productID, Product product, InputStream inputStream) throws ServiceException {
+        try {
+            return dao.updateProduct(productID, product, inputStream);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
     }
 }

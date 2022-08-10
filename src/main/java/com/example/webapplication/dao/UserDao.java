@@ -5,6 +5,7 @@ import com.example.webapplication.entity.user.Address;
 import com.example.webapplication.entity.user.Card;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.DaoException;
+import com.example.webapplication.exception.ServiceException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,4 +39,5 @@ public interface UserDao extends EntityDao<User, Integer> {
 
     List<Card> findUserCards(int userId) throws DaoException;
 
+    Optional<User> findSellerById(int sellerID) throws DaoException;
 }

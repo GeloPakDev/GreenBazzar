@@ -199,6 +199,18 @@ public final class QuerySQL {
             JOIN user_address ua ON u.users_id = ua.customer_id
             WHERE u.users_id=?""";
 
+    public static final String SELECT_SELLER_BY_ID = """
+            SELECT u.users_id,
+                   u.login,
+                   u.password,
+                   u.first_name,
+                   u.last_name,
+                   u.email,
+                   u.role,
+                   u.company_name
+            FROM users u
+            WHERE u.users_id=?""";
+
     public static final String USER_SEARCH = """
             SELECT u.users_id,
                    u.login,

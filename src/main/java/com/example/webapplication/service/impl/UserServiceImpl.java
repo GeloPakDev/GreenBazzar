@@ -181,4 +181,13 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(exception);
         }
     }
+
+    @Override
+    public Optional<User> findSellerById(int sellerID) throws ServiceException {
+        try {
+            return userDao.findSellerById(sellerID);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

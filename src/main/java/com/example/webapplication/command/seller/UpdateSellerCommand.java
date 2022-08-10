@@ -1,4 +1,4 @@
-package com.example.webapplication.command.customer;
+package com.example.webapplication.command.seller;
 
 import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
@@ -16,8 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
-public class UpdateCustomerCommand implements Command {
-
+public class UpdateSellerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -28,8 +27,8 @@ public class UpdateCustomerCommand implements Command {
         String userId = request.getParameter(RequestParameter.USER_ID);
         logger.info("User id is : " + userId);
         try {
-            Optional<User> optionalUser = userService.findById(Integer.parseInt(userId));
-            logger.info(optionalUser);
+            int sellerId = Integer.parseInt(userId);
+            Optional<User> optionalUser = userService.findSellerById(sellerId);
             if (optionalUser.isEmpty()) {
                 throw new CommandException("could not find the user with id" + userId);
             }
@@ -54,7 +53,7 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isLoginAvailable(login)) {
                     userToUpdate.setLogin(login);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    return new Router(PagePath.SELLER_ABOUT_ME_PAGE, Router.Type.FORWARD);
                 }
             }
             //email
@@ -65,7 +64,7 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isEmailAvailable(email)) {
                     userToUpdate.setEmail(email);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    return new Router(PagePath.SELLER_ABOUT_ME_PAGE, Router.Type.FORWARD);
                 }
             }
             //company name for seller case
@@ -73,7 +72,7 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isCompanyNameAvailable(companyName)) {
                     userToUpdate.setCompanyName(companyName);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    return new Router(PagePath.SELLER_ABOUT_ME_PAGE, Router.Type.FORWARD);
                 }
             }
             userToUpdate.setFirstName(firstName);
@@ -83,7 +82,7 @@ public class UpdateCustomerCommand implements Command {
             if (userService.updateUser(userToUpdate)) {
                 logger.info("update operation is successful " + userToUpdate);
                 request.setAttribute(RequestParameter.USER, userToUpdate);
-                return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                return new Router(PagePath.SELLER_ABOUT_ME_PAGE, Router.Type.FORWARD);
             } else {
                 logger.info("unsuccessful update operation " + userToUpdate);
                 return new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);

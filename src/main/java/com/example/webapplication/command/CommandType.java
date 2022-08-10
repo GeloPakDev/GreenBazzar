@@ -1,15 +1,14 @@
 package com.example.webapplication.command;
 
-import com.example.webapplication.command.admin.UpdateOrderProductCommand;
+import com.example.webapplication.command.admin.ChooseProductByStatusCommand;
+import com.example.webapplication.command.admin.PendingAdminProductsCommand;
+import com.example.webapplication.command.admin.UpdateSellerProductStatusCommand;
 import com.example.webapplication.command.common.DefaultCommand;
 import com.example.webapplication.command.common.LogoutCommand;
 import com.example.webapplication.command.common.RegistrationCommand;
 import com.example.webapplication.command.common.LoginCommand;
 import com.example.webapplication.command.customer.*;
-import com.example.webapplication.command.seller.AddProductCommand;
-import com.example.webapplication.command.seller.ChooseByStatusOrderProductCommand;
-import com.example.webapplication.command.seller.ChooseProductByStatusCommand;
-import com.example.webapplication.command.seller.UpdateOrderProductStatusCommand;
+import com.example.webapplication.command.seller.*;
 
 public enum CommandType {
     LOGIN(new LoginCommand()),
@@ -21,10 +20,9 @@ public enum CommandType {
     DELETE_ADDRESS(new DeleteAddressCommand()),
     ADD_CARD(new AddCardCommand()),
     DELETE_CARD(new DeleteCardCommand()),
-    CHOOSE_PRODUCT_BY_STATUS(new ChooseProductByStatusCommand()),
-    CHOOSE_ORDER_PRODUCT_BY_STATUS(new ChooseByStatusOrderProductCommand()),
+    PENDING_SELLER_PRODUCTS(new PendingSellerProductsCommand()),
+    CHOOSE_ORDER_PRODUCT_BY_STATUS(new ChooseOrderProductByStatusCommand()),
     ADD_PRODUCT(new AddProductCommand()),
-    APPROVE_PRODUCT(new UpdateOrderProductCommand()),
     CHOOSE_BY_CATEGORY_PRODUCT(new ChooseByCategoryProductCommand()),
     CHOOSE_BY_PRICE_RANGE(new ChooseByPriceRangeCommand()),
     SEARCH_PRODUCTS(new SearchProductCommand()),
@@ -38,7 +36,18 @@ public enum CommandType {
     CUSTOMER_BUCKET(new CustomerBucketCommand()),
     FAVOURITE(new FavouriteCommand()),
     ADD_TO_FAVOURITES(new AddToFavouriteCommand()),
-    DELETE_FROM_FAVOURITES(new DeleteFromFavourites());
+    DELETE_FROM_FAVOURITES(new DeleteFromFavourites()),
+    UPDATE_SELLER(new UpdateSellerCommand()),
+    APPROVED_SELLER_PRODUCTS(new ApprovedSellerProductsCommand()),
+    DECLINED_SELLER_PRODUCTS(new DeclinedSellerProductsCommand()),
+    UPDATE_SELLER_PRODUCT(new UpdateSellerProductCommand()),
+    DELETE_SELLER_PRODUCT(new DeleteSellerProductCommand()),
+    PENDING_SELLER_ORDERS(new PendingSellerOrdersCommand()),
+    UPDATE_SELLER_PRODUCT_STATUS(new UpdateSellerProductStatusCommand()),
+    CHOOSE_PRODUCT_BY_STATUS(new ChooseProductByStatusCommand()),
+    PENDING_PRODUCTS_PAGE(new PendingAdminProductsCommand()),
+    PROCEED_TO_EDIT_PRODUCT(new ProceedToEditProductCommand());
+
 
     private final Command command;
 

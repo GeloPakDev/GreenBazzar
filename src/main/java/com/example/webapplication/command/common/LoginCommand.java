@@ -68,11 +68,13 @@ public class LoginCommand implements Command {
                             List<Product> productList = productService.findProductsByStatus(user.getId(), String.valueOf(Status.PENDING));
                             session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.PRODUCTS, productList);
-                            router = new Router(PagePath.SELLER_HOME_PAGE, Router.Type.FORWARD);
+                            session.setAttribute(RequestParameter.USER_ID, user.getId());
+                            session.setAttribute(RequestParameter.USER, user);
+                            router = new Router(PagePath.PENDING_SELLER_PRODUCTS_PAGE, Router.Type.FORWARD);
                         } else if (user.getRole() == Role.ADMIN) {
                             List<Product> productList = productService.findAllProductsByStatus(String.valueOf(Status.PENDING));
                             session.setAttribute(RequestParameter.PRODUCTS, productList);
-                            router = new Router(PagePath.ADMIN_PAGE, Router.Type.FORWARD);
+                            router = new Router(PagePath.PENDING_ADMIN_PRODUCTS_PAGE, Router.Type.FORWARD);
                         }
                     }
                 }

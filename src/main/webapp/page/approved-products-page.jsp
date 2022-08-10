@@ -1,10 +1,8 @@
-<%@ page import="com.example.webapplication.command.RequestParameter" %>
-<%@ page import="java.util.Objects" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Seller Home Page</title>
+    <title>Approved products</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/seller-home-style.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -18,7 +16,8 @@
     <hr>
     <div class="sidebar">
         <div class="card-body">
-            <table id="datatablesSimple">
+            <table id="datatablesSimple" style="position: absolute;
+    right: 60px;">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -28,15 +27,15 @@
                     <th>weight</th>
                     <th>category</th>
                     <th>quantity</th>
-                    <th>approve</th>
-                    <th>decline</th>
+                    <th>edit</th>
+                    <th>delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="tempProduct" items="${products}">
                     <tr>
                         <td>${tempProduct.name}</td>
-                        <td>${tempProduct.photo}</td>
+                        <td><img src="data:image/jpg;base64,${tempProduct.photo}" width="70" height="70"/></td>
                         <td>${tempProduct.price}</td>
                         <td>${tempProduct.description}</td>
                         <td>${tempProduct.weight}</td>
@@ -44,26 +43,19 @@
                         <td>${tempProduct.quantity}</td>
                         <td>
                             <form action="${pageContext.request.contextPath}/controller" method="post">
-                                <input type="hidden" value="update_order_product_status" name="command">
-                                <% if (request.getParameter(RequestParameter.ORDER_CHECKER) != null) { %>
-                                <input type="hidden" value="${tempProduct.order}" name="order_id">
-                                <input type="hidden" name="order_checker" value="order_checker">
-                                <%
-                                    } else {
-                                        System.out.println("Order doesn't has an Id");
-                                    }%>
+                                <input type="hidden" value="proceed_to_edit_product" name="command">
                                 <input type="hidden" name="products_id" value="${tempProduct.id}">
-                                <button name="status" type="submit" value="APPROVED">
-                                    Approve
+                                <button name="status">
+                                    Edit
                                 </button>
                             </form>
                         </td>
                         <td>
                             <form action="${pageContext.request.contextPath}/controller" method="post">
-                                <input type="hidden" value="update_order_product_status" name="command">
+                                <input type="hidden" value="delete_seller_product" name="command">
                                 <input type="hidden" name="products_id" value="${tempProduct.id}">
-                                <button name="status" value="DECLINED">
-                                    Decline
+                                <button name="status">
+                                    Delete
                                 </button>
                             </form>
                         </td>
@@ -80,23 +72,24 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="${pageContext.request.contextPath}/controller" method="post">
+                        <form action="${pageContext.request.contextPath}/controller" method="post"
+                              enctype="multipart/form-data">
                             <input type="hidden" value="add_product" name="command">
                             <input name="id" type="hidden" value="${id}">
                             <div class="form-row">
                                 <div class="mb-3">
                                     <label class="form-label required">Name</label>
-                                    <input name="name" type="text" class="form-control" id="address-line">
+                                    <input name="name" type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label required">Photo</label>
-                                    <input name="photo" type="text" class="form-control" id="city">
+                                    <input name="photo" type="file" class="form-control" accept=".png, .jpg, .jpeg">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="mb-3">
                                     <label class="form-label required">Price</label>
-                                    <input name="price" type="text" class="form-control" id="postal-code">
+                                    <input name="price" type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label required">Description</label>
@@ -128,27 +121,27 @@
         <ul>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="choose_product_by_status" name="command">
+                    <input type="hidden" value="pending_seller_products" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status" value="PENDING">
+                    <button name="status">
                         Pending
                     </button>
                 </form>
             </li>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="choose_product_by_status" name="command">
+                    <input type="hidden" value="approved_seller_products" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status" value="APPROVED">
+                    <button name="status">
                         Approved
                     </button>
                 </form>
             </li>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="choose_product_by_status" name="command">
+                    <input type="hidden" value="declined_seller_products" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status" value="DECLINED">
+                    <button name="status">
                         Declined
                     </button>
                 </form>
@@ -159,10 +152,9 @@
         <ul>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="choose_order_product_by_status" name="command">
-                    <input type="hidden" name="order_checker" value="order_checker">
+                    <input type="hidden" value="pending_seller_orders" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status" type="submit" value="PENDING">
+                    <button type="submit">
                         Pending
                     </button>
                 </form>
@@ -187,7 +179,21 @@
             </li>
         </ul>
         <hr>
-        <div>About shop</div>
+        <div>
+            <a href="${pageContext.request.contextPath}/page/seller-about-me-page.jsp">
+                <input value="home" class="enter-btn" type="submit" style="color: black;
+    text-decoration: none;
+    right: 220px;
+    top: 30px;
+    position: absolute;
+    border-width: 0;
+    float: right;
+    height: 40px;
+    width: 115px;
+    background-color: #D9D9D9;
+    border-radius: 10px;">
+            </a>
+        </div>
     </div>
 </div>
 </body>

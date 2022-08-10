@@ -36,4 +36,6 @@ public interface UserService {
     boolean deleteCard(int addressId) throws ServiceException;
 
     List<Card> findUserCards(int userId) throws ServiceException;
+
+    Optional<User> findSellerById(int sellerID) throws ServiceException;
 }

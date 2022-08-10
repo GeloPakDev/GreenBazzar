@@ -2,7 +2,6 @@
 <%@ page import="com.example.webapplication.entity.product.Product" %>
 <%@ page import="com.example.webapplication.command.RequestParameter" %>
 <%@ page import="com.example.webapplication.entity.order.OrderStatus" %>
-<%@ page import="com.example.webapplication.entity.product.Status" %>
 <%@ page import="com.example.webapplication.service.OrderService" %>
 <%@ page import="com.example.webapplication.service.impl.OrderServiceImpl" %>
 <%@ page import="com.example.webapplication.exception.ServiceException" %>
