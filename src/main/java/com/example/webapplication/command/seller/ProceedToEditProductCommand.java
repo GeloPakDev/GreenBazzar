@@ -17,13 +17,14 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 public class ProceedToEditProductCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         ProductService productService = ProductServiceImpl.getInstance();
         String productID = request.getParameter(RequestParameter.PRODUCT_ID);
+        logger.info(productID);
         int id = Integer.parseInt(productID);
         try {
             Optional<Product> optionalProduct = productService.findProductById(id);

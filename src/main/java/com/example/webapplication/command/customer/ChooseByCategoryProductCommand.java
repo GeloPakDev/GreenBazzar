@@ -24,7 +24,6 @@ public class ChooseByCategoryProductCommand implements Command {
         HttpSession session = request.getSession();
         ProductService productService = ProductServiceImpl.getInstance();
         String category = request.getParameter(RequestParameter.PRODUCT_CATEGORY);
-
         logger.info("That is  the category : " + category);
 
         try {

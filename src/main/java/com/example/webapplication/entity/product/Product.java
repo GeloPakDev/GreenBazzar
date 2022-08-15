@@ -19,7 +19,6 @@ public class Product implements AbstractEntity {
     private int quantity;
     private Date created_at;
     private Date modified_at;
-    private Date deleted_at;
     private int sellerId;
 
     public Product() {
@@ -36,7 +35,6 @@ public class Product implements AbstractEntity {
         this.quantity = builder.getQuantity();
         this.created_at = builder.getCreated_at();
         this.modified_at = builder.getModified_at();
-        this.deleted_at = builder.getDeleted_at();
         this.sellerId = builder.getSellerId();
     }
 
@@ -54,14 +52,6 @@ public class Product implements AbstractEntity {
 
     public void setModified_at(Date modified_at) {
         this.modified_at = modified_at;
-    }
-
-    public Date getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(Date deleted_at) {
-        this.deleted_at = deleted_at;
     }
 
     public int getSellerId() {
@@ -136,7 +126,6 @@ public class Product implements AbstractEntity {
         this.category = category;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -154,8 +143,7 @@ public class Product implements AbstractEntity {
         if (weight != null ? !weight.equals(product.weight) : product.weight != null) return false;
         if (category != product.category) return false;
         if (created_at != null ? !created_at.equals(product.created_at) : product.created_at != null) return false;
-        if (modified_at != null ? !modified_at.equals(product.modified_at) : product.modified_at != null) return false;
-        return deleted_at != null ? deleted_at.equals(product.deleted_at) : product.deleted_at == null;
+        return modified_at != null ? modified_at.equals(product.modified_at) : product.modified_at == null;
     }
 
     @Override
@@ -170,7 +158,6 @@ public class Product implements AbstractEntity {
         result = 31 * result + quantity;
         result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
         result = 31 * result + (modified_at != null ? modified_at.hashCode() : 0);
-        result = 31 * result + (deleted_at != null ? deleted_at.hashCode() : 0);
         result = 31 * result + sellerId;
         return result;
     }
@@ -188,7 +175,6 @@ public class Product implements AbstractEntity {
         sb.append(", quantity=").append(quantity);
         sb.append(", created_at=").append(created_at);
         sb.append(", modified_at=").append(modified_at);
-        sb.append(", deleted_at=").append(deleted_at);
         sb.append(", sellerId=").append(sellerId);
         sb.append('}');
         return sb.toString();

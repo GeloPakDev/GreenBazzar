@@ -52,45 +52,6 @@ header {
     padding-bottom: 32px;
 }
 
-/*.header-main .container .header-class-actions .buttons-section .favorite-btn {*/
-/*    background-color: white;*/
-/*    padding-top: 10px;*/
-/*    border-width: 0;*/
-/*}*/
-
-/*.header-main .container .header-class-actions .buttons-section .shopping-btn {*/
-/*    text-decoration: none;*/
-/*    padding-top: 10px;*/
-/*    padding-left: 10px;*/
-/*    padding-right: 10px;*/
-/*    background-color: white;*/
-/*    border-width: 0;*/
-/*}*/
-
-/*.header-main .container .header-class-actions .buttons-section .enter-btn {*/
-/*    border-width: 0;*/
-/*    height: 40px;*/
-/*    width: 115px;*/
-/*    background-color: #D9D9D9;*/
-/*    border-radius: 10px;*/
-/*    color: black;*/
-/*    text-decoration: none;*/
-/*    position: absolute;*/
-/*}*/
-
-/*.header-main .container .header-class-actions input {*/
-/*    width: 400px;*/
-/*    border-radius: 100px;*/
-/*    padding-left: 20px;*/
-/*    text-align: left;*/
-/*    height: 40px;*/
-/*}*/
-
-/*.header-main .container .header-class-actions .search {*/
-/*    position: absolute;*/
-/*    right: 215px;*/
-/*}*/
-
 .header-main .container .title {
     font-size: 28px;
     font-weight: 500;
@@ -100,7 +61,7 @@ header {
     width: 55%;
     height: 210px;
     border-radius: 10px;
-    background-color: #D9D9D9;
+    background-color: mediumseagreen;
 }
 
 .categories {

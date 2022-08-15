@@ -1,5 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
 <html>
 <head>
     <title>Admin Home Page</title>
@@ -11,21 +14,31 @@
 <body>
 <div class="container">
     <div class="title">Greenbazaar</div>
-    <div class="profile">Admin Panel</div>
-    <div class="statuses">Applications</div>
+    <div class="profile"><fmt:message key="admin.adminpanel"/></div>
+    <div class="statuses"><fmt:message key="admin.applications"/></div>
+    <div class="language" style="position: absolute ; right: 220px;top:170px;">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" value="change_language" name="command">
+            <select onchange="this.form.submit()" name="locale">
+                <option>Language</option>
+                <option value="en">English</option>
+                <option value="ru">Russian</option>
+            </select>
+        </form>
+    </div>
     <hr>
     <div class="sidebar">
         <div class="card-body">
             <table id="datatablesSimple" style="position: absolute;right: 60px;">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Photo</th>
-                    <th>price</th>
-                    <th>description</th>
-                    <th>weight</th>
-                    <th>category</th>
-                    <th>quantity</th>
+                    <th><fmt:message key="customer.name"/></th>
+                    <th><fmt:message key="customer.photo"/></th>
+                    <th><fmt:message key="customer.price"/></th>
+                    <th><fmt:message key="customer.description"/></th>
+                    <th><fmt:message key="customer.weight"/></th>
+                    <th><fmt:message key="seller.category"/></th>
+                    <th><fmt:message key="customer.quantity"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,27 +57,28 @@
             </table>
         </div>
         <div class="vl"></div>
-        <span class="products">Products</span>
+        <span class="products"><fmt:message key="seller.products"/></span>
         <ul>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" value="pending_products_page" name="command">
                     <input type="hidden" name="id" value="${user.id}">
                     <button name="status" value="PENDING">
-                        Pending
+                        <fmt:message key="seller.pending"/>
                     </button>
                 </form>
             </li>
         </ul>
         <hr>
-        <div>History</div>
+        <div><fmt:message key="admin.history"/>
+        </div>
         <ul>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" value="choose_product_by_status" name="command">
                     <input type="hidden" name="id" value="${user.id}">
                     <button name="status" value="APPROVED">
-                        Approved
+                        <fmt:message key="seller.approved"/>
                     </button>
                 </form>
             </li>
@@ -73,9 +87,19 @@
                     <input type="hidden" value="choose_product_by_status" name="command">
                     <input type="hidden" name="id" value="${user.id}">
                     <button name="status" value="DECLINED">
-                        Declined
+                        <fmt:message key="seller.declined"/>
                     </button>
                 </form>
+            </li>
+        </ul>
+        <hr>
+        <ul>
+            <li>
+                <a href="${pageContext.request.contextPath}/page/admin-about-me-page.jsp">
+                    <button name="status" value="PENDING">
+                        <fmt:message key="admin.aboutme"/>
+                    </button>
+                </a>
             </li>
         </ul>
     </div>

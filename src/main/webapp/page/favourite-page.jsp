@@ -1,9 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.example.webapplication.entity.product.Product" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="com.example.webapplication.command.RequestParameter" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
 <html>
 <head>
     <title>Favourite page</title>
@@ -23,7 +25,7 @@
                 <span class="search-section">
                      <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
                        <input type="hidden" value="search_products" name="command">
-                       <input type="text" placeholder="Search.." name="search">
+                         <input type="text" placeholder="<fmt:message key="home.search"/>" name="search">
                        <button type="submit">
                            <i class="fa fa-search"></i></button>
                      </form>
@@ -57,9 +59,9 @@
                     </form>
 
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                                <input type="hidden" value="about_me" name="command">
-                                <input type="hidden" name="category" value="Vegetables">
-                                <input class="enter-btn" type="submit" value="profile" style=" color: black;
+                           <input type="hidden" value="about_me" name="command">
+                           <input class="enter-btn" type="submit"
+                                  value="<fmt:message key="customermainpage.profile"/> " style=" color: black;
     text-decoration: none;
     right: 130px;
     top: 30px;
@@ -80,7 +82,7 @@
         List<Product> favouriteList = (List<Product>) session.getAttribute(RequestParameter.FAVOURITE_LIST);
         if (favouriteList.isEmpty()) {
     %>
-    <p>Favourite list is empty!</p>
+    <p style="text-align: center;font-size: 30px;"><fmt:message key="customer.favouriteslist"/></p>
     <%
     } else {
     %>
@@ -100,7 +102,7 @@
         <c:forEach var="tempProduct" items="${favourite_list}">
             <tr>
                 <td>${tempProduct.name}</td>
-                <td>${tempProduct.photo}</td>
+                <td><img src="data:image/jpg;base64,${tempProduct.photo}" width="70" height="70"/></td>
                 <td>${tempProduct.price}</td>
                 <td>${tempProduct.description}</td>
                 <td>${tempProduct.weight}</td>
@@ -109,7 +111,7 @@
                         <input type="hidden" value="add_to_cart" name="command">
                         <input type="hidden" name="products_id" value="${tempProduct.id}">
                         <button type="submit" name="orderStatus">
-                            Add To cart
+                            <fmt:message key="customer.addtocart"/>
                         </button>
                     </form>
                 </td>
@@ -117,7 +119,7 @@
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                         <input type="hidden" value="delete_from_favourites" name="command">
                         <input type="hidden" name="products_id" value="${tempProduct.id}">
-                        <input type="submit" value="delete">
+                        <input type="submit" value="<fmt:message key="customer.delete"/>">
                     </form>
                 </td>
             </tr>

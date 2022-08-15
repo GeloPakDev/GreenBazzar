@@ -9,6 +9,8 @@ import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductDaoImpl implements ProductDao {
+    public static final Logger logger = LogManager.getLogger();
     private static ProductDaoImpl instance;
 
     public static ProductDaoImpl getInstance() {
@@ -34,7 +37,7 @@ public class ProductDaoImpl implements ProductDao {
     private ProductDaoImpl() {
     }
 
-    ProductMapper mapper = new ProductMapper();
+    private ProductMapper mapper = new ProductMapper();
 
     @Override
     public Optional<Product> find(Integer id) throws DaoException {
@@ -75,7 +78,7 @@ public class ProductDaoImpl implements ProductDao {
              var addStatusPreparedStatement = connection.prepareStatement(QuerySQL.ADD_PRODUCT_STATUS)
         ) {
             constructPreparedStatement(addProductPreparedStatement, product, inputStream);
-            addProductPreparedStatement.setInt(11, sellerId);
+            addProductPreparedStatement.setInt(10, sellerId);
             int count = addProductPreparedStatement.executeUpdate();
 
             int userId = 0;
@@ -96,15 +99,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public boolean update(Product product) throws DaoException {
-        try (var connection = ConnectionPool.getInstance().getConnection();
-             var statement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT)) {
-            //constructPreparedStatement(statement, product)
-            statement.setInt(11, product.getId());
-            int count = statement.executeUpdate();
-            return count == 1;
-        } catch (SQLException exception) {
-            throw new DaoException(exception);
-        }
+        return false;
     }
 
     @Override
@@ -241,7 +236,7 @@ public class ProductDaoImpl implements ProductDao {
         try (var connection = ConnectionPool.getInstance().getConnection();
              var preparedStatement = connection.prepareStatement(QuerySQL.UPDATE_PRODUCT)) {
             constructPreparedStatement(preparedStatement, product, inputStream);
-            preparedStatement.setInt(11, productID);
+            preparedStatement.setInt(10, productID);
             int counter = preparedStatement.executeUpdate();
             return counter == 1;
         } catch (SQLException exception) {
@@ -261,6 +256,5 @@ public class ProductDaoImpl implements ProductDao {
         preparedStatement.setInt(7, product.getQuantity());
         preparedStatement.setDate(8, product.getCreated_at());
         preparedStatement.setDate(9, product.getModified_at());
-        preparedStatement.setDate(10, product.getDeleted_at());
     }
 }

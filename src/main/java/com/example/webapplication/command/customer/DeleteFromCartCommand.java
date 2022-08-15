@@ -33,7 +33,6 @@ public class DeleteFromCartCommand implements Command {
         String productQuantityFromBasket = request.getParameter(RequestParameter.PRODUCT_QUANTITY_CART);
         logger.info("That is number of products :" + productQuantityFromBasket);
 
-
         int productQuantityFromCart = Integer.parseInt(productQuantityFromBasket);
         int productId = Integer.parseInt(id);
         try {

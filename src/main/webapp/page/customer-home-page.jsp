@@ -8,7 +8,10 @@
 <%@ page import="java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
+<html lang="en">
 <head>
     <title>About me page</title>
     <link href="${pageContext.request.contextPath}/style/about-me-style.css" rel="stylesheet">
@@ -19,8 +22,22 @@
 <body>
 <div class="container">
     <div class="title">Greenbazaar</div>
-    <div class="profile">Profile</div>
-    <span class="personal-data">Personal data</span>
+    <span class="profile"><fmt:message key="customermainpage.profile"/></span>
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+        <input type="hidden" value="logout" name="command">
+        <input value="<fmt:message key="customer.signout"/>" type="submit" style="color: black;
+        height: 40px;
+        width: 115px;
+        top: 80px;
+        left: 120px;
+        position:absolute;
+        text-decoration: none;
+        border-width: 0;
+            background-color: #D9D9D9;
+
+        border-radius: 10px;">
+    </form>
+    <span class="personal-data"><fmt:message key="customer.personaldata"/></span>
 
     <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModal">
         <i class="fa fa-pencil"></i></button>
@@ -56,7 +73,7 @@
         </form>
         <%--                    Home page--%>
         <a href="${pageContext.request.contextPath}/page/home.jsp">
-            <input value="home" class="enter-btn" type="submit" style="color: black;
+            <input value="<fmt:message key="customer.home"/>" class="enter-btn" type="submit" style="color: black;
     text-decoration: none;
     right: 0;
     top: 0;
@@ -78,22 +95,22 @@
                         <input type="hidden" value="update_customer" name="command">
                         <input name="id" type="hidden" value="${user.id}">
                         <div class="mb-3">
-                            <label class="form-label required">Login</label>
+                            <label class="form-label required"><fmt:message key="title.login"/></label>
                             <input name="login" type="text" class="form-control" value="${user.login}">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Name</label>
+                            <label class="form-label required"><fmt:message key="signin.firstname"/></label>
                             <input name="first_name" type="text" class="form-control" value="${user.firstName}">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Surname</label>
+                            <label class="form-label required"><fmt:message key="signin.lastname"/></label>
                             <input name="last_name" type="text" class="form-control" value="${user.lastName}">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Email</label>
+                            <label class="form-label required"><fmt:message key="signin.email"/></label>
                             <input name="email" type="email" class="form-control" value="${user.email}">
                         </div>
-                        <input type="submit" class="btn" value="Submit">
+                        <input type="submit" class="btn" value="<fmt:message key="customer.submit"/>">
                     </form>
                 </div>
             </div>
@@ -118,7 +135,7 @@
         </div>
     </form>
     <!--User Addresses-->
-    <span class="address-title">Address</span>
+    <span class="address-title" style="font-size: 25px; font-weight: 500;"><fmt:message key="customer.address"/></span>
     <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModalAddress">
         <i class="fa fa-plus" aria-hidden="true"></i></button>
     <!--Modal for adding User address-->
@@ -131,28 +148,36 @@
                         <input name="id" type="hidden" value="${user.id}">
                         <div class="form-row">
                             <div class="mb-3">
-                                <label class="form-label required">Address</label>
-                                <input name="address-line" type="text" class="form-control" id="address-line">
+                                <label class="form-label required"><fmt:message key="customer.address"/></label>
+                                <input name="address-line" type="text" class="form-control" id="address-line"
+                                       maxlength="45"
+                                >
                             </div>
                             <div class="mb-3">
-                                <label class="form-label required">City</label>
-                                <input name="city" type="text" class="form-control" id="city">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="mb-3">
-                                <label class="form-label required">Postal Code</label>
-                                <input name="postal-code" type="text" class="form-control" id="postal-code">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label required">Country</label>
-                                <input name="country" type="text" class="form-control" id="country">
+                                <label class="form-label required"><fmt:message key="customer.city"/></label>
+                                <input name="city" type="text" class="form-control" id="city" maxlength="20">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="mb-3">
-                                <label class="form-label required">Phone number</label>
-                                <input name="phone-number" type="text" class="form-control" id="phone-number">
+                                <label class="form-label required"><fmt:message key="customer.postalcode"/></label>
+                                <input name="postal-code" type="text" class="form-control" id="postal-code"
+                                       maxlength="6"
+                                       onkeyup="return numberValidation(event)"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required"><fmt:message key="customer.country"/></label>
+                                <input name="country" type="text" class="form-control" id="country"
+                                       maxlength="15"
+                                >
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="mb-3">
+                                <label class="form-label required"><fmt:message key="customer.phonenumber"/></label>
+                                <input name="phone-number" type="text" class="form-control" id="phone-number"
+                                       maxlength="12">
                             </div>
                         </div>
                         <input type="submit" class="btn" value="Submit">
@@ -182,7 +207,8 @@
         </ul>
     </div>
     <!--User Banking Cards-->
-    <span class="banking-cards-title">Banking Cards</span>
+    <span class="banking-cards-title" style="font-size: 25px; font-weight: 500;"><fmt:message
+            key="customer.bankingcards"/></span>
     <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModalBankingCards">
         <i class="fa fa-plus" aria-hidden="true"></i></button>
     <!--Modal for the Banking Card-->
@@ -194,7 +220,7 @@
                         <input type="hidden" value="add_card" name="command">
                         <input type="hidden" value="${user.id}" name="id">
                         <div class="card_number" id="card-container">
-                            <label class="form-label required">Card Number</label>
+                            <label class="form-label required"><fmt:message key="customer.cardnumber"/></label>
                             <input name="card-number" type="text" class="input" id="card"
                                    onkeypress='return formats(this,event)' onkeyup="return numberValidation(event)"
                                    placeholder="0000 0000 0000 0000"
@@ -202,7 +228,7 @@
                         </div>
                         <div class="card_grp">
                             <div class="expiry_date">
-                                <label class="form-label required">Expiration date</label>
+                                <label class="form-label required"><fmt:message key="customer.expirationdate"/></label>
                                 <input name="expiration-date" type="text" class="expiry_input" data-mask="00"
                                        maxlength="5"
                                        placeholder="MM/YY"
@@ -210,16 +236,16 @@
                                        style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                             </div>
                             <div class="cvc">
-                                <label class="form-label required">CVV</label>
+                                <label class="form-label required"><fmt:message key="customer.cvv"/></label>
                                 <input name="cvv-number" type="text" class="cvc_input" data-mask="000"
-                                       placeholder="Enter CVV" maxlength="3"
+                                       placeholder="<fmt:message key="customer.entercvv"/>" maxlength="3"
                                        onkeyup="return numberValidation(event)"
                                        style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
                             </div>
                             <div class="card-balance">
-                                <label class="form-label required">Balance</label>
+                                <label class="form-label required"><fmt:message key="customer.balance"/></label>
                                 <input name="card-balance" type="text" class="card_balance" data-mask="000"
-                                       placeholder="Enter balance"
+                                       placeholder="<fmt:message key="customer.enterbalance"/>"
                                        onkeyup="return numberValidation(event)"
                                        maxlength="8"
                                        style="padding-top: 7px;padding-bottom: 7px;width: calc(100% / 2 - 10px);border-radius: 10px;padding-left: 20px;text-align: left;height: 30px;">
@@ -251,7 +277,7 @@
         </ul>
     </div>
 
-    <div class="user-orders">Orders</div>
+    <div class="user-orders" style="font-size: 25px; font-weight: 500;"><fmt:message key="customer.orders"/></div>
 
     <div class="orders-list">
         <ul style="padding: 0; margin: 0;">
@@ -267,16 +293,23 @@
                     int orderID = orderList.get(i).getId();
                     OrderStatus orderStatus = orderList.get(i).getOrderStatus();
             %>
-            <p>Order <%=orderID%> Status: <%=orderStatus%>
-            </p>
+            <div> Order: <%=orderID%>
+            </div>
+            <div>
+                Status: <%=orderStatus%>
+            </div>
             <%
                 String status = "";
+                double price;
+                double weight;
                 int p = products.get(i).size();
                 List<String> statusesOfProducts = new ArrayList<>();
                 for (int j = 0; j < p; j++) {
                     //get products from the list
                     Product product = products.get(i).get(j);
                     int productID = product.getId();
+                    price = product.getPrice();
+                    weight = product.getWeight();
                     try {
                         //Get status of the product in the order
                         Optional<String> optionalStatus = orderService.findOrderProductStatus(orderID, productID);
@@ -290,33 +323,10 @@
             %>
             <li>
                 <input class="order-input" type="text"
-                       value="<%=product.getName()%>  status : <%=status%>"
-                       required readonly>
+                       value="<%=product.getName()%> price: <%=price%> weight: <%=weight%> status: <%=status%>">
             </li>
             <%
                     }
-//                    int check = 0;
-//                    for (String productStatus : statusesOfProducts) {
-//                        if (!Objects.equals(productStatus, String.valueOf(Status.APPROVED))) {
-//                            check++;
-//                        } else if (Objects.equals(productStatus, String.valueOf(Status.DECLINED))) {
-//                            check = -10;
-//                            break;
-//                        }
-//                    }
-//                    if (check == 0) {
-//                        try {
-//                            orderService.updateOrderStatus(orderID, String.valueOf(Status.APPROVED));
-//                        } catch (ServiceException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    } else if (check == -10) {
-//                        try {
-//                            orderService.updateOrderStatus(orderID , String.valueOf(Status.DECLINED));
-//                        } catch (ServiceException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
                 }
             %>
         </ul>

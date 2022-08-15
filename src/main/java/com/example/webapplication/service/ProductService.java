@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> findAll() throws ServiceException;
 
     List<Product> findProductsByCategory(String category) throws ServiceException;
 

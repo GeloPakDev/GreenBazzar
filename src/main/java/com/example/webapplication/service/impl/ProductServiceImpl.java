@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static ProductServiceImpl instance;
     private final ProductDao dao = ProductDaoImpl.getInstance();
 
@@ -26,15 +25,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductServiceImpl() {
-    }
-
-    @Override
-    public List<Product> findAll() throws ServiceException {
-        try {
-            return dao.findAll();
-        } catch (DaoException exception) {
-            throw new ServiceException(exception);
-        }
     }
 
     @Override
@@ -123,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             dao.delete(productID);
         } catch (DaoException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(e);
         }
     }
 

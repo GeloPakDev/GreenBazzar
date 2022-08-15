@@ -38,4 +38,6 @@ public interface UserService {
     List<Card> findUserCards(int userId) throws ServiceException;
 
     Optional<User> findSellerById(int sellerID) throws ServiceException;
+
+    Optional<User> findAdmin(int adminID) throws ServiceException;
 }

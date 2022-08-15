@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class DeleteSellerProductCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -26,7 +26,9 @@ public class DeleteSellerProductCommand implements Command {
         HttpSession session = request.getSession();
         //Get id of the product which should be deleted
         String productID = request.getParameter(RequestParameter.PRODUCT_ID);
+        logger.info("That is productID: " + productID);
         int sellerId = (int) session.getAttribute(RequestParameter.USER_ID);
+        logger.info("That is sellerID: " + sellerId);
 
         List<Product> productList;
         try {
@@ -35,7 +37,7 @@ public class DeleteSellerProductCommand implements Command {
             productList = productService.findProductsByStatus(sellerId, String.valueOf(Status.APPROVED));
             session.setAttribute(RequestParameter.USER_ID, sellerId);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
-            return new Router(PagePath.APPROVED_SELLER_PRODUCTS_PAGE, Router.Type.FORWARD);
+            return new Router(PagePath.CHOSEN_PRODUCTS_STATUS_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

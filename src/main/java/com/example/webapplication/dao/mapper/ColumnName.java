@@ -1,6 +1,9 @@
 package com.example.webapplication.dao.mapper;
 
 public final class ColumnName {
+    private ColumnName() {
+
+    }
     //These constants used for the DB
 
     //Products

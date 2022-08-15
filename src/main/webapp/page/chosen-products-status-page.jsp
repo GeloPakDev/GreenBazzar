@@ -1,5 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
 <html>
 <head>
     <title>Approved products</title>
@@ -11,8 +14,18 @@
 <body>
 <div class="container">
     <div class="title">Greenbazaar</div>
-    <div class="profile">Seller Panel</div>
-    <div class="statuses">Statuses</div>
+    <div class="profile"><fmt:message key="seller.sellerpanel"/></div>
+    <div class="statuses"><fmt:message key="seller.statuses"/></div>
+    <div class="language" style="position: absolute ; right: 220px;top:170px;">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" value="change_language" name="command">
+            <select onchange="this.form.submit()" name="locale">
+                <option>Language</option>
+                <option value="en">English</option>
+                <option value="ru">Russian</option>
+            </select>
+        </form>
+    </div>
     <hr>
     <div class="sidebar">
         <div class="card-body">
@@ -20,15 +33,15 @@
     right: 60px;">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Photo</th>
-                    <th>price</th>
-                    <th>description</th>
-                    <th>weight</th>
-                    <th>category</th>
-                    <th>quantity</th>
-                    <th>edit</th>
-                    <th>delete</th>
+                    <th><fmt:message key="customer.name"/></th>
+                    <th><fmt:message key="customer.photo"/></th>
+                    <th><fmt:message key="customer.price"/></th>
+                    <th><fmt:message key="customer.description"/></th>
+                    <th><fmt:message key="customer.weight"/></th>
+                    <th><fmt:message key="seller.category"/></th>
+                    <th><fmt:message key="customer.quantity"/></th>
+                    <th><fmt:message key="seller.edit"/></th>
+                    <th><fmt:message key="customer.delete"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,7 +59,7 @@
                                 <input type="hidden" value="proceed_to_edit_product" name="command">
                                 <input type="hidden" name="products_id" value="${tempProduct.id}">
                                 <button name="status">
-                                    Edit
+                                    <fmt:message key="seller.edit"/>
                                 </button>
                             </form>
                         </td>
@@ -55,7 +68,7 @@
                                 <input type="hidden" value="delete_seller_product" name="command">
                                 <input type="hidden" name="products_id" value="${tempProduct.id}">
                                 <button name="status">
-                                    Delete
+                                    <fmt:message key="customer.delete"/>
                                 </button>
                             </form>
                         </td>
@@ -65,7 +78,7 @@
             </table>
         </div>
         <div class="vl"></div>
-        <span class="products">Products</span>
+        <span class="products"><fmt:message key="seller.products"/></span>
         <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#myModalProduct">
             <i class="fa fa-plus"></i></button>
         <div class="modal" id="myModalProduct">
@@ -78,41 +91,41 @@
                             <input name="id" type="hidden" value="${id}">
                             <div class="form-row">
                                 <div class="mb-3">
-                                    <label class="form-label required">Name</label>
+                                    <label class="form-label required"><fmt:message key="customer.name"/></label>
                                     <input name="name" type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required">Photo</label>
+                                    <label class="form-label required"><fmt:message key="customer.photo"/></label>
                                     <input name="photo" type="file" class="form-control" accept=".png, .jpg, .jpeg">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="mb-3">
-                                    <label class="form-label required">Price</label>
+                                    <label class="form-label required"><fmt:message key="customer.price"/></label>
                                     <input name="price" type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required">Description</label>
+                                    <label class="form-label required"><fmt:message key="customer.description"/></label>
                                     <input name="description" type="text" class="form-control" id="country">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="mb-3">
-                                    <label class="form-label required">Category</label>
+                                    <label class="form-label required"><fmt:message key="seller.category"/></label>
                                     <input name="category" type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required">Weight</label>
+                                    <label class="form-label required"><fmt:message key="customer.weight"/></label>
                                     <input name="weight" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="mb-3">
-                                    <label class="form-label required">Quantity</label>
+                                    <label class="form-label required"><fmt:message key="customer.quantity"/></label>
                                     <input name="quantity" type="text" class="form-control">
                                 </div>
                             </div>
-                            <input type="submit" class="btn" value="Submit">
+                            <input type="submit" class="btn" value="<fmt:message key="customer.submit"/>">
                         </form>
                     </div>
                 </div>
@@ -124,38 +137,40 @@
                     <input type="hidden" value="pending_seller_products" name="command">
                     <input type="hidden" name="id" value="${id}">
                     <button name="status">
-                        Pending
+                        <fmt:message key="seller.pending"/>
                     </button>
                 </form>
             </li>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="approved_seller_products" name="command">
+                    <input type="hidden" value="chosen_seller_by_status_products" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status">
-                        Approved
+                    <button name="status" value="APPROVED">
+                        <fmt:message key="seller.approved"/>
                     </button>
                 </form>
             </li>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
-                    <input type="hidden" value="declined_seller_products" name="command">
+                    <input type="hidden" value="chosen_seller_by_status_products" name="command">
                     <input type="hidden" name="id" value="${id}">
-                    <button name="status">
-                        Declined
+                    <button name="status" value="DECLINED">
+                        <fmt:message key="seller.declined"/>
                     </button>
                 </form>
             </li>
         </ul>
         <hr>
-        <div>Orders</div>
+        <div><fmt:message key="seller.orders"/>
+        </div>
         <ul>
             <li>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" value="pending_seller_orders" name="command">
                     <input type="hidden" name="id" value="${id}">
                     <button type="submit">
-                        Pending
+                        <fmt:message key="seller.pending"/>
+
                     </button>
                 </form>
             </li>
@@ -164,7 +179,7 @@
                     <input type="hidden" value="choose_order_product_by_status" name="command">
                     <input type="hidden" name="id" value="${id}">
                     <button name="status" value="APPROVED">
-                        Approved
+                        <fmt:message key="seller.approved"/>
                     </button>
                 </form>
             </li>
@@ -173,7 +188,7 @@
                     <input type="hidden" value="choose_order_product_by_status" name="command">
                     <input type="hidden" name="id" value="${id}">
                     <button name="status" value="DECLINED">
-                        Declined
+                        <fmt:message key="seller.declined"/>
                     </button>
                 </form>
             </li>
@@ -181,7 +196,7 @@
         <hr>
         <div>
             <a href="${pageContext.request.contextPath}/page/seller-about-me-page.jsp">
-                <input value="home" class="enter-btn" type="submit" style="color: black;
+                <input value="<fmt:message key="customermainpage.profile"/>" class="enter-btn" type="submit" style="color: black;
     text-decoration: none;
     right: 220px;
     top: 30px;
@@ -198,3 +213,19 @@
 </div>
 </body>
 </html>
+
+<script>
+    function formats(ele, e) {
+        if (ele.value.length < 19) {
+            ele.value = ele.value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function numberValidation(e) {
+        e.target.value = e.target.value.replace(/[^\d ]/g, '');
+        return false;
+    }
+</script>

@@ -1,6 +1,5 @@
 package com.example.webapplication.entity.builder;
 
-import com.example.webapplication.entity.user.Card;
 
 public class CardBuilder {
     private int id;

@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 public class LogoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        return new Router(PagePath.REGISTRATION_PAGE);
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return new Router(PagePath.LOGIN_PAGE);
     }
 }

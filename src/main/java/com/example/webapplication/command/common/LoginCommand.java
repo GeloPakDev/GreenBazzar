@@ -29,6 +29,8 @@ import java.util.Optional;
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final String ERROR_MESSAGE = "Unable to get the user from the DB!";
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -39,9 +41,12 @@ public class LoginCommand implements Command {
         Router router = new Router();
         String login = request.getParameter(RequestParameter.USER_LOGIN);
         String password = request.getParameter(RequestParameter.USER_PASSWORD);
+
+        String locale = (String) session.getAttribute(RequestParameter.LOCALE_NAME);
+        LOGGER.info(locale);
         //Check login and password on validity
         if (userValidator.checkLogin(login) && userValidator.checkPassword(password)) {
-            LOGGER.info("Users login" + login);
+            LOGGER.info("User's login" + login);
             try {
                 //Auth the user
                 if (userService.authenticate(login, password)) {
@@ -49,7 +54,8 @@ public class LoginCommand implements Command {
                     Optional<User> optionalUser = userService.findByLogin(login);
                     User user;
                     if (optionalUser.isEmpty()) {
-                        router = new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);
+                        request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                        router = new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
                     } else {
                         user = optionalUser.get();
                         LOGGER.info("Users role:" + user.getRole());
@@ -68,11 +74,12 @@ public class LoginCommand implements Command {
                             List<Product> productList = productService.findProductsByStatus(user.getId(), String.valueOf(Status.PENDING));
                             session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.PRODUCTS, productList);
-                            session.setAttribute(RequestParameter.USER_ID, user.getId());
                             session.setAttribute(RequestParameter.USER, user);
                             router = new Router(PagePath.PENDING_SELLER_PRODUCTS_PAGE, Router.Type.FORWARD);
                         } else if (user.getRole() == Role.ADMIN) {
                             List<Product> productList = productService.findAllProductsByStatus(String.valueOf(Status.PENDING));
+                            session.setAttribute(RequestParameter.USER_ID, user.getId());
+                            session.setAttribute(RequestParameter.USER, user);
                             session.setAttribute(RequestParameter.PRODUCTS, productList);
                             router = new Router(PagePath.PENDING_ADMIN_PRODUCTS_PAGE, Router.Type.FORWARD);
                         }

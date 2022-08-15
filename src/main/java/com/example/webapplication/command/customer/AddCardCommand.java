@@ -11,6 +11,7 @@ import com.example.webapplication.exception.CommandException;
 import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.service.UserService;
 import com.example.webapplication.service.impl.UserServiceImpl;
+import com.mysql.cj.util.PerVmServerConfigCacheFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class AddCardCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR_MESSAGE = "Unable to add card into the DB";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -50,7 +52,8 @@ public class AddCardCommand implements Command {
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
             } else {
-                return new Router(PagePath.LOGIN_PAGE, Router.Type.REDIRECT);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.REDIRECT);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

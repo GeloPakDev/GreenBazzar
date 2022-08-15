@@ -2,11 +2,7 @@ package com.example.webapplication.dao.impl;
 
 import com.example.webapplication.dao.QuerySQL;
 import com.example.webapplication.dao.UserDao;
-import com.example.webapplication.dao.mapper.impl.AddressMapper;
-import com.example.webapplication.dao.mapper.impl.CardMapper;
-import com.example.webapplication.dao.mapper.impl.SellerMapper;
-import com.example.webapplication.dao.mapper.impl.UserMapper;
-import com.example.webapplication.entity.product.Status;
+import com.example.webapplication.dao.mapper.impl.*;
 import com.example.webapplication.entity.user.Address;
 import com.example.webapplication.entity.user.Card;
 import com.example.webapplication.entity.user.Role;
@@ -40,6 +36,7 @@ public class UserDaoImpl implements UserDao {
     private AddressMapper addressMapper = new AddressMapper();
     private CardMapper cardMapper = new CardMapper();
     private SellerMapper sellerMapper = new SellerMapper();
+    private AdminMapper adminMapper = new AdminMapper();
 
 
     @Override
@@ -83,9 +80,6 @@ public class UserDaoImpl implements UserDao {
                 }
                 toReturn = preparedStatement.executeUpdate() != 0;
             }
-            //constructPreparedStatement(preparedStatement, user);
-            //int count = preparedStatement.executeUpdate();
-            //return count == 1;
         } catch (SQLException exception) {
             throw new DaoException(exception);
         }
@@ -101,7 +95,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(3, user.getLastName());
             preparedStatement.setString(4, user.getEmail());
             if (user.getCompanyName() == null || user.getCompanyName().isBlank()) {
-                logger.info("as certificate is null or empty null is being set");
+                logger.info("as company name is null or empty null is being set");
                 preparedStatement.setObject(5, null);
             } else {
                 preparedStatement.setString(5, user.getCompanyName());
@@ -260,6 +254,22 @@ public class UserDaoImpl implements UserDao {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<User> findAdmin(int adminID) throws DaoException {
+        try (var connection = ConnectionPool.getInstance().getConnection();
+             var preparedStatement = connection.prepareStatement(QuerySQL.SELECT_ADMIN)) {
+            preparedStatement.setInt(1, adminID);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return adminMapper.map(resultSet);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new DaoException(exception);
+        }
+        return Optional.empty();
+    }
+
 
     @Override
     public List<User> findUsersByQuery(String query) throws DaoException {
@@ -269,24 +279,6 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(1, query);
             preparedStatement.setString(2, query);
             preparedStatement.setString(3, query);
-            try (var resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    var optionalUser = userMapper.map(resultSet);
-                    optionalUser.ifPresent(users::add);
-                }
-            }
-        } catch (SQLException exception) {
-            throw new DaoException(exception);
-        }
-        return users;
-    }
-
-    @Override
-    public List<User> findUsersByRole(String role) throws DaoException {
-        List<User> users = new ArrayList<>();
-        try (var connection = ConnectionPool.getInstance().getConnection();
-             var preparedStatement = connection.prepareStatement(QuerySQL.SELECT_USER_BY_ROLE)) {
-            preparedStatement.setString(1, role);
             try (var resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     var optionalUser = userMapper.map(resultSet);

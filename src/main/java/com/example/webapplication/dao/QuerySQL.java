@@ -16,7 +16,6 @@ public final class QuerySQL {
                    quantity,
                    created_at,
                    modified_at,
-                   deleted_at,
                    seller_id
             FROM products
             WHERE products_id=?""";
@@ -30,14 +29,13 @@ public final class QuerySQL {
                    category,
                    quantity,
                    created_at,
-                   modified_at,
-                   deleted_at
+                   modified_at
             FROM products""";
 
     public static final String ADD_PRODUCT = """
             INSERT INTO products
-            (name, photo, price, description, weight, category, quantity, created_at, modified_at, deleted_at , seller_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (name, photo, price, description, weight, category, quantity, created_at, modified_at, seller_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
     public static final String ADD_PRODUCT_STATUS = """
@@ -56,8 +54,7 @@ public final class QuerySQL {
                 category=?,
                 quantity=?,
                 created_at=?,
-                modified_at=?,
-                deleted_at=?
+                modified_at=?
             WHERE products_id=?""";
 
     public static final String DELETE_PRODUCT = """
@@ -76,7 +73,6 @@ public final class QuerySQL {
                    quantity,
                    created_at,
                    modified_at,
-                   deleted_at,
                    seller_id
             FROM products
             WHERE name LIKE CONCAT('%',?,'%') AND quantity > 0""";
@@ -92,7 +88,6 @@ public final class QuerySQL {
                    p.quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
@@ -110,7 +105,6 @@ public final class QuerySQL {
                    p.quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
@@ -127,7 +121,6 @@ public final class QuerySQL {
                    p.quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
@@ -144,7 +137,6 @@ public final class QuerySQL {
                    p.quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id
             FROM products p
             JOIN product_status ps ON p.products_id = ps.products_id
@@ -210,6 +202,18 @@ public final class QuerySQL {
                    u.company_name
             FROM users u
             WHERE u.users_id=?""";
+
+    public static final String SELECT_ADMIN = """
+            SELECT u.users_id,
+                   u.login,
+                   u.password,
+                   u.first_name,
+                   u.last_name,
+                   u.email,
+                   u.role
+            FROM users u
+            WHERE u.users_id=?
+            """;
 
     public static final String USER_SEARCH = """
             SELECT u.users_id,
@@ -364,7 +368,6 @@ public final class QuerySQL {
                    p.quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id
             FROM order_product_list ol
             JOIN products p ON ol.products_id = p.products_id
@@ -381,7 +384,6 @@ public final class QuerySQL {
                    ol.product_quantity,
                    p.created_at,
                    p.modified_at,
-                   p.deleted_at,
                    p.seller_id,
                    ol.order_id
             FROM order_product_list ol

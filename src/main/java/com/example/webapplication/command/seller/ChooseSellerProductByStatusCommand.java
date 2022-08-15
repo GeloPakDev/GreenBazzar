@@ -17,21 +17,22 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class DeclinedSellerProductsCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+public class ChooseSellerProductByStatusCommand implements Command {
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         ProductService productService = ProductServiceImpl.getInstance();
         HttpSession session = request.getSession();
         int sellerId = (int) session.getAttribute(RequestParameter.USER_ID);
+        String status = request.getParameter(RequestParameter.PRODUCT_STATUS);
         logger.info("That is userId : " + sellerId);
         List<Product> productList;
         try {
-            productList = productService.findProductsByStatus(sellerId, String.valueOf(Status.DECLINED));
+            productList = productService.findProductsByStatus(sellerId, status);
             session.setAttribute(RequestParameter.USER_ID, sellerId);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
-            return new Router(PagePath.DECLINED_SELLER_PRODUCTS_PAGE, Router.Type.FORWARD);
+            return new Router(PagePath.CHOSEN_PRODUCTS_STATUS_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

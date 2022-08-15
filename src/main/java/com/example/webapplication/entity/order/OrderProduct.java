@@ -19,7 +19,6 @@ public class OrderProduct implements AbstractEntity {
     private int quantity;
     private Date created_at;
     private Date modified_at;
-    private Date deleted_at;
     private int sellerId;
     private int order;
 
@@ -106,14 +105,6 @@ public class OrderProduct implements AbstractEntity {
         this.modified_at = modified_at;
     }
 
-    public Date getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(Date deleted_at) {
-        this.deleted_at = deleted_at;
-    }
-
     public int getSellerId() {
         return sellerId;
     }
@@ -143,9 +134,8 @@ public class OrderProduct implements AbstractEntity {
         sb.append(", quantity=").append(quantity);
         sb.append(", created_at=").append(created_at);
         sb.append(", modified_at=").append(modified_at);
-        sb.append(", deleted_at=").append(deleted_at);
         sb.append(", sellerId=").append(sellerId);
-        sb.append(", orderId=").append(order);
+        sb.append(", order=").append(order);
         sb.append('}');
         return sb.toString();
     }
@@ -168,8 +158,7 @@ public class OrderProduct implements AbstractEntity {
         if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
         if (category != that.category) return false;
         if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
-        if (modified_at != null ? !modified_at.equals(that.modified_at) : that.modified_at != null) return false;
-        return deleted_at != null ? deleted_at.equals(that.deleted_at) : that.deleted_at == null;
+        return modified_at != null ? modified_at.equals(that.modified_at) : that.modified_at == null;
     }
 
     @Override
@@ -184,7 +173,6 @@ public class OrderProduct implements AbstractEntity {
         result = 31 * result + quantity;
         result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
         result = 31 * result + (modified_at != null ? modified_at.hashCode() : 0);
-        result = 31 * result + (deleted_at != null ? deleted_at.hashCode() : 0);
         result = 31 * result + sellerId;
         result = 31 * result + order;
         return result;

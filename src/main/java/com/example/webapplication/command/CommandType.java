@@ -2,13 +2,12 @@ package com.example.webapplication.command;
 
 import com.example.webapplication.command.admin.ChooseProductByStatusCommand;
 import com.example.webapplication.command.admin.PendingAdminProductsCommand;
+import com.example.webapplication.command.admin.UpdateAdminCommand;
 import com.example.webapplication.command.admin.UpdateSellerProductStatusCommand;
-import com.example.webapplication.command.common.DefaultCommand;
-import com.example.webapplication.command.common.LogoutCommand;
-import com.example.webapplication.command.common.RegistrationCommand;
-import com.example.webapplication.command.common.LoginCommand;
+import com.example.webapplication.command.common.*;
 import com.example.webapplication.command.customer.*;
 import com.example.webapplication.command.seller.*;
+
 
 public enum CommandType {
     LOGIN(new LoginCommand()),
@@ -38,17 +37,16 @@ public enum CommandType {
     ADD_TO_FAVOURITES(new AddToFavouriteCommand()),
     DELETE_FROM_FAVOURITES(new DeleteFromFavourites()),
     UPDATE_SELLER(new UpdateSellerCommand()),
-    APPROVED_SELLER_PRODUCTS(new ApprovedSellerProductsCommand()),
-    DECLINED_SELLER_PRODUCTS(new DeclinedSellerProductsCommand()),
     UPDATE_SELLER_PRODUCT(new UpdateSellerProductCommand()),
     DELETE_SELLER_PRODUCT(new DeleteSellerProductCommand()),
     PENDING_SELLER_ORDERS(new PendingSellerOrdersCommand()),
     UPDATE_SELLER_PRODUCT_STATUS(new UpdateSellerProductStatusCommand()),
     CHOOSE_PRODUCT_BY_STATUS(new ChooseProductByStatusCommand()),
     PENDING_PRODUCTS_PAGE(new PendingAdminProductsCommand()),
-    PROCEED_TO_EDIT_PRODUCT(new ProceedToEditProductCommand());
-
-
+    PROCEED_TO_EDIT_PRODUCT(new ProceedToEditProductCommand()),
+    CHOSEN_SELLER_BY_STATUS_PRODUCTS(new ChooseSellerProductByStatusCommand()),
+    CHANGE_LANGUAGE(new ChangeLanguageCommand()),
+    UPDATE_ADMIN(new UpdateAdminCommand());
     private final Command command;
 
     CommandType(Command command) {

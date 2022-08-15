@@ -4,6 +4,10 @@ import com.example.webapplication.command.Command;
 import com.example.webapplication.command.RequestParameter;
 import com.example.webapplication.controller.PagePath;
 import com.example.webapplication.controller.Router;
+import com.example.webapplication.entity.order.Order;
+import com.example.webapplication.entity.product.Product;
+import com.example.webapplication.entity.user.Address;
+import com.example.webapplication.entity.user.Card;
 import com.example.webapplication.entity.user.Role;
 import com.example.webapplication.entity.user.User;
 import com.example.webapplication.exception.CommandException;
@@ -11,21 +15,25 @@ import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.service.UserService;
 import com.example.webapplication.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class RegistrationCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String ALREADY_EXISTING_LOGIN = "this login is already existing";
     private static final String ALREADY_EXISTING_EMAIL = "this email is already existing";
     private static final String ALREADY_EXISTING_COMPANY_NAME = "this company is already existing";
-    private static final String SUCCESSFUL_REGISTRATION = "registration passed successfully";
-    private static final String UNSUCCESSFUL_REGISTRATION = "registration passed unsuccessfully";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
-
+        //Get user's data for register
         String login = request.getParameter(RequestParameter.USER_LOGIN);
         String password = request.getParameter(RequestParameter.USER_PASSWORD);
         String firstName = request.getParameter(RequestParameter.USER_FIRSTNAME);
@@ -38,33 +46,30 @@ public class RegistrationCommand implements Command {
         if (role.equalsIgnoreCase(Role.SELLER.toString())) {
             companyName = request.getParameter(RequestParameter.SELLER_COMPANY);
         }
-
+        //Create user's object
         User user = new User();
 
         try {
-
+            //Check login on availability
             if (userService.isLoginAvailable(login)) {
                 user.setLogin(login);
             } else {
-                request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                request.setAttribute(RequestParameter.UNAVAILABLE_LOGIN, login + ALREADY_EXISTING_LOGIN);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ALREADY_EXISTING_LOGIN);
                 return new Router(PagePath.REGISTRATION_PAGE, Router.Type.FORWARD);
             }
-
+            //Check email on availability
             if (userService.isEmailAvailable(email)) {
                 user.setEmail(email);
             } else {
-                request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                request.setAttribute(RequestParameter.UNAVAILABLE_EMAIL_ADDRESS, email + ALREADY_EXISTING_EMAIL);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ALREADY_EXISTING_EMAIL);
                 return new Router(PagePath.REGISTRATION_PAGE, Router.Type.FORWARD);
             }
-
+            //Check companyName on availability for seller
             if (!companyName.isEmpty()) {
                 if (userService.isCompanyNameAvailable(companyName)) {
                     user.setCompanyName(companyName);
                 } else {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                    request.setAttribute(RequestParameter.UNAVAILABLE_COMPANY_NAME, companyName + ALREADY_EXISTING_COMPANY_NAME);
+                    request.setAttribute(RequestParameter.ERROR_MESSAGE, ALREADY_EXISTING_COMPANY_NAME);
                     return new Router(PagePath.REGISTRATION_PAGE, Router.Type.FORWARD);
                 }
             } else {
@@ -75,34 +80,40 @@ public class RegistrationCommand implements Command {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setRole(Role.valueOf(role));
-
-            logger.info("user.toString() ===> " + user);
-            request.setAttribute(RequestParameter.USER, user);
-
+            //Redirect the User depending on the Role
             Router router = new Router();
             if (role.equalsIgnoreCase(String.valueOf(Role.CUSTOMER))) {
                 if (userService.registerUser(user)) {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, SUCCESSFUL_REGISTRATION);
+                    //User's Orders
+                    HashMap<Order, List<Product>> orders = new HashMap<>();
+                    //User's Cards
+                    List<Card> cardList = new ArrayList<>();
+                    //User's addresses
+                    List<Address> addressList = new ArrayList<>();
+                    //User's cart
+                    HashMap<Product, Integer> productCart = new HashMap<>();
+                    //User's favourite List
+                    List<Product> favouriteProductList = new ArrayList<>();
+                    session.setAttribute(RequestParameter.ORDERS, orders);
+                    session.setAttribute(RequestParameter.CARDS, cardList);
+                    session.setAttribute(RequestParameter.ADDRESSES, addressList);
+                    session.setAttribute(RequestParameter.PRODUCT_CART, productCart);
+                    session.setAttribute(RequestParameter.FAVOURITE_LIST, favouriteProductList);
+                    session.setAttribute(RequestParameter.USER, user);
+                    session.setAttribute(RequestParameter.USER_ID, user.getId());
                     return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
                 } else {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                    return new Router(PagePath.REGISTRATION_PAGE, Router.Type.REDIRECT);
+                    return new Router(PagePath.ERROR_PAGE, Router.Type.REDIRECT);
                 }
             } else if (role.equalsIgnoreCase(String.valueOf(Role.SELLER))) {
                 if (userService.registerUser(user)) {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, SUCCESSFUL_REGISTRATION);
+                    List<Product> list = new ArrayList<>();
+                    session.setAttribute(RequestParameter.PRODUCTS, list);
+                    session.setAttribute(RequestParameter.USER, user);
+                    session.setAttribute(RequestParameter.USER_ID, user.getId());
                     router = new Router(PagePath.SELLER_HOME_PAGE, Router.Type.FORWARD);
                 } else {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                    router = new Router(PagePath.REGISTRATION_PAGE, Router.Type.REDIRECT);
-                }
-            } else if (role.equalsIgnoreCase(String.valueOf(Role.ADMIN))) {
-                if (userService.registerUser(user)) {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, SUCCESSFUL_REGISTRATION);
-                    router = new Router(PagePath.ADMIN_PAGE, Router.Type.FORWARD);
-                } else {
-                    request.setAttribute(RequestParameter.OPERATION_MESSAGE, UNSUCCESSFUL_REGISTRATION);
-                    router = new Router(PagePath.REGISTRATION_PAGE, Router.Type.REDIRECT);
+                    router = new Router(PagePath.ERROR_PAGE, Router.Type.REDIRECT);
                 }
             }
             return router;

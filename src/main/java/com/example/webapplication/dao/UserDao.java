@@ -15,8 +15,6 @@ public interface UserDao extends EntityDao<User, Integer> {
 
     List<User> findUsersByQuery(String query) throws DaoException;
 
-    List<User> findUsersByRole(String role) throws DaoException;
-
     boolean isLoginAvailable(String login) throws DaoException;
 
     boolean isEmailAvailable(String email) throws DaoException;
@@ -40,4 +38,6 @@ public interface UserDao extends EntityDao<User, Integer> {
     List<Card> findUserCards(int userId) throws DaoException;
 
     Optional<User> findSellerById(int sellerID) throws DaoException;
+
+    Optional<User> findAdmin(int adminID) throws DaoException;
 }

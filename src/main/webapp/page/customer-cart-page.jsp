@@ -2,6 +2,9 @@
 <%@ page import="com.example.webapplication.entity.product.Product" %>
 <%@ page import="java.util.HashMap" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,7 +25,7 @@
                 <span class="search-section">
                      <form class="search" action="${pageContext.request.contextPath}/controller" method="post">
                        <input type="hidden" value="search_products" name="command">
-                       <input type="text" placeholder="Search.." name="search">
+                       <input type="text" placeholder="<fmt:message key="home.search"/>" name="search">
                        <button type="submit">
                            <i class="fa fa-search"></i></button>
                      </form>
@@ -60,7 +63,8 @@
 <%--                    Profile page--%>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
                                 <input type="hidden" value="about_me" name="command">
-                                <input class="enter-btn" type="submit" value="profile" style=" color: black;
+                                <input class="enter-btn" type="submit"
+                                       value="<fmt:message key="customermainpage.profile"/> " style=" color: black;
     text-decoration: none;
     right: 130px;
     top: 30px;
@@ -81,20 +85,20 @@
         HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
         if (productList.isEmpty()) {
     %>
-    <p>Your cart is empty!</p>
+    <p style="text-align: center;font-size: 30px;"><fmt:message key="customer.cartlist"/></p>
     <%
     } else {
     %>
     <table id="datatablesSimple">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Photo</th>
-            <th>price</th>
-            <th>description</th>
-            <th>weight</th>
-            <th>Quantity</th>
-            <th>delete</th>
+            <th><fmt:message key="customer.name"/></th>
+            <th><fmt:message key="customer.photo"/></th>
+            <th><fmt:message key="customer.price"/></th>
+            <th><fmt:message key="customer.description"/></th>
+            <th><fmt:message key="customer.weight"/></th>
+            <th><fmt:message key="customer.quantity"/></th>
+            <th><fmt:message key="customer.delete"/></th>
         </tr>
         </thead>
         <tbody>
@@ -115,7 +119,7 @@
                             <i class="fa fa-plus"></i>
                         </button>
                         <input type="number" name="product_quantity" id="price-max" value="${tempProduct.value}" min="0"
-                               readonly>
+                               readonly style="width : 50px;">
                         <button type="submit"
                                 value="decrease"
                                 name="action"
@@ -129,7 +133,7 @@
                         <input type="hidden" name="product_quantity" value="${tempProduct.value}">
                         <input type="hidden" name="products_id" value="${tempProduct.key.id}">
                         <input type="hidden" value="delete_from_cart" name="command">
-                        <input type="submit" value="delete">
+                        <input type="submit" value="<fmt:message key="customer.delete"/>">
                     </form>
                 </td>
             </tr>
@@ -142,15 +146,15 @@
 </div>
 <div class="cart-overview">
     <div class="total-products">
-        Total number of products:${total_quantity}
+        <fmt:message key="customer.totalnumberofproducts"/>: ${total_quantity}
     </div>
     <div class="total-price">
-        Total price of products:${total_price}
+        <fmt:message key="customer.totalpriceofproducts"/>: ${total_price}
     </div>
     <div class="proceed-to-payment">
         <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" value="proceed_to_payment" name="command">
-            <input type="submit" value="Proceed to payment" class="checkout">
+            <input type="submit" value=" <fmt:message key="customer.proceedtopayment"/>" class="checkout">
         </form>
     </div>
 </div>

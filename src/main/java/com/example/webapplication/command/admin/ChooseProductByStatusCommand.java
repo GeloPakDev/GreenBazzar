@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class ChooseProductByStatusCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -28,6 +28,7 @@ public class ChooseProductByStatusCommand implements Command {
         try {
             //Call method from the DB to find products
             productList = productService.findAllProductsByStatus(status);
+            logger.info("List: " + productList);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
             return new Router(PagePath.ADMIN_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {

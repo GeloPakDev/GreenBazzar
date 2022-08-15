@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class PendingAdminProductsCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -26,6 +26,7 @@ public class PendingAdminProductsCommand implements Command {
         List<Product> productList;
         try {
             productList = productService.findAllProductsByStatus(String.valueOf(Status.PENDING));
+            logger.info("List : " + productList);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
             return new Router(PagePath.PENDING_ADMIN_PRODUCTS_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {

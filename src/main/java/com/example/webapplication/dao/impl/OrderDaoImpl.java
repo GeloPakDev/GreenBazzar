@@ -13,8 +13,6 @@ import com.example.webapplication.exception.DaoException;
 import com.example.webapplication.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.status.StatusConfiguration;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +23,7 @@ import static com.example.webapplication.dao.QuerySQL.*;
 
 public class OrderDaoImpl implements OrderDao {
     private static OrderDaoImpl instance;
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     public static OrderDaoImpl getInstance() {
         if (instance == null) {
@@ -53,23 +51,6 @@ public class OrderDaoImpl implements OrderDao {
                 }
             }
         } catch (SQLException exception) {
-            throw new DaoException(exception);
-        }
-        return Optional.of(order);
-    }
-
-    public Optional<Order> findOrderByUserID(int userId) throws DaoException {
-        var order = new Order();
-        try (var connection = ConnectionPool.getInstance().getConnection();
-             var preparedStatement = connection.prepareStatement(SELECT_ORDER_BY_USER_ID)) {
-            preparedStatement.setInt(1, userId);
-            try (var resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return orderMapper.map(resultSet);
-                }
-            }
-        } catch (
-                SQLException exception) {
             throw new DaoException(exception);
         }
         return Optional.of(order);
@@ -132,34 +113,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findAll() throws DaoException {
-//        try (var connection = ConnectionPool.getInstance().getConnection();
-//             var preparedStatement = connection.prepareStatement(SELECT_ORDER_BY_ID)) {
-//            preparedStatement.setInt(1, id);
-//            List<Product> productList = new ArrayList<>();
-//            try (var resultSet = preparedStatement.executeQuery()) {
-//                while (resultSet.next()) {
-//                    order.setId(resultSet.getInt(ORDER_ID));
-//
-//                    var userMapper = new UserMapper();
-//                    Optional<User> user = userMapper.map(resultSet);
-//                    user.ifPresent(order::setUser);
-//
-//                    order.setStatus(OrderStatus.valueOf(resultSet.getString(ORDER_STATUS).toUpperCase()));
-//                    order.setOrderedDate(resultSet.getDate(ORDER_ORDERED_TIME));
-//                    order.setConfirmedDate(resultSet.getDate(ORDER_CONFIRMED_TIME));
-//                    order.setCompletedDate(resultSet.getDate(ORDER_COMPLETED_TIME));
-//                    order.setCanceledDate(resultSet.getDate(ORDER_CANCELED_TIME));
-//
-//                    var productMapper = new ProductOrderMapper();
-//                    Optional<Product> product = productMapper.map(resultSet);
-//                    product.ifPresent(productList::add);
-//                }
-//                order.setProductList(productList);
-//            }
-//        } catch (SQLException exception) {
-//            throw new DaoException(exception);
-//        }
-
         return null;
     }
 
@@ -171,11 +124,6 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public void delete(Integer id) throws DaoException {
 
-    }
-
-    @Override
-    public Optional<Order> findOrderByStatus(String status) {
-        return Optional.empty();
     }
 
     @Override

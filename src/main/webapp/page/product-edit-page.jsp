@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Edit Product Page</title>
 </head>
 <body>
 <div class="modal" id="myModalProduct">
@@ -12,8 +12,7 @@
                 <form action="${pageContext.request.contextPath}/controller" method="post"
                       enctype="multipart/form-data">
                     <input type="hidden" value="update_seller_product" name="command">
-                    <input name="products_id" type="hidden" value="${id}">
-                    <input name="id" type="hidden" value="${id}">
+                    <input name="products_id" type="hidden" value="${products_id}">
                     <div class="form-row">
                         <div class="mb-3">
                             <label class="form-label required">Name</label>
@@ -23,7 +22,8 @@
                         <div class="mb-3">
                             <label class="form-label required">Photo</label>
                             <img src="data:image/jpg;base64,${photo}" width="70" height="70"/>
-                            <input name="photo" type="file" class="form-control" accept=".png, .jpg, .jpeg">
+                            <input name="photo" type="file" class="form-control" accept=".png, .jpg, .jpeg"
+                                   value="${photo}">
                         </div>
                     </div>
                     <div class="form-row">

@@ -35,7 +35,6 @@ public class ChooseByPriceRangeCommand implements Command {
         try {
             List<Product> productList = productService.findProductsByPriceRange(category, from, to);
             session.setAttribute(RequestParameter.PRODUCT_CATEGORY, category);
-            //request.setAttribute(RequestParameter.PRODUCT_CATEGORY, category);
             request.setAttribute(RequestParameter.PRODUCTS, productList);
             return new Router(PagePath.SELECTED_CATEGORY_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {

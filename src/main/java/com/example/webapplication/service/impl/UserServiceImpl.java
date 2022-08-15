@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
     public boolean authenticate(String login, String password) throws ServiceException {
         boolean match;
         try {
-//            String hashedPassword = PasswordEncoder.hashPassword(password);
             match = userDao.authenticate(login, password);
             LOGGER.info(match);
         } catch (DaoException exception) {
@@ -186,6 +185,15 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findSellerById(int sellerID) throws ServiceException {
         try {
             return userDao.findSellerById(sellerID);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findAdmin(int adminID) throws ServiceException {
+        try {
+            return userDao.findAdmin(adminID);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

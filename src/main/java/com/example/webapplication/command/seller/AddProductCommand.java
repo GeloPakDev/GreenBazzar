@@ -21,11 +21,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
 public class AddProductCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR_MESSAGE = "Error in adding the product!";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -39,14 +43,13 @@ public class AddProductCommand implements Command {
         try {
             part = request.getPart(ColumnName.PRODUCT_PHOTO);
         } catch (IOException | ServletException e) {
-            throw new RuntimeException(e);
+            throw new CommandException(e);
         }
-        logger.debug(part);
         if (part != null) {
             try {
                 inputStream = part.getInputStream();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new CommandException(e);
             }
         }
         double price = Double.parseDouble(request.getParameter(RequestParameter.PRODUCT_PRICE));
@@ -66,6 +69,7 @@ public class AddProductCommand implements Command {
         product.setCategory(category);
         product.setWeight(weight);
         product.setQuantity(quantity);
+        product.setCreated_at(Date.valueOf(LocalDate.now()));
 
         logger.info("That is the  product:" + product);
 
@@ -76,10 +80,12 @@ public class AddProductCommand implements Command {
                 List<Product> list = productService.findProductsByStatus(id, String.valueOf(Status.PENDING));
                 request.setAttribute(RequestParameter.PRODUCTS, list);
                 return new Router(PagePath.SELLER_HOME_PAGE, Router.Type.FORWARD);
+            } else {
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return null;
     }
 }

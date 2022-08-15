@@ -9,9 +9,6 @@ import java.util.regex.Pattern;
 
 public class UserValidatorImpl implements UserValidator {
     private static final String INCORRECT_VALUE_PARAMETER = "- Incorrect Value";
-
-    private static final Logger logger = LogManager.getLogger(UserValidator.class);
-
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     private static final String LOGIN_REGEX = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
     private static final String EMAIL_REGEX = "^(.+)@(\\S+)$";

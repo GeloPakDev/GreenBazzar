@@ -10,7 +10,6 @@ import com.example.webapplication.exception.ServiceException;
 import com.example.webapplication.service.UserService;
 import com.example.webapplication.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,10 +18,13 @@ import java.util.Optional;
 public class UpdateCustomerCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
+    private static final String LOGIN_IS_NOT_AVAILABLE = "Login is not available";
+    private static final String EMAIL_IS_NOT_AVAILABLE = "Email is not available";
+    private static final String COMPANY_NAME_IS_NOT_AVAILABLE = "Company Name is not available";
+    private static final String UPDATE_ERROR = "Error while updating the User";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
         User userToUpdate;
         String userId = request.getParameter(RequestParameter.USER_ID);
@@ -54,7 +56,8 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isLoginAvailable(login)) {
                     userToUpdate.setLogin(login);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    request.setAttribute(RequestParameter.ERROR_MESSAGE, LOGIN_IS_NOT_AVAILABLE);
+                    return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
                 }
             }
             //email
@@ -65,7 +68,8 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isEmailAvailable(email)) {
                     userToUpdate.setEmail(email);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    request.setAttribute(RequestParameter.ERROR_MESSAGE, EMAIL_IS_NOT_AVAILABLE);
+                    return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
                 }
             }
             //company name for seller case
@@ -73,7 +77,8 @@ public class UpdateCustomerCommand implements Command {
                 if (userService.isCompanyNameAvailable(companyName)) {
                     userToUpdate.setCompanyName(companyName);
                 } else {
-                    return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
+                    request.setAttribute(RequestParameter.ERROR_MESSAGE, COMPANY_NAME_IS_NOT_AVAILABLE);
+                    return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
                 }
             }
             userToUpdate.setFirstName(firstName);
@@ -81,15 +86,13 @@ public class UpdateCustomerCommand implements Command {
             userToUpdate.setLastName(lastName);
             logger.info(lastName + " is set as lastName");
             if (userService.updateUser(userToUpdate)) {
-                logger.info("update operation is successful " + userToUpdate);
                 request.setAttribute(RequestParameter.USER, userToUpdate);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
             } else {
-                logger.info("unsuccessful update operation " + userToUpdate);
-                return new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, UPDATE_ERROR);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
-            logger.error("error in updating the user ", e);
             throw new CommandException(e);
         }
     }

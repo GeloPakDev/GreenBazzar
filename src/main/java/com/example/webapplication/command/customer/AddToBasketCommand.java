@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -22,43 +23,64 @@ public class AddToBasketCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
         HttpSession session = request.getSession();
         ProductService service = ProductServiceImpl.getInstance();
         //Get the cart from the session for the user
         HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
         //Get ID of the product which will be added
         String id = request.getParameter(RequestParameter.PRODUCT_ID);
-
         try {
-            Product product;
+            Product product = new Product();
             Product updatedProduct;
             int productId = Integer.parseInt(id);
             //Find the product from the DB
             Optional<Product> productOptional = service.findProductById(productId);
-
+            //Check was the getting product successful
             if (productOptional.isPresent()) {
                 product = productOptional.get();
-                //Put the product to the cart with default quantity of 1
                 int productInventoryQuantity = product.getQuantity();
-                //Check on availability of the product in the DB
-                if (productInventoryQuantity - 1 > 0) {
-                    int quantity = productInventoryQuantity - 1;
-                    //Update the quantity of the product
-                    service.updateQuantityOfTheProduct(productId, quantity);
-                    //Get updated product to put it in the cart
-                    Optional<Product> updatedOptionalProduct = service.findProductById(productId);
-                    if (updatedOptionalProduct.isPresent()) {
-                        updatedProduct = updatedOptionalProduct.get();
-                        productList.put(updatedProduct, 1);
+                //Check on existence in the map
+                if (productList.containsKey(product)) {
+                    //Check on availability of the product in the DB
+                    if (productInventoryQuantity - 1 > 0) {
+                        int quantity = productInventoryQuantity - 1;
+                        //Update the quantity of the product
+                        service.updateQuantityOfTheProduct(productId, quantity);
+                        //Get updated product to put it in the cart
+                        Optional<Product> updatedOptionalProduct = service.findProductById(productId);
+                        if (updatedOptionalProduct.isPresent()) {
+                            updatedProduct = updatedOptionalProduct.get();
+                            int productQuantityInTheMap = productList.get(product) + 1;
+                            productList.remove(product);
+                            productList.put(updatedProduct , productQuantityInTheMap);
+                            calculateCartData(request);
+                            router = new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
+                        }
+                    }
+                } else {
+                    //Check on availability of the product in the DB
+                    if (productInventoryQuantity - 1 > 0) {
+                        int quantity = productInventoryQuantity - 1;
+                        //Update the quantity of the product
+                        service.updateQuantityOfTheProduct(productId, quantity);
+                        //Get updated product to put it in the cart
+                        Optional<Product> updatedOptionalProduct = service.findProductById(productId);
+                        if (updatedOptionalProduct.isPresent()) {
+                            updatedProduct = updatedOptionalProduct.get();
+                            //Put the product to the cart with default quantity of 1
+                            productList.put(updatedProduct, 1);
+                            calculateCartData(request);
+                            router = new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
+                        }
                     }
                 }
             }
-            //update the data
-            calculateCartData(request);
-            return new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
-        } catch (ServiceException e) {
+        } catch (
+                ServiceException e) {
             throw new CommandException(e);
         }
+        return router;
     }
 
     public static void calculateCartData(HttpServletRequest request) {

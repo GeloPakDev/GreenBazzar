@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderDao extends EntityDao<Order, Integer> {
-    Optional<Order> findOrderByStatus(String status) throws DaoException;
-
-    Optional<Order> findOrderByUserID(int userID) throws DaoException;
 
     List<Order> findAllUserOrders(int userId) throws DaoException;
 

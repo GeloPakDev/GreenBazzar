@@ -20,6 +20,7 @@ import java.util.List;
 
 public class DeleteCardCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR_MESSAGE = "Unable in deleting the card";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -38,7 +39,8 @@ public class DeleteCardCommand implements Command {
                 session.setAttribute(RequestParameter.ADDRESSES, addressList);
                 return new Router(PagePath.CUSTOMER_HOME_PAGE, Router.Type.FORWARD);
             } else {
-                return new Router(PagePath.HOME_PAGE, Router.Type.REDIRECT);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.REDIRECT);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

@@ -18,10 +18,10 @@ import java.util.Optional;
 
 public class UpdateSellerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR_MESSAGE = "Error in updating seller";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        HttpSession session = request.getSession();
         UserService userService = UserServiceImpl.getInstance();
         User userToUpdate;
         String userId = request.getParameter(RequestParameter.USER_ID);
@@ -80,15 +80,13 @@ public class UpdateSellerCommand implements Command {
             userToUpdate.setLastName(lastName);
             logger.info(lastName + " is set as lastName");
             if (userService.updateUser(userToUpdate)) {
-                logger.info("update operation is successful " + userToUpdate);
                 request.setAttribute(RequestParameter.USER, userToUpdate);
                 return new Router(PagePath.SELLER_ABOUT_ME_PAGE, Router.Type.FORWARD);
             } else {
-                logger.info("unsuccessful update operation " + userToUpdate);
-                return new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
-            logger.error("error in updating the user ", e);
             throw new CommandException(e);
         }
     }

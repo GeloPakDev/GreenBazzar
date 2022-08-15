@@ -49,7 +49,7 @@ public class CheckoutCommand implements Command {
         //get the user Address to point out where product should be delivered
         Address address = (Address) request.getAttribute(RequestParameter.ADDRESS);
         logger.info("That is user's address: " + address);
-        //Get the list of products which should be in the product
+        //Get the list of products which should be in the order
         HashMap<Product, Integer> productList = (HashMap<Product, Integer>) session.getAttribute(RequestParameter.PRODUCT_CART);
         logger.info("List of products : " + productList.keySet());
         //get total price of the order
@@ -78,6 +78,9 @@ public class CheckoutCommand implements Command {
                     order.setOrderedDate(Date.valueOf(LocalDate.now()));
                     //Call the dao method to create object
                     if (orderService.createOrder(customerID, order, productList)) {
+                        //After we created an order we should make the cart empty
+                        productList = new HashMap<>();
+                        session.setAttribute(RequestParameter.PRODUCT_CART , productList);
                         router = new Router(PagePath.HOME_PAGE, Router.Type.FORWARD);
                     } else {
                         router = new Router(PagePath.ORDER_CONFIRMATION_PAGE, Router.Type.FORWARD);
@@ -92,4 +95,3 @@ public class CheckoutCommand implements Command {
         return router;
     }
 }
-

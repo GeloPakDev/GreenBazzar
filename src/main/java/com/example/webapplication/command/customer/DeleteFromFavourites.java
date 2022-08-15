@@ -28,6 +28,7 @@ public class DeleteFromFavourites implements Command {
         List<Product> productList = (List<Product>) session.getAttribute(RequestParameter.FAVOURITE_LIST);
         //Get product which should be deleted
         String productId = request.getParameter(RequestParameter.PRODUCT_ID);
+        logger.info("That is productID :"+ productId);
 
         int id = Integer.parseInt(productId);
 

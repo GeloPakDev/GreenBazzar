@@ -17,7 +17,6 @@ public class ProductBuilder {
     private int quantity;
     private Date created_at;
     private Date modified_at;
-    private Date deleted_at;
     private Status status;
     private int sellerId;
 
@@ -115,15 +114,6 @@ public class ProductBuilder {
         return this;
     }
 
-    public Date getDeleted_at() {
-        return deleted_at;
-    }
-
-    public ProductBuilder setDeleted_at(Date deleted_at) {
-        this.deleted_at = deleted_at;
-        return this;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -160,7 +150,6 @@ public class ProductBuilder {
         if (category != that.category) return false;
         if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
         if (modified_at != null ? !modified_at.equals(that.modified_at) : that.modified_at != null) return false;
-        if (deleted_at != null ? !deleted_at.equals(that.deleted_at) : that.deleted_at != null) return false;
         return status == that.status;
     }
 
@@ -176,7 +165,6 @@ public class ProductBuilder {
         result = 31 * result + quantity;
         result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
         result = 31 * result + (modified_at != null ? modified_at.hashCode() : 0);
-        result = 31 * result + (deleted_at != null ? deleted_at.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + sellerId;
         return result;
@@ -195,7 +183,6 @@ public class ProductBuilder {
         sb.append(", quantity=").append(quantity);
         sb.append(", created_at=").append(created_at);
         sb.append(", modified_at=").append(modified_at);
-        sb.append(", deleted_at=").append(deleted_at);
         sb.append(", status=").append(status);
         sb.append(", sellerId=").append(sellerId);
         sb.append('}');

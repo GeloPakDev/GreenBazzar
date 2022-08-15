@@ -2,9 +2,11 @@
 <%@ page import="com.example.webapplication.entity.user.Address" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.webapplication.entity.user.Card" %>
-<%@ page import="com.example.webapplication.command.customer.AddCardCommand" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.language"/>
 <html>
 <head>
     <title>Order confirmation page</title>
@@ -22,7 +24,7 @@
             <span class="title">Greenbazaar</span>
             <span class="header-class-actions">
                <a href="${pageContext.request.contextPath}/page/home.jsp">
-               <input value="home" class="enter-btn" type="submit" style="color: black;
+               <input value="<fmt:message key="customer.home"/>" class="enter-btn" type="submit" style="color: black;
     text-decoration: none;
     right: 220px;
     top: 30px;
@@ -42,7 +44,7 @@
 <form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" value="checkout" name="command">
     <div class="address">
-        <div>Choose address from following:</div>
+        <div><fmt:message key="customer.chooseaddress"/></div>
         <div class="addresses-list">
             <%
                 List<Address> addresses = (List<Address>) session.getAttribute(RequestParameter.ADDRESSES);
@@ -70,7 +72,7 @@
         </div>
     </div>
     <div class="cards">
-        <div>Choose card from the following:</div>
+        <div><fmt:message key="customer.choosecard"/></div>
         <div class="cards-list">
             <%
                 List<Card> cards = (List<Card>) session.getAttribute(RequestParameter.CARDS);
@@ -96,13 +98,13 @@
         </div>
     </div>
     <div class="products">
-        <div>List of products:</div>
+        <div><fmt:message key="customer.productlist"/></div>
         <div class="products-list">
             <ul style="padding: 0; margin: 0;">
                 <c:forEach var="tempProduct" items="${cart}">
                     <li>
                         <input class="product-input" type="text"
-                               value="${tempProduct.key.name} , ${tempProduct.key.photo},${tempProduct.key.price}, ${tempProduct.key.description}, ${tempProduct.key.weight}"
+                               value="${tempProduct.key.name} , ${tempProduct.key.price}, ${tempProduct.key.description}, ${tempProduct.key.weight}"
                                required readonly>
                     </li>
                 </c:forEach>
@@ -111,13 +113,13 @@
     </div>
 
     <div class="payment">
-        <div class="title">Payment Data</div>
+        <div class="title"><fmt:message key="customer.paymentdata"/></div>
         <div class="total-price">
-            Total price for payment: ${total_price}
+            <fmt:message key="customer.totalpriceforpayment"/>: ${total_price}
         </div>
 
         <div class="proceed-to-payment">
-            <input type="submit" value="Proceed to payment" class="payment-button">
+            <input type="submit" value="<fmt:message key="customer.pay"/>" class="payment-button">
         </div>
     </div>
 </form>

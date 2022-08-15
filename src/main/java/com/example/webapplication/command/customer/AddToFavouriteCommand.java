@@ -20,14 +20,18 @@ import java.util.Optional;
 public class AddToFavouriteCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
+    private static final String ERROR_MESSAGE = "Already in basket!";
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
         HttpSession session = request.getSession();
         ProductService service = ProductServiceImpl.getInstance();
         //Get list of favourite products
         List<Product> productList = (List<Product>) session.getAttribute(RequestParameter.FAVOURITE_LIST);
         //Get id of the product
         String productId = request.getParameter(RequestParameter.PRODUCT_ID);
+        logger.info("That is productID : " + productId);
 
         int id = Integer.parseInt(productId);
 
@@ -37,11 +41,17 @@ public class AddToFavouriteCommand implements Command {
             Optional<Product> optionalProduct = service.findProductById(id);
             if (optionalProduct.isPresent()) {
                 product = optionalProduct.get();
-                productList.add(product);
+                if (productList.contains(product)) {
+                    request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                    router = new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
+                } else {
+                    productList.add(product);
+                    router = new Router(PagePath.FAVOURITE_PAGE, Router.Type.FORWARD);
+                }
             }
-            return new Router(PagePath.FAVOURITE_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
+        return router;
     }
 }

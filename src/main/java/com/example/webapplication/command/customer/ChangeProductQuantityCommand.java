@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ChangeProductQuantityCommand implements Command {
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -62,22 +62,20 @@ public class ChangeProductQuantityCommand implements Command {
                     Optional<Product> productOptional = productService.findProductById(id);
                     if (productOptional.isPresent()) {
                         product = productOptional.get();
-                        logger.info("Before update: " + product.getQuantity());
-                        logger.info(productList);
                         //Put the product to the cart with default quantity of 1
                         int inventoryQuantity = product.getQuantity();
                         int increasedQuantity = inventoryQuantity + 1;
                         //Update the quantity of the product
                         productService.updateQuantityOfTheProduct(id, increasedQuantity);
+                        //Get updated product
                         Optional<Product> updatedOptionalProduct = productService.findProductById(id);
                         if (updatedOptionalProduct.isPresent()) {
                             int updatedProductQuantity = quantity - 1;
                             updatedProduct = updatedOptionalProduct.get();
-                            logger.info("After update: " + updatedProduct.getQuantity());
+                            //Check if the product already in the cart or noy
                             if (productList.containsKey(product)) {
                                 productList.remove(product);
                                 productList.put(updatedProduct, updatedProductQuantity);
-                                logger.info(productList);
                             } else {
                                 productList.put(updatedProduct, updatedProductQuantity);
                             }
@@ -119,7 +117,7 @@ public class ChangeProductQuantityCommand implements Command {
             }
             router = new Router(PagePath.CUSTOMER_CART_PAGE, Router.Type.FORWARD);
         } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            throw new CommandException(e);
         }
         return router;
     }

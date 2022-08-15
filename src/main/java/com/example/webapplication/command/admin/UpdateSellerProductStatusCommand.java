@@ -19,6 +19,7 @@ import java.util.List;
 
 public class UpdateSellerProductStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ERROR_MESSAGE = "Unable to update the User!";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -33,10 +34,10 @@ public class UpdateSellerProductStatusCommand implements Command {
             if (service.updateProductStatus(id, status)) {
                 List<Product> productList = service.findAllProductsByStatus(String.valueOf(Status.PENDING));
                 request.setAttribute(RequestParameter.PRODUCTS, productList);
-                return new Router(PagePath.ADMIN_PAGE, Router.Type.FORWARD);
+                return new Router(PagePath.PENDING_ADMIN_PRODUCTS_PAGE, Router.Type.FORWARD);
             } else {
-                //TODO
-                return new Router(PagePath.LOGIN_PAGE, Router.Type.FORWARD);
+                request.setAttribute(RequestParameter.ERROR_MESSAGE, ERROR_MESSAGE);
+                return new Router(PagePath.ERROR_PAGE, Router.Type.FORWARD);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
