@@ -1,5 +1,5 @@
 .mvn
 .idea
-mvnw
+pom.xml
 mvnw.cmd
 WebApplication.iml
