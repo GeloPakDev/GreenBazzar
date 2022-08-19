@@ -5,6 +5,8 @@ This project done to provide the possibility of selling goods in the Internet
 Functionality of the project:
 - 3 roles(Admin , Customer , Seller)
 - Login / Registration
+- Signout 
+- Localization(en/ru)
 <br></br>
 - <h1>Admin</h1> 
 - Approve / Decline prodcus which should be published by the Customer
