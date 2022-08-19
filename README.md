@@ -18,6 +18,7 @@ Functionality of the project:
 - Delete product
 - Approve/Decline Order 
 - Edit personal Data
+- Update product
 <br></br>
 - <h1>Customer</h1>
 - Make an Order
