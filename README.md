@@ -33,5 +33,5 @@ Functionality of the project:
 - Delete from favourites
 - Delete address
 - Delete Banking Card
-- Edit personal Data
+- Edit personal Data![final](https://user-images.githubusercontent.com/89264247/185540833-1c0efbd0-71b0-480a-a567-3fc714102deb.png)
 
