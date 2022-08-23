@@ -2,6 +2,17 @@
 
 This project done to provide the possibility of selling goods in the Internet
 
+Technologies used in the project 
+- Java 17 
+- Maven
+- Git
+- JDBC
+- MySQL
+- JavaEE: Servlet, JSP, JSTL
+- Logger: Log4J 
+- Server / Servlet container: Tomcat 9
+<br></br>
+
 Functionality of the project:
 - 3 roles(Admin , Customer , Seller)
 - Login / Registration
